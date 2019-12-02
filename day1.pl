@@ -111,7 +111,7 @@ sub CalcFuel {
     my $Result = floor($Mass / 3) - 2;
     return 0 if $Result < 0;
     
-    $Result += CalcFuel($Result, $Deep) if $Deep && $Result > 0;
+    $Result += CalcFuel($Result, $Deep) if $Deep;
     
     return $Result;
 };
