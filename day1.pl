@@ -105,12 +105,34 @@ my @Modules = qw(
     68267
 );
 
+sub CalcFuel {
+    my ($Mass, $Deep) = @_;
+    
+    my $Result = floor($Mass / 3) - 2;
+    return 0 if $Result < 0;
+    
+    $Result += CalcFuel($Result, $Deep) if $Deep && $Result > 0;
+    
+    return $Result;
+};
+
 my $FuelSum = 0;
 for my $Module (@Modules) {
-    $FuelSum += floor($Module / 3) - 2;
+    $FuelSum += CalcFuel($Module);
 }
 
 print "What is the sum of the fuel requirements for all of the modules on your spacecraft?\n";
 print $FuelSum . "\n";
+
+die "Test 1 failed" if CalcFuel(14, 1) != 2;
+die "Test 2 failed" if CalcFuel(1969, 1) != 966;
+die "Test 3 failed" if CalcFuel(100756, 1) != 50346;
+
+my $FuelSum = 0;
+for my $Module (@Modules) {
+    $FuelSum += CalcFuel($Module, 1);
+}
+
+print "Part 2: $FuelSum\n";
 
 1;
