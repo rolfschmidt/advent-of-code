@@ -105,7 +105,7 @@ my @Modules = qw(
     68267
 );
 
-my $FuelSum;
+my $FuelSum = 0;
 for my $Module (@Modules) {
     $FuelSum += floor($Module / 3) - 2;
 }
