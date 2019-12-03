@@ -51,7 +51,7 @@ sub CalcWires {
                     $Matrix{$X}->{$Y}->{$WireIndex} = $WireSteps;
                 }
 
-                next STEP if keys %{ $Matrix{$X}->{$Y} || {} } < 2;
+                next STEP if keys %{ $Matrix{$X}->{$Y} } < 2;
 
                 my $Distance = abs($X) + abs($Y);
                 next STEP if $Result && $Result < $Distance && $Type eq 'Distance';
