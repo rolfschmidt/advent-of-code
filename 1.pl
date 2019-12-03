@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+use strict;
+use warnings;
+
 use POSIX;
 
 my @Modules = qw(
@@ -107,12 +110,12 @@ my @Modules = qw(
 
 sub CalcFuel {
     my ($Mass, $Deep) = @_;
-    
+
     my $Result = floor($Mass / 3) - 2;
     return 0 if $Result < 0;
-    
+
     $Result += CalcFuel($Result, $Deep) if $Deep;
-    
+
     return $Result;
 };
 
@@ -128,7 +131,7 @@ die "Test 1 failed" if CalcFuel(14, 1) != 2;
 die "Test 2 failed" if CalcFuel(1969, 1) != 966;
 die "Test 3 failed" if CalcFuel(100756, 1) != 50346;
 
-my $FuelSum = 0;
+$FuelSum = 0;
 for my $Module (@Modules) {
     $FuelSum += CalcFuel($Module, 1);
 }

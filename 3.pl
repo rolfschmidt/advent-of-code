@@ -1,5 +1,8 @@
 #/usr/bin/perl
 
+use strict;
+use warnings;
+
 use List::Util qw(max sum);
 
 sub CalcWires {
@@ -55,9 +58,6 @@ sub CalcWires {
 
                 my $StepsTotal = sum values %{ $Matrix{$X}->{$Y} };
                 next STEP if %{ $Result || {} } && $Result->{StepsTotal} < $StepsTotal && $Type eq 'StepsTotal';
-
-#                 use Data::Dumper;
-#                 print STDERR "DEBUG - xxx - VariableName = ". Dumper($Matrix{$X}->{$Y}, $StepsTotal, $Type) ."\n";
 
                 $Result = {
                     X          => $X,

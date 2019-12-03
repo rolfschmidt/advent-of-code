@@ -1,11 +1,14 @@
 #/usr/bin/perl
 
+use strict;
+use warnings;
+
 my $Compute = sub {
     my ($Code) = @_;
 
     my @Parts = split /,/, $Code;
 
-    $Index = 0;
+    my $Index = 0;
     PART:
     while ( $Index != 99 ) {
         my $Part = int $Parts[$Index];
