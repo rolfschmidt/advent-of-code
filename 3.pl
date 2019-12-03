@@ -59,10 +59,7 @@ sub CalcWires {
                 my $StepsTotal = sum values %{ $Matrix{$X}->{$Y} };
                 next STEP if $Result && $Result < $StepsTotal && $Type eq 'StepsTotal';
 
-                $Result = $Distance;
-                if ( $Type eq 'StepsTotal' ) {
-                    $Result = $StepsTotal;
-                }
+                $Result = $Type eq 'StepsTotal' ? $StepsTotal : $Distance;
             }
         }
     }
