@@ -16,7 +16,6 @@ function CalcPass($Input, $Mode = 'Classic') {
         $AdjacentDigits = 0;
         $PrevChar = -1;
         foreach ($SplitNumber as $Key => $Char) {
-            // print "$Char\n";
             if (!isset($AdjacentDigitsList[$Char])) $AdjacentDigitsList[$Char] = 0;
             $AdjacentDigitsList[$Char]++;
 
