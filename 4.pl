@@ -6,7 +6,7 @@ use warnings;
 use List::Util qw(max sum);
 
 sub CalcPass {
-    my ($Input) = @_;
+    my ($Input, $Mode) = @_;
 
     my @SplitRange = split /-/, $Input;
 
@@ -21,6 +21,7 @@ sub CalcPass {
         # check two adjacent digits
         my $Increasing = 1;
         my %AdjacentDigitsList;
+        my %AdjacentDigitsListElf;
         my $AdjacentDigits;
         my $PrevChar;
         SPLIT:
@@ -32,8 +33,12 @@ sub CalcPass {
                 $AdjacentDigits = 1;
             }
 
+            if ( defined $PrevChar && $PrevChar eq $Char ) {
+                $AdjacentDigitsListElf{$Char} ||= 1;
+                $AdjacentDigitsListElf{$Char}++;
+            }
 
-            if ( !defined$PrevChar || ($PrevChar && $PrevChar <= $Char) ) {
+            if ( !defined $PrevChar || ($PrevChar && $PrevChar <= $Char) ) {
                 $PrevChar = $Char;
                 next SPLIT;
             }
@@ -41,6 +46,19 @@ sub CalcPass {
             $Increasing = 0;
 
             last SPLIT;
+        }
+
+        if ($Mode && $Mode eq 'Elf') {
+
+            $AdjacentDigits = 0;
+            CHAR:
+            for my $Char (sort keys %AdjacentDigitsListElf) {
+                next CHAR if $AdjacentDigitsListElf{$Char} != 2;
+
+                $AdjacentDigits = 1;
+
+                last CHAR;
+            }
         }
 
         next NUMBER if !$Increasing;
@@ -57,5 +75,9 @@ die "Count failed for puzzle range" if scalar $Count != 1748;
 
 print "Part 1: $Count\n";
 
+$Count = CalcPass('146810-612564', 'Elf');
+die "Count failed for puzzle range $Count" if scalar $Count != 1180;
+
+print "Part 2: $Count\n";
 
 1;
