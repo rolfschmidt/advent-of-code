@@ -16,7 +16,6 @@ sub CalcPass {
     for my $Number ($From .. $To) {
         my @SplitNumber = split //, $Number;
 
-        # check two adjacent digits
         my $Increasing = 1;
         my %AdjacentDigitsList;
         my %AdjacentDigitsListElf;
