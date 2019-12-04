@@ -21,7 +21,7 @@ sub CalcPass {
         my %AdjacentDigitsList;
         my %AdjacentDigitsListElf;
         my $AdjacentDigits;
-        my $PrevChar;
+        my $PrevChar = -1;
         SPLIT:
         for my $Char (@SplitNumber) {
             $AdjacentDigitsList{$Char} ||= 0;
@@ -31,12 +31,12 @@ sub CalcPass {
                 $AdjacentDigits = 1;
             }
 
-            if ( defined $PrevChar && $PrevChar eq $Char ) {
+            if ( $PrevChar eq $Char ) {
                 $AdjacentDigitsListElf{$Char} ||= 1;
                 $AdjacentDigitsListElf{$Char}++;
             }
 
-            if ( !defined $PrevChar || ($PrevChar && $PrevChar <= $Char) ) {
+            if ( $PrevChar <= $Char ) {
                 $PrevChar = $Char;
                 next SPLIT;
             }
