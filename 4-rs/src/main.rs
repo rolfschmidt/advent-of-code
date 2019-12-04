@@ -8,29 +8,26 @@ fn calcpass(input: &str, mode: &str) -> usize {
     let mut result: usize     = 0;
 
     for number in from .. to {
-        let number_str                 = number.to_string();
-        let mut splitnumber: Vec<&str> = number_str.split("").collect();
-        splitnumber.pop();
-        splitnumber.drain(0 .. 1);
+        let splitnumber: Vec<char> = number.to_string().chars().collect();
 
         let mut increasing                                  = 1;
-        let mut adjacentdigitslist: HashMap<&str, usize>    = HashMap::new();
-        let mut adjacentdigitslistelf: HashMap<&str, usize> = HashMap::new();
+        let mut adjacentdigitslist: HashMap<char, usize>    = HashMap::new();
+        let mut adjacentdigitslistelf: HashMap<char, usize> = HashMap::new();
         let mut adjacentdigits                              = 0;
         let mut prevchar                                    = 0;
 
         for char in splitnumber {
-            let char_number: usize = char.parse().unwrap();
+            let char_number: usize = char as usize;
             adjacentdigitslist.entry(char).or_insert(0);
-            adjacentdigitslist.insert(char, adjacentdigitslist[char] + 1);
+            adjacentdigitslist.insert(char, adjacentdigitslist[&char] + 1);
 
-            if adjacentdigitslist[char] > 1 {
+            if adjacentdigitslist[&char] > 1 {
                 adjacentdigits = 1;
             }
 
             if prevchar == char_number {
                 adjacentdigitslistelf.entry(char).or_insert(1);
-                adjacentdigitslistelf.insert(char, adjacentdigitslistelf[char] + 1);
+                adjacentdigitslistelf.insert(char, adjacentdigitslistelf[&char] + 1);
             }
 
             if prevchar <= char_number {
