@@ -46,6 +46,8 @@ sub CalcPass {
             last SPLIT;
         }
 
+        next NUMBER if !$Increasing;
+
         if ($Mode && $Mode eq 'Elf') {
 
             $AdjacentDigits = 0;
@@ -59,7 +61,6 @@ sub CalcPass {
             }
         }
 
-        next NUMBER if !$Increasing;
         next NUMBER if !$AdjacentDigits;
 
         $Result++;
