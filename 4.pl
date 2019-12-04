@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 
-use List::Util qw(max sum);
-
 sub CalcPass {
     my ($Input, $Mode) = @_;
 
