@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use Test::More;
+
 sub PartOpCodeGet {
     my ($OpCodeIndex, $Parts) = @_;
 
@@ -85,7 +87,7 @@ sub Compute {
         # move value
         elsif ( $Part == 3 ) {
             $Result = PartValueGet($Index, $Index + 1, \@Parts);
-            PartValueSet($Index, $Result, $Input ? $Input : 1, \@Parts);
+            PartValueSet($Index, $Result, defined $Input ? $Input : 1, \@Parts);
             $Index += 2;
         }
 
@@ -150,7 +152,6 @@ sub Compute {
     return join ',', @Parts;
 };
 
-
 my @Tests = (
     {
         Code   => '1,0,0,0,99',
@@ -190,67 +191,91 @@ my @Tests = (
     {
         Code   => '3,9,8,9,10,9,4,9,99,-1,8',
         Result => '1',
-        Text   => 'Day 5 Part 2 - Test 1 - position mode - equal to - true',
+        Text   => 'Day 5 Part 2 - position mode - equal to - true',
         Input  => 8,
     },
     {
         Code   => '3,9,8,9,10,9,4,9,99,-1,8',
         Result => '0',
-        Text   => 'Day 5 Part 2 - Test 2 - position mode - equal to - false',
+        Text   => 'Day 5 Part 2 - position mode - equal to - false',
         Input  => 7,
     },
     {
         Code   => '3,9,7,9,10,9,4,9,99,-1,8',
         Result => '1',
-        Text   => 'Day 5 Part 2 - Test 3 - position mode - less than - true',
+        Text   => 'Day 5 Part 2 - position mode - less than - true',
         Input  => 5,
     },
     {
         Code   => '3,9,7,9,10,9,4,9,99,-1,8',
         Result => '0',
-        Text   => 'Day 5 Part 2 - Test 4 - position mode - less than - false',
+        Text   => 'Day 5 Part 2 - position mode - less than - false',
         Input  => 9,
     },
     {
         Code   => '33,3,1108,-1,8,3,4,3,99',
         Result => '1',
-        Text   => 'Day 5 Part 2 - Test 5 - immediate mode - equal to - true',
+        Text   => 'Day 5 Part 2 - immediate mode - equal to - true',
         Input  => 8,
     },
     {
         Code   => '33,3,1108,-1,8,3,4,3,99',
         Result => '1',
-        Text   => 'Day 5 Part 2 - Test 6 - immediate mode - equal to - false',
+        Text   => 'Day 5 Part 2 - immediate mode - equal to - false',
         Input  => 7,
     },
     {
         Code   => '3,3,1107,-1,8,3,4,3,99',
         Result => '1',
-        Text   => 'Day 5 Part 2 - Test 7 - immediate mode - less than - true',
+        Text   => 'Day 5 Part 2 - immediate mode - less than - true',
         Input  => 5,
     },
     {
         Code   => '3,3,1107,-1,8,3,4,3,99',
         Result => '0',
-        Text   => 'Day 5 Part 2 - Test 8 - immediate mode - less than - false',
+        Text   => 'Day 5 Part 2 - immediate mode - less than - false',
         Input  => 9,
+    },
+    {
+        Code   => '3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9',
+        Result => '0',
+        Text   => 'Day 5 Part 2 - position mode - jump test - zero',
+        Input  => 0,
+    },
+    {
+        Code   => '3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9',
+        Result => '1',
+        Text   => 'Day 5 Part 2 - position mode - jump test - nonzero',
+        Input  => 1,
+    },
+    {
+        Code   => '3,3,1105,-1,9,1101,0,0,12,4,12,99,1',
+        Result => '0',
+        Text   => 'Day 5 Part 2 - immediate mode - jump test 2 - zero',
+        Input  => 0,
+    },
+    {
+        Code   => '3,3,1105,-1,9,1101,0,0,12,4,12,99,1',
+        Result => '1',
+        Text   => 'Day 5 Part 2 - immediate mode - jump test 2 - nonzero',
+        Input  => 1,
     },
     {
         Code   => '3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99',
         Result => '999',
-        Text   => 'Day 5 Part 2 - Test 9 - largest 999',
+        Text   => 'Day 5 Part 2 - largest 999',
         Input  => 7,
     },
     {
         Code   => '3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99',
         Result => '1000',
-        Text   => 'Day 5 Part 2 - Test 9 - largest 1000',
+        Text   => 'Day 5 Part 2 - largest 1000',
         Input  => 8,
     },
     {
         Code   => '3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99',
         Result => '1001',
-        Text   => 'Day 5 Part 2 - Test 9 - largest 1001',
+        Text   => 'Day 5 Part 2 - largest 1001',
         Input  => 9,
     },
     {
@@ -266,14 +291,11 @@ TEST:
 for my $Test (@Tests) {
 
     my $Result = Compute($Test->{Code}, $Test->{Input});
-    if ( $Result =~ $Test->{Result} ) {
-        print "ok " . $Test->{Text} . " (Result: " . $Test->{Result} . ")\n";
-    }
-    else {
-        print "failed " . $Test->{Text} . " " . $Test->{Result} . " != $Result\n";
+    my $Check = $Result =~ $Test->{Result} ? 1 : 0;
 
-        last TEST;
-    }
+    is(1, $Check, $Test->{Text} . "(Result: " . $Test->{Result} . ")");
 }
+
+done_testing();
 
 1;
