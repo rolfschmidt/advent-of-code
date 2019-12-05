@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use List::Util qw(max sum);
+use Test::More;
 
 sub CalcWires {
     my ($Input, $Type) = @_;
@@ -132,14 +133,11 @@ WWIRE
 
 TEST:
 for my $Test (@Tests) {
-
     my $Result = CalcWires($Test->{Code}, $Test->{StepsTotal} ? 'StepsTotal' : 'Distance');
-    if ( $Result == $Test->{Result} ) {
-        print "ok " . $Test->{Text} . " (Result: " . $Test->{Result} . ")\n";
-    }
-    else {
-        print "failed " . $Test->{Text} . " " . $Test->{Result} . " != $Result\n";
-    }
+
+    is($Result, $Test->{Result}, $Test->{Text} . "(Result: " . $Test->{Result} . ")");
 }
+
+done_testing();
 
 1;

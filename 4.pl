@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use Test::More;
+
 sub CalcPass {
     my ($Input, $Mode) = @_;
 
@@ -69,13 +71,11 @@ sub CalcPass {
 }
 
 my $Count = CalcPass('146810-612564');
-die "Count failed for puzzle range" if scalar $Count != 1748;
-
-print "Part 1: $Count\n";
+is($Count, 1748, "Part 1 - Puzzle (Result: $Count)");
 
 $Count = CalcPass('146810-612564', 'Elf');
-die "Count failed for puzzle range $Count" if scalar $Count != 1180;
+is($Count, 1180, "Part 2 - Puzzle (Result: $Count)");
 
-print "Part 2: $Count\n";
+done_testing();
 
 1;

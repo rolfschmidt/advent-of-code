@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use POSIX;
+use Test::More;
 
 my @Modules = qw(
     77680
@@ -124,18 +125,18 @@ for my $Module (@Modules) {
     $FuelSum += CalcFuel($Module);
 }
 
-print "What is the sum of the fuel requirements for all of the modules on your spacecraft?\n";
-print $FuelSum . "\n";
-
-die "Test 1 failed" if CalcFuel(14, 1) != 2;
-die "Test 2 failed" if CalcFuel(1969, 1) != 966;
-die "Test 3 failed" if CalcFuel(100756, 1) != 50346;
+is($FuelSum, 3363760, 'What is the sum of the fuel requirements for all of the modules on your spacecraft?');
+is(CalcFuel(14, 1), 2, 'Test 1');
+is(CalcFuel(1969, 1), 966, 'Test 2');
+is(CalcFuel(100756, 1), 50346, 'Test 3');
 
 $FuelSum = 0;
 for my $Module (@Modules) {
     $FuelSum += CalcFuel($Module, 1);
 }
 
-print "Part 2: $FuelSum\n";
+is($FuelSum, 5042767, 'Part 2');
+
+done_testing();
 
 1;
