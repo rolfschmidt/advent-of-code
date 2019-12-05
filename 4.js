@@ -70,8 +70,8 @@ function CalcPass(Input, Mode = 'Classic') {
 
 Count = CalcPass('146810-612564');
 
-console.log("Part 1: " + Count + "\n");
+console.log("Part 1: " + Count);
 
 Count = CalcPass('146810-612564', 'Elf');
 
-console.log("Part 2: " + Count + "\n");
+console.log("Part 2: " + Count);
