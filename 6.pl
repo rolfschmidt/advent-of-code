@@ -4,7 +4,6 @@ use strict;
 use warnings;
 no warnings 'recursion';
 
-use List::Util qw(sum);
 use Test::More;
 
 sub OrbitRoute {
