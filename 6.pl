@@ -19,6 +19,53 @@ while (<DATA>) {
     $Data[$Index] .= $_;
 };
 
+sub RouteDataGet {
+    my ($Code, $Mode) = @_;
+
+    my @SplitRoutes = split /\n/, $Code;
+
+    my %Data;
+    for my $Route (@SplitRoutes) {
+        my @Connection = split /\)/, $Route;
+
+        if ( $Mode && $Mode eq 'Full' ) {
+            $Data{ $Connection[0] } ||= {};
+            $Data{ $Connection[0] }->{ $Connection[1] } = 1;
+            $Data{ $Connection[1] } ||= {};
+            $Data{ $Connection[1] }->{ $Connection[0] } = 1;
+        }
+        else {
+            $Data{ $Connection[1] } = $Connection[0];
+        }
+
+    }
+
+    return %Data;
+}
+
+sub OrbitCount {
+    my ($Count, $Orbit, $Data) = @_;
+
+    return $Count if !defined $Data->{$Orbit};
+
+    $Count++;
+
+    return OrbitCount($Count, $Data->{$Orbit}, $Data);
+}
+
+sub OrbitAllCount {
+    my ($Code) = @_;
+
+    my %Data = RouteDataGet($Code);
+
+    my $Count = 0;
+    for my $Orbit (sort keys %Data) {
+        $Count = OrbitCount($Count, $Orbit, \%Data);
+    }
+
+    return $Count;
+}
+
 sub OrbitRoute {
     my ($From, $To, $Data, $Ignore) = @_;
 
@@ -37,52 +84,26 @@ sub OrbitRoute {
     return @Result;
 }
 
-sub RouteDataGet {
-    my ($Code) = @_;
-
-    my @SplitRoutes = split /\n/, $Code;
-
-    my %Data;
-    for my $Route (@SplitRoutes) {
-        my @Connection = split /\)/, $Route;
-
-        $Data{ $Connection[0] } ||= {};
-        $Data{ $Connection[0] }->{ $Connection[1] } = 1;
-
-        $Data{ $Connection[1] } ||= {};
-        $Data{ $Connection[1] }->{ $Connection[0] } = 1;
-    }
-
-    return %Data;
-}
-
-sub Compute {
+sub OrbitRouteCount {
     my ($From, $To, $Code) = @_;
 
-    my %Data   = RouteDataGet($Code);
+    my %Data   = RouteDataGet($Code, 'Full');
     my @Result = OrbitRoute($From, $To, \%Data);
 
     return scalar @Result - 1;
 };
 
-is(Compute('D', 'COM', $Data[0]), 3, 'D directly orbits C and indirectly orbits B and COM, a total of 3 orbits.');
-is(Compute('L', 'COM', $Data[0]), 7, 'L directly orbits K and indirectly orbits J, E, D, C, B, and COM, a total of 7 orbits.');
-is(Compute('L', 'COM', $Data[0]) + Compute('D', 'COM', $Data[0]), 10, 'L and D eq 10 orbits.');
-is(Compute('COM', 'COM', $Data[0]), 0, 'COM orbits nothing.');
+is(OrbitRouteCount('D', 'COM', $Data[0]), 3, 'D directly orbits C and indirectly orbits B and COM, a total of 3 orbits.');
+is(OrbitRouteCount('L', 'COM', $Data[0]), 7, 'L directly orbits K and indirectly orbits J, E, D, C, B, and COM, a total of 7 orbits.');
+is(OrbitRouteCount('L', 'COM', $Data[0]) + OrbitRouteCount('D', 'COM', $Data[0]), 10, 'L and D eq 10 orbits.');
+is(OrbitRouteCount('COM', 'COM', $Data[0]), 0, 'COM orbits nothing.');
 
-my %Result = RouteDataGet($Data[1]);
-
-my $Count = 0;
-for my $From (sort keys %Result) {
-    $Count += Compute($From, 'COM', $Data[1]);
-}
-
-is($Count, 144909, 'Puzzle orbits 144909.');
+is(OrbitAllCount($Data[1]), 144909, 'Puzzle orbits 144909.');
 
 # Part 2
-# Compute - 2 because "SAN" and "YOU" are persons in a orbit
+# OrbitRouteCount - 2 because "SAN" and "YOU" are persons in a orbit
 # so we dont need to count them
-is(Compute('SAN', 'YOU', $Data[1]) - 2, 259, 'SAN to YOU got orbits 259.');
+is(OrbitRouteCount('SAN', 'YOU', $Data[1]) - 2, 259, 'SAN to YOU got orbits 259.');
 
 done_testing();
 
