@@ -7,29 +7,6 @@ no warnings 'recursion';
 use List::Util qw(sum);
 use Test::More;
 
-sub OrbitCount {
-    my ($Orbit, $Data) = @_;
-
-    my %CountData;
-    ORBIT:
-    for my $CountOrbit ( keys %{ $Data->{$Orbit} || {} } ) {
-        my %SubData;
-        if ( !defined $CountData{$CountOrbit} ) {
-            %SubData = OrbitCount( $CountOrbit, $Data );
-
-        }
-
-        $CountData{$CountOrbit} = 1;
-
-        %CountData = (
-            %CountData,
-            %SubData,
-        );
-    }
-
-    return %CountData;
-};
-
 sub OrbitRoute {
     my ($From, $To, $Data, $Ignore) = @_;
 
@@ -73,7 +50,7 @@ sub RouteDataGet {
 }
 
 sub Compute {
-    my ($From, $To, $Code, $Mode) = @_;
+    my ($From, $To, $Code) = @_;
 
     my %Data   = RouteDataGet($Code);
     my @Result = OrbitRoute($From, $To, \%Data);
