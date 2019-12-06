@@ -29,7 +29,6 @@ sub OrbitRoute {
     return if $Ignore->{$From};
     $Ignore->{$From} = 1;
 
-    CHECK:
     for my $Check ( sort keys %{ $Data->{$From} } ) {
         push @Result, OrbitRoute($Check, $To, $Data, $Ignore);
     }
