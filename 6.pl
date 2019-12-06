@@ -1,10 +1,23 @@
 #!/usr/bin/perl
 
+package main;
+
 use strict;
 use warnings;
 no warnings 'recursion';
 
 use Test::More;
+
+my @Data;
+my $Index = 0;
+while (<DATA>) {
+    if ( $_ =~ m{\A\s*\z} ) {
+        $Index++;
+        next;
+    }
+    $Data[$Index] ||= '';
+    $Data[$Index] .= $_;
+};
 
 sub OrbitRoute {
     my ($From, $To, $Data, $Ignore) = @_;
@@ -53,8 +66,30 @@ sub Compute {
     return scalar @Result - 1;
 };
 
+is(Compute('D', 'COM', $Data[0]), 3, 'D directly orbits C and indirectly orbits B and COM, a total of 3 orbits.');
+is(Compute('L', 'COM', $Data[0]), 7, 'L directly orbits K and indirectly orbits J, E, D, C, B, and COM, a total of 7 orbits.');
+is(Compute('L', 'COM', $Data[0]) + Compute('D', 'COM', $Data[0]), 10, 'L and D eq 10 orbits.');
+is(Compute('COM', 'COM', $Data[0]), 0, 'COM orbits nothing.');
 
-my $TestData = <<OORBIT;
+my %Result = RouteDataGet($Data[1]);
+
+my $Count = 0;
+for my $From (sort keys %Result) {
+    $Count += Compute($From, 'COM', $Data[1]);
+}
+
+is($Count, 144909, 'Puzzle orbits 144909.');
+
+# Part 2
+# Compute - 2 because "SAN" and "YOU" are persons in a orbit
+# so we dont need to count them
+is(Compute('SAN', 'YOU', $Data[1]) - 2, 259, 'SAN to YOU got orbits 259.');
+
+done_testing();
+
+1;
+
+__DATA__
 COM)B
 B)C
 C)D
@@ -66,14 +101,7 @@ D)I
 E)J
 J)K
 K)L
-OORBIT
 
-is(Compute('D', 'COM', $TestData), 3, 'D directly orbits C and indirectly orbits B and COM, a total of 3 orbits.');
-is(Compute('L', 'COM', $TestData), 7, 'L directly orbits K and indirectly orbits J, E, D, C, B, and COM, a total of 7 orbits.');
-is(Compute('L', 'COM', $TestData) + Compute('D', 'COM', $TestData), 10, 'L and D eq 10 orbits.');
-is(Compute('COM', 'COM', $TestData), 0, 'COM orbits nothing.');
-
-my $PuzzleData = <<OORBIT;
 R45)497
 TYR)159
 RJC)Z1B
@@ -1181,22 +1209,3 @@ ZYJ)2G1
 Y1S)F31
 S12)Q16
 L1Q)1WM
-OORBIT
-
-my %Result = RouteDataGet($PuzzleData);
-
-my $Count = 0;
-for my $From (sort keys %Result) {
-    $Count += Compute($From, 'COM', $PuzzleData);
-}
-
-is($Count, 144909, 'Puzzle orbits 144909.');
-
-# Part 2
-# Compute - 2 because "SAN" and "YOU" are persons in a orbit
-# so we dont need to count them
-is(Compute('SAN', 'YOU', $PuzzleData) - 2, 259, 'SAN to YOU got orbits 259.');
-
-done_testing();
-
-1;

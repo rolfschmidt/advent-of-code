@@ -5,6 +5,17 @@ use warnings;
 
 use Test::More;
 
+my @Data;
+my $Index = 0;
+while (<DATA>) {
+    if ( $_ =~ m{\A\s*\z} ) {
+        $Index++;
+        next;
+    }
+    $Data[$Index] ||= '';
+    $Data[$Index] .= $_;
+};
+
 sub CalcPass {
     my ($Input, $Mode) = @_;
 
@@ -70,12 +81,15 @@ sub CalcPass {
     return $Result;
 }
 
-my $Count = CalcPass('146810-612564');
+my $Count = CalcPass($Data[0]);
 is($Count, 1748, "Part 1 - Puzzle (Result: $Count)");
 
-$Count = CalcPass('146810-612564', 'Elf');
+$Count = CalcPass($Data[0], 'Elf');
 is($Count, 1180, "Part 2 - Puzzle (Result: $Count)");
 
 done_testing();
 
 1;
+
+__DATA__
+146810-612564
