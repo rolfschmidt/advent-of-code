@@ -18,11 +18,7 @@ sub OrbitRoute {
 
     CHECK:
     for my $Check ( sort keys %{ $Data->{$From} } ) {
-        my @Route = OrbitRoute($Check, $To, $Data, $Ignore);
-
-        next CHECK if !grep { $_ eq $To } @Route;
-
-        push @Result, @Route;
+        push @Result, OrbitRoute($Check, $To, $Data, $Ignore);
     }
 
     return if !grep { $_ eq $To } @Result;
