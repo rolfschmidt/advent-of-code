@@ -365,7 +365,7 @@ sub AmpSequenceListGet {
 }
 
 sub AmpRun {
-    my ($Code, $Sequences, $Deep) = @_;
+    my ($Code, $Sequences, $Mode) = @_;
 
     my @Outputs;
 
@@ -376,7 +376,6 @@ sub AmpRun {
         my $IndexCode    = {};
 
         my $AmpIndex = 0;
-        my $Feedback = 0;
         AMP:
         while ( $AmpIndex < 5 ) {
             $IndexMemory->{$AmpIndex}    ||= 0;
@@ -389,9 +388,9 @@ sub AmpRun {
 
             push @Outputs, $AmpOutputs;
 
-            next SEQ if $RA->{Halted} && $AmpIndex == 4 && $Deep;
+            next SEQ if $RA->{Halted} && $AmpIndex == 4 && $Mode && $Mode eq 'Feedback';
 
-            if ($Deep) {
+            if ($Mode && $Mode eq 'Feedback') {
                 $IndexMemory->{$AmpIndex} = $RA->{Index};
                 $IndexCode->{$AmpIndex}   = $RA->{Parts};
 
@@ -442,28 +441,28 @@ sub AmpRun {
         Result    => '139629729',
         Text      => 'Day 7 Part 2 - Test 1',
         Sequences => AmpSequenceListGet(5, 9),
-        Deep      => 1,
+        Mode      => 'Feedback',
     },
     {
         Code      => $Data[5],
         Result    => '18216',
         Text      => 'Day 7 Part 2 - Test 2',
         Sequences => AmpSequenceListGet(5, 9),
-        Deep      => 1,
+        Mode      => 'Feedback',
     },
     {
         Code      => $Data[3],
         Result    => '5371621',
         Text      => 'Day 7 Part 2 - Puzzle',
         Sequences => AmpSequenceListGet(5, 9),
-        Deep      => 1,
+        Mode      => 'Feedback',
     },
 
 );
 
 TEST:
 for my $Test (@Tests) {
-    my $Result = max( AmpRun($Test->{Code}, $Test->{Sequences}, $Test->{Deep}) );
+    my $Result = max( AmpRun($Test->{Code}, $Test->{Sequences}, $Test->{Mode}) );
 
     is($Result, $Test->{Result}, $Test->{Text} . "(Result: " . $Test->{Result} . ")");
 }
