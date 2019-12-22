@@ -364,7 +364,7 @@ sub AmpSequenceListGet {
     return \@Result;
 }
 
-sub AmpRun { # 1342904 671452
+sub AmpRun { # 1342904 671452 373005 373006 61696857
     my ($Code, $Sequences, $Deep) = @_;
 
     my @Outputs;
@@ -403,8 +403,8 @@ sub AmpRun { # 1342904 671452
             $AmpOutputs = $RA->{Outputs} if $RA->{Outputs};
             $IndexOutputs->{$AmpIndex} = $RA->{Outputs};
 
-            # push @Outputs, $AmpOutputs if $AmpIndex == 4;
-            push @Outputs, $AmpOutputs if $RA->{Outputs} && $AmpIndex == 4;
+            push @Outputs, $AmpOutputs;
+            # push @Outputs, $AmpOutputs;
 
             # print Dumper($RA);
             next SEQ if $RA->{Halted} && $Deep;
@@ -438,10 +438,9 @@ sub AmpRun { # 1342904 671452
 
             $AmpIndex++;
         }
-
-        last SEQ if $Deep;
     }
 
+    print "last: $Outputs[-1]\n";
 
     return @Outputs
 }
