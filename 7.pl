@@ -364,7 +364,7 @@ sub AmpSequenceListGet {
     return \@Result;
 }
 
-sub AmpRun { # 1342904 671452 373005 373006 61696857
+sub AmpRun {
     my ($Code, $Sequences, $Deep) = @_;
 
     my @Outputs;
