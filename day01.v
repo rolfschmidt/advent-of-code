@@ -1,7 +1,7 @@
 module main
 
 fn day01a() int {
-    numbers := read_day('day01a.txt')
+    numbers := read_day('day01.txt')
     mut result := 0
 
     for number1 in numbers {
@@ -24,7 +24,7 @@ fn day01a() int {
 }
 
 fn day01b() int {
-    numbers := read_day('day01a.txt')
+    numbers := read_day('day01.txt')
     mut result := 0
 
     for number1 in numbers {
