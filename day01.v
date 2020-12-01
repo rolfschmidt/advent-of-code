@@ -32,9 +32,6 @@ fn day01b() int {
             for number3 in numbers {
                 if ( number1.int() + number2.int() + number3.int() ) == 2020 {
                     result = number1.int() * number2.int() * number3.int()
-                }
-
-                if result > 0 {
                     break
                 }
             }
