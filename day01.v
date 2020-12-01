@@ -6,7 +6,7 @@ fn day01a() int {
 
     for number1 in numbers {
         for number2 in numbers {
-            if ( number1 + number2 ) == 2020 {
+            if number1 + number2 == 2020 {
                 result = number1 * number2
                 break
             }
@@ -27,7 +27,7 @@ fn day01b() int {
     for number1 in numbers {
         for number2 in numbers {
             for number3 in numbers {
-                if ( number1 + number2 + number3 ) == 2020 {
+                if number1 + number2 + number3 == 2020 {
                     result = number1 * number2 * number3
                     break
                 }
