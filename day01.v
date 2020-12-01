@@ -8,9 +8,6 @@ fn day01a() int {
         for number2 in numbers {
             if ( number1.int() + number2.int() ) == 2020 {
                 result = number1.int() * number2.int()
-            }
-
-            if result > 0 {
                 break
             }
         }
