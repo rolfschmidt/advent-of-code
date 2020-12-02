@@ -61,8 +61,8 @@ fn day02a() int {
 
     passwords := read_day('day02.txt')
     for password in passwords {
-        pass_obj := d2_parse_password(password)
-        if !pass_obj.valid() {
+        password_object := d2_parse_password(password)
+        if !password_object.valid() {
             continue
         }
 
@@ -77,8 +77,8 @@ fn day02b() int {
 
     passwords := read_day('day02.txt')
     for password in passwords {
-        pass_obj := d2_parse_password(password)
-        if !pass_obj.valid_by_index() {
+        password_object := d2_parse_password(password)
+        if !password_object.valid_by_index() {
             continue
         }
 
