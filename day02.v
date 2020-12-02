@@ -16,7 +16,7 @@ fn (p D2Password) valid() bool {
 fn (p D2Password) valid_by_index() bool {
 	match_min := p.check_string[p.min_char - 1..p.min_char] == p.check_char
 	match_max := p.check_string[p.max_char - 1..p.max_char] == p.check_char
-	return (!match_min && match_max) || (match_min && !match_max)
+	return match_min != match_max
 }
 
 fn d2_parse_password(password string) D2Password {
