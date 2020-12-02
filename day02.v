@@ -22,10 +22,10 @@ fn (p D2Password) valid_by_index() bool {
 fn d2_parse_password(password string) D2Password {
 	groups := regex_match(password, r'([0-9]+)\-([0-9]+)\s(\w+):\s(\w+)')
 	return D2Password{
-		min_char: '${password[groups[0]..groups[1]]}'.int()
-		max_char: '${password[groups[2]..groups[3]]}'.int()
-		check_char: '${password[groups[4]..groups[5]]}'
-		check_string: '${password[groups[6]..groups[7]]}'
+		min_char: groups[0].int()
+		max_char: groups[1].int()
+		check_char: groups[2]
+		check_string: groups[3]
 	}
 }
 
