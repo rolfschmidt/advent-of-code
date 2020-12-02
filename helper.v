@@ -17,14 +17,14 @@ fn regex_match(value string, query string) []string {
 	start, end := re.match_string(value)
 	mut result := []string{}
 	if start != -1 {
-		result << '${value[start..end]}'
+		result << value[start..end]
 	}
 	for gi := 0; gi < re.groups.len; gi += 2 {
 		if re.groups[gi] == -1 {
 			result << ''
 			continue
 		}
-		result << '${value[re.groups[gi]..re.groups[gi + 1]]}'
+		result << value[re.groups[gi]..re.groups[gi + 1]]
 	}
 	return result
 }
