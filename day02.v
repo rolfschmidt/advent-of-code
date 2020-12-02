@@ -2,7 +2,7 @@ module main
 
 import regex
 
-struct Password {
+struct D2Password {
 mut:
     min_char int
     max_char int
@@ -10,18 +10,18 @@ mut:
     check_string string
 }
 
-fn (p Password) valid() bool {
+fn (p D2Password) valid() bool {
     return p.check_string.count(p.check_char) >= p.min_char && p.check_string.count(p.check_char) <= p.max_char
 }
 
-fn (p Password) valid_by_index() bool {
+fn (p D2Password) valid_by_index() bool {
     match_min := p.check_string.substr(p.min_char - 1, p.min_char) == p.check_char
     match_max := p.check_string.substr(p.max_char - 1, p.max_char) == p.check_char
 
     return (!match_min && match_max) || (match_min && !match_max)
 }
 
-fn parse_password(password string) Password {
+fn d2_parse_password(password string) D2Password {
     query := r"([0-9]+)\-([0-9]+)\s(\w+):\s(\w+)"
     mut re := regex.regex_opt(query) or { panic(err) }
     re.match_string(password)
@@ -48,7 +48,7 @@ fn parse_password(password string) Password {
         gi += 2
     }
 
-    return Password {
+    return D2Password {
         min_char: min_char
         max_char: max_char
         check_char: check_char
@@ -61,7 +61,7 @@ fn day02a() int {
 
     passwords := read_day('day02.txt')
     for password in passwords {
-        pass_obj := parse_password(password)
+        pass_obj := d2_parse_password(password)
         if !pass_obj.valid() {
             continue
         }
@@ -77,7 +77,7 @@ fn day02b() int {
 
     passwords := read_day('day02.txt')
     for password in passwords {
-        pass_obj := parse_password(password)
+        pass_obj := d2_parse_password(password)
         if !pass_obj.valid_by_index() {
             continue
         }
