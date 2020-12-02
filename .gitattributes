@@ -1,0 +1,3 @@
+*.v linguist-language=V filter=spacify text=auto eol=lf
+*.vv linguist-language=V filter=spacify text=auto eol=lf
+*.zig linguist-language=Zig filter=spacify text=auto eolf=lf
