@@ -21,26 +21,11 @@ fn (p D2Password) valid_by_index() bool {
 
 fn d2_parse_password(password string) D2Password {
 	groups := regex_match(password, r'([0-9]+)\-([0-9]+)\s(\w+):\s(\w+)')
-	mut min_char := 0
-	mut max_char := 0
-	mut check_char := ''
-	mut check_string := ''
-	for gi := 0; gi < groups.len; gi += 2 {
-		if gi == 0 {
-			min_char = '${password[groups[gi]..groups[gi + 1]]}'.int()
-		} else if gi == 2 {
-			max_char = '${password[groups[gi]..groups[gi + 1]]}'.int()
-		} else if gi == 4 {
-			check_char = '${password[groups[gi]..groups[gi + 1]]}'
-		} else if gi == 6 {
-			check_string = '${password[groups[gi]..groups[gi + 1]]}'
-		}
-	}
 	return D2Password{
-		min_char: min_char
-		max_char: max_char
-		check_char: check_char
-		check_string: check_string
+		min_char: '${password[groups[0]..groups[1]]}'.int()
+		max_char: '${password[groups[2]..groups[3]]}'.int()
+		check_char: '${password[groups[4]..groups[5]]}'
+		check_string: '${password[groups[6]..groups[7]]}'
 	}
 }
 
