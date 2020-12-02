@@ -7,7 +7,5 @@ fn read_day(path string) []string {
         panic(err)
     }
 
-    data = data.trim(' \n\t\v\f\r')
-
-    return data.split('\n')
+    return data.trim(' \n\t\v\f\r').split('\n')
 }
