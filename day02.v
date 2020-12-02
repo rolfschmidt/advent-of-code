@@ -1,7 +1,5 @@
 module main
 
-import regex
-
 struct D2Password {
 mut:
 	min_char     int
@@ -22,27 +20,21 @@ fn (p D2Password) valid_by_index() bool {
 }
 
 fn d2_parse_password(password string) D2Password {
-	query := r'([0-9]+)\-([0-9]+)\s(\w+):\s(\w+)'
-	mut re := regex.regex_opt(query) or {
-		panic(err)
-	}
-	re.match_string(password)
+	groups := regex_match(password, r'([0-9]+)\-([0-9]+)\s(\w+):\s(\w+)')
 	mut min_char := 0
 	mut max_char := 0
 	mut check_char := ''
 	mut check_string := ''
-	mut gi := 0
-	for gi < re.groups.len {
+	for gi := 0; gi < groups.len; gi += 2 {
 		if gi == 0 {
-			min_char = '${password[re.groups[gi]..re.groups[gi + 1]]}'.int()
+			min_char = '${password[groups[gi]..groups[gi + 1]]}'.int()
 		} else if gi == 2 {
-			max_char = '${password[re.groups[gi]..re.groups[gi + 1]]}'.int()
+			max_char = '${password[groups[gi]..groups[gi + 1]]}'.int()
 		} else if gi == 4 {
-			check_char = '${password[re.groups[gi]..re.groups[gi + 1]]}'
+			check_char = '${password[groups[gi]..groups[gi + 1]]}'
 		} else if gi == 6 {
-			check_string = '${password[re.groups[gi]..re.groups[gi + 1]]}'
+			check_string = '${password[groups[gi]..groups[gi + 1]]}'
 		}
-		gi += 2
 	}
 	return D2Password{
 		min_char: min_char
