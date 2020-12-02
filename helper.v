@@ -16,10 +16,7 @@ fn regex_match(value string, query string) []string {
 	}
 	re.match_string(value)
 	mut result := []string{}
-	for gi := 0; gi <= re.groups.len; gi += 2 {
-		if gi + 1 >= re.groups.len {
-			break
-		}
+	for gi := 0; gi < re.groups.len; gi += 2 {
 		result << '${value[re.groups[gi]..re.groups[gi + 1]]}'
 	}
 	return result
