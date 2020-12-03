@@ -12,15 +12,11 @@ fn (p D3Map) tree() bool {
 }
 
 fn (mut p D3Map) move(addx int, addy int) bool {
-	mut movex := p.posx + addx
 	movey := p.posy + addy
 	if movey >= p.map.len {
 		return false
 	}
-	if movex > p.map[movey].len - 1 {
-		movex = movex % 31
-	}
-	p.posx = movex
+	p.posx = (p.posx + addx) % p.map[movey].len
 	p.posy = movey
 	return true
 }
