@@ -2,13 +2,13 @@ module main
 
 struct D3Map {
 mut:
-	map  [][]string
+	map  []string
 	posx int
 	posy int
 }
 
 fn (p D3Map) tree() bool {
-	return p.map[p.posy][p.posx] == '#'
+	return p.map[p.posy][p.posx].str() == '#'
 }
 
 fn (mut p D3Map) move(addx int, addy int) bool {
@@ -39,12 +39,8 @@ fn (mut p D3Map) tree_count(addx int, addy int) u64 {
 }
 
 fn d3_parse_map(day_map []string) D3Map {
-	mut split_map := [][]string{}
-	for row in day_map {
-		split_map << row.split('')
-	}
 	return D3Map{
-		map: split_map
+		map: day_map
 		posx: 0
 		posy: 0
 	}
