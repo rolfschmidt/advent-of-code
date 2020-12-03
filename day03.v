@@ -8,7 +8,7 @@ mut:
 }
 
 fn (p D3Map) tree() bool {
-	return p.map[p.posy][p.posx].str() == '#'
+	return p.map[p.posy][p.posx] == `#`
 }
 
 fn (mut p D3Map) move(addx int, addy int) bool {
