@@ -25,32 +25,45 @@ fn (p D4Passport) eyr_valid() bool {
 }
 
 fn (p D4Passport) hgt_valid() bool {
-	hgt := regex_match(p.hgt, r'^(\d+)([incm]{2})$')
-	if hgt.len < 3 {
-		return false
-	}
-	value := hgt[1].int()
-	typ := hgt[2]
-	if typ == 'cm' && value >= 150 && value <= 193 {
-		return true
-	}
-	if typ == 'in' && value >= 59 && value <= 76 {
-		return true
-	}
-	return false
+    if p.hgt.len < 3 {
+        return false
+    }
+
+    typ := p.hgt[p.hgt.len - 2..p.hgt.len]
+    if ['cm', 'in'].index(typ) == -1 {
+        return false
+    }
+
+    value := p.hgt.int()
+    if typ == 'cm' && value >= 150 && value <= 193 {
+        return true
+    }
+    if typ == 'in' && value >= 59 && value <= 76 {
+        return true
+    }
+
+    return false
 }
 
 fn (p D4Passport) hcl_valid() bool {
-	return regex_match(p.hcl, r'^#[a-f0-9]{6}$').len > 0
+    if p.hcl[0] != `#` || p.hcl.len != 7 {
+        return false
+    }
+    for i := 1; i < p.hcl.len; i++ {
+        if (p.hcl[i] < `a` || p.hcl[i] > `f`) && (p.hcl[i] < `0` || p.hcl[i] > `9`) {
+            return false
+        }
+    }
+
+    return true
 }
 
 fn (p D4Passport) ecl_valid() bool {
-	return p.ecl == 'amb' || p.ecl == 'blu' || p.ecl == 'brn' || p.ecl == 'gry' || p.ecl == 'grn' ||
-		p.ecl == 'hzl' || p.ecl == 'oth'
+	return ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'].index(p.ecl) != -1
 }
 
 fn (p D4Passport) pid_valid() bool {
-	return p.pid.bytes().filter(it.is_digit()).len == 9
+	return p.pid.len == 9 && p.pid.bytes().filter(it.is_digit()).len == 9
 }
 
 fn (p D4Passport) valid() bool {
