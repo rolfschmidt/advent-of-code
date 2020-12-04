@@ -1,6 +1,6 @@
 module main
 
 fn main() {
-	println(day03a())
-	println(day03b())
+	println(day04a())
+	println(day04b())
 }

@@ -3,11 +3,15 @@ module main
 import os
 import regex
 
-fn read_day(path string) []string {
+fn read_day_string(path string) string {
 	mut data := os.read_file(path) or {
 		panic(err)
 	}
-	return data.trim(' \n\t\v\f\r').split_into_lines()
+	return data.trim(' \n\t\v\f\r')
+}
+
+fn read_day(path string) []string {
+	return read_day_string(path).split_into_lines()
 }
 
 fn regex_match(value string, query string) []string {
