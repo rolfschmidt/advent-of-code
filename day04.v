@@ -28,7 +28,7 @@ fn (p D4Passport) hgt_valid() bool {
 	if p.hgt.len < 3 {
 		return false
 	}
-	typ := p.hgt[p.hgt.len - 2..p.hgt.len]
+	typ := p.hgt[p.hgt.len - 2..]
 	if ['cm', 'in'].index(typ) == -1 {
 		return false
 	}

@@ -22,8 +22,8 @@ fn d5_partionate(code string, range_low_init int, range_high_init int, index int
 fn d5_seats(seat_data []string) []int {
 	mut result := []int{}
 	for seat_string in seat_data {
-		column := d5_partionate(seat_string[0..seat_string.len - 3], 0, 127, 0)
-		row := d5_partionate(seat_string[seat_string.len - 3..seat_string.len], 0, 7, 0)
+		column := d5_partionate(seat_string[..7], 0, 127, 0)
+		row := d5_partionate(seat_string[7..], 0, 7, 0)
 		result << column * 8 + row
 	}
     result.sort()
