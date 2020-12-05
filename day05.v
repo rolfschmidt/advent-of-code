@@ -26,20 +26,19 @@ fn d5_seats(seat_data []string) []int {
 		row := partionate(seat_string[seat_string.len - 3..seat_string.len], 0, 7, 0)
 		result << column * 8 + row
 	}
+    result.sort()
 	return result
 }
 
 fn day05a() int {
 	seat_data := read_day('day05.txt')
 	mut seats := d5_seats(seat_data)
-	seats.sort()
 	return seats.last()
 }
 
 fn day05b() int {
 	seat_data := read_day('day05.txt')
 	mut seats := d5_seats(seat_data)
-	seats.sort()
 	mut seat := 0
 	for i := 0; i < seats.len; i++ {
 		seat = seats[i]
