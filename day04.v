@@ -25,37 +25,33 @@ fn (p D4Passport) eyr_valid() bool {
 }
 
 fn (p D4Passport) hgt_valid() bool {
-    if p.hgt.len < 3 {
-        return false
-    }
-
-    typ := p.hgt[p.hgt.len - 2..p.hgt.len]
-    if ['cm', 'in'].index(typ) == -1 {
-        return false
-    }
-
-    value := p.hgt.int()
-    if typ == 'cm' && value >= 150 && value <= 193 {
-        return true
-    }
-    if typ == 'in' && value >= 59 && value <= 76 {
-        return true
-    }
-
-    return false
+	if p.hgt.len < 3 {
+		return false
+	}
+	typ := p.hgt[p.hgt.len - 2..p.hgt.len]
+	if ['cm', 'in'].index(typ) == -1 {
+		return false
+	}
+	value := p.hgt.int()
+	if typ == 'cm' && value >= 150 && value <= 193 {
+		return true
+	}
+	if typ == 'in' && value >= 59 && value <= 76 {
+		return true
+	}
+	return false
 }
 
 fn (p D4Passport) hcl_valid() bool {
-    if p.hcl[0] != `#` || p.hcl.len != 7 {
-        return false
-    }
-    for i := 1; i < p.hcl.len; i++ {
-        if (p.hcl[i] < `a` || p.hcl[i] > `f`) && (p.hcl[i] < `0` || p.hcl[i] > `9`) {
-            return false
-        }
-    }
-
-    return true
+	if p.hcl[0] != `#` || p.hcl.len != 7 {
+		return false
+	}
+	for i := 1; i < p.hcl.len; i++ {
+		if (p.hcl[i] < `a` || p.hcl[i] > `f`) && (p.hcl[i] < `0` || p.hcl[i] > `9`) {
+			return false
+		}
+	}
+	return true
 }
 
 fn (p D4Passport) ecl_valid() bool {
