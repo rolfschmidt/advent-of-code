@@ -26,7 +26,7 @@ fn d5_seats(seat_data []string) []int {
 		row := d5_partionate(seat_string[7..], 0, 7, 0)
 		result << column * 8 + row
 	}
-    result.sort()
+	result.sort()
 	return result
 }
 
