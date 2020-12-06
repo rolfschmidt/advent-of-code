@@ -9,7 +9,7 @@ fn d6_parse_questions(question_data string) (int, int) {
 		for question in block.replace('\n', '') {
 			yes[question.str()]++
 		}
-		everyone_yes += yes.keys().map(yes[it]).len
+		everyone_yes += yes.keys().len
 		all_yes += yes.keys().filter(yes[it] == persons).len
 	}
 	return everyone_yes, all_yes
