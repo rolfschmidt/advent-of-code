@@ -68,5 +68,5 @@ fn day07a() int {
 
 fn day07b() int {
 	bag_data := read_day_string('day07.txt')
-	return d7_parse_shiny_bags(bag_data).make_shiny('shiny gold').count_shiny('shiny gold')
+	return d7_parse_shiny_bags(bag_data).count_shiny('shiny gold')
 }
