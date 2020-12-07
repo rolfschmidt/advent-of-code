@@ -10,15 +10,14 @@ pub mut:
 
 fn (bags []D7Bag) make_shiny(name string) []D7Bag {
 	for mut bag in bags {
-		if bag.name == 'shiny gold' || bag.shiny {
+		if bag.shiny {
 			continue
 		}
-		for mut inner_bag in bag.bags {
+		for inner_bag in bag.bags {
 			if inner_bag.name != name {
 				continue
 			}
 			bag.shiny = true
-			inner_bag.shiny = true
 			bags.make_shiny(bag.name)
 		}
 	}
