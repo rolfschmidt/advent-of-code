@@ -41,10 +41,7 @@ fn (bags []D7Bag) count_shiny(name string) int {
 
 fn d7_parse_shiny_bags(bag_data string) []D7Bag {
 	mut result := []D7Bag{}
-	for mut line in bag_data.replace('\n', '').split('.') {
-		if line.len < 1 {
-			continue
-		}
+	for mut line in bag_data.replace('\n', '').trim_right('.').split('.') {
 		bag_split := line.split(' bags contain ')
 		mut inner_bags := []D7Bag{}
 		for inner_bag in bag_split[1].split(', ') {
