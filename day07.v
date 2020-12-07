@@ -8,23 +8,6 @@ pub mut:
 	shiny bool
 }
 
-fn (b D7Bag) shiny_count(all_bags []D7Bag) int {
-	mut count := 0
-	if b.name.contains('shiny gold') {
-		count++
-	}
-	for inner_bag in b.bags {
-		for bag in all_bags {
-			if inner_bag.name != bag.name {
-				continue
-			}
-			count += bag.shiny_count(all_bags) * bag.count
-			break
-		}
-	}
-	return count
-}
-
 fn (bags []D7Bag) make_shiny(name string) []D7Bag {
 	for mut bag in bags {
 		if bag.name == 'shiny gold' || bag.shiny {
