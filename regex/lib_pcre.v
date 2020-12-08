@@ -1,53 +1,68 @@
 module regex
 
 /*
-	* V bindings for lpcre library
+* V bindings for lpcre library
 	* http://www.pcre.org/
 	* lib_pcre.v
 	* https://github.com/shellbear/v-regex
 */
-
-
 // TODO: windows support
-
 #flag linux  -lpcre
 #flag darwin -lpcre
-
 #include <pcre.h>
-
-struct C.pcre {}
-struct C.pcre_extra {}
-
-
-fn C.pcre_compile(byteptr, int, &byteptr, &int, voidptr) &C.pcre
-fn C.pcre_compile2(byteptr, int, &int, &byteptr, &int, byteptr) &C.pcre
-fn C.pcre_copy_named_substring(&C.pcre, byteptr, &int, int, byteptr, byteptr, int) int
-fn C.pcre_copy_substring(byteptr, &int, int, int, byteptr, int) int
-fn C.pcre_dfa_exec(&C.pcre, &C.pcre_extra, byteptr, int, int, int, &int, int, &int, int) int
-fn C.pcre_study(&C.pcre, int, &byteptr) &C.pcre_extra
-fn C.pcre_exec(&C.pcre, &C.pcre_extra, byteptr, int, int, int, &int, int) int
-fn C.pcre_fullinfo(&C.pcre, &C.pcre_extra, int, voidptr) int
-fn C.pcre_get_stringnumber(&C.pcre, byteptr) int
-fn C.pcre_get_stringtable_entries(&C.pcre, byteptr, &byteptr, &byteptr) int
-fn C.pcre_get_substring(byteptr, &int, int, int, &byteptr) int
-fn C.pcre_get_substring_list(byteptr, &int, int, &byteptr) int
-fn C.pcre_get_named_substring(&C.pctr, byteptr, &int, int, byteptr, &byteptr) int
-fn C.pcre_maketables() byteptr
-fn C.pcre_refcount(&C.pcre, int) int
-fn C.pcre_version() byteptr
-fn C.pcre_free_substring_list(&byteptr)
-fn C.pcre_free_substring(byteptr)
-fn C.pcre_free_study(&C.pcre_extra)
-fn C.pcre_free(voidptr)
-
-fn dummy_func_to_avoid_a_v_bug(){
+struct C.pcre {
 }
 
-//////////////////////////////////////////////////////////////////////////////////
+struct C.pcre_extra {
+}
 
+fn C.pcre_compile(byteptr, int, &byteptr, &int, voidptr) &C.pcre
+
+fn C.pcre_compile2(byteptr, int, &int, &byteptr, &int, byteptr) &C.pcre
+
+fn C.pcre_copy_named_substring(&C.pcre, byteptr, &int, int, byteptr, byteptr, int) int
+
+fn C.pcre_copy_substring(byteptr, &int, int, int, byteptr, int) int
+
+fn C.pcre_dfa_exec(&C.pcre, &C.pcre_extra, byteptr, int, int, int, &int, int, &int, int) int
+
+fn C.pcre_study(&C.pcre, int, &byteptr) &C.pcre_extra
+
+fn C.pcre_exec(&C.pcre, &C.pcre_extra, byteptr, int, int, int, &int, int) int
+
+fn C.pcre_fullinfo(&C.pcre, &C.pcre_extra, int, voidptr) int
+
+fn C.pcre_get_stringnumber(&C.pcre, byteptr) int
+
+fn C.pcre_get_stringtable_entries(&C.pcre, byteptr, &byteptr, &byteptr) int
+
+fn C.pcre_get_substring(byteptr, &int, int, int, &byteptr) int
+
+fn C.pcre_get_substring_list(byteptr, &int, int, &byteptr) int
+
+fn C.pcre_get_named_substring(&C.pctr, byteptr, &int, int, byteptr, &byteptr) int
+
+fn C.pcre_maketables() byteptr
+
+fn C.pcre_refcount(&C.pcre, int) int
+
+fn C.pcre_version() byteptr
+
+fn C.pcre_free_substring_list(&byteptr)
+
+fn C.pcre_free_substring(byteptr)
+
+fn C.pcre_free_study(&C.pcre_extra)
+
+fn C.pcre_free(voidptr)
+
+fn dummy_func_to_avoid_a_v_bug() {
+}
+
+// ////////////////////////////////////////////////////////////////////////////////
 // Options that can be passed to pcre_compile()
 /*
-	PCRE_CASELESS
+PCRE_CASELESS
 	PCRE_MULTILINE
 	PCRE_DOTALL
 	PCRE_EXTENDED
@@ -88,10 +103,9 @@ fn dummy_func_to_avoid_a_v_bug(){
 	PCRE_NOTEMPTY_ATSTART
 	PCRE_UCP
 */
-
 // Request types for pcre_fullinfo()
 /*
-	PCRE_INFO_OPTIONS
+PCRE_INFO_OPTIONS
 	PCRE_INFO_SIZE
 	PCRE_INFO_CAPTURECOUNT
 	PCRE_INFO_BACKREFMAX
@@ -119,10 +133,9 @@ fn dummy_func_to_avoid_a_v_bug(){
 	PCRE_INFO_RECURSIONLIMIT
 	PCRE_INFO_MATCH_EMPTY
 */
-
 // Exec-time and get/set-time error codes
 /*
-	PCRE_ERROR_NOMATCH
+PCRE_ERROR_NOMATCH
 	PCRE_ERROR_NULL
 	PCRE_ERROR_BADOPTION
 	PCRE_ERROR_BADMAGIC
@@ -186,28 +199,24 @@ fn dummy_func_to_avoid_a_v_bug(){
 	PCRE_UTF8_ERR21
 	PCRE_UTF8_ERR22
 */
-
-
 // Specific error codes for UTF-16 validity checks
 /*
-	PCRE_UTF16_ERR0
+PCRE_UTF16_ERR0
 	PCRE_UTF16_ERR1
 	PCRE_UTF16_ERR2
 	PCRE_UTF16_ERR3
 	PCRE_UTF16_ERR4
 */
-
 // Specific error codes for UTF-32 validity checks
 /*
-	PCRE_UTF32_ERR0
+PCRE_UTF32_ERR0
 	PCRE_UTF32_ERR1
 	PCRE_UTF32_ERR2
 	PCRE_UTF32_ERR3
 */
-
 // Request types for pcre_config()
 /*
-	PCRE_CONFIG_UTF8
+PCRE_CONFIG_UTF8
 	PCRE_CONFIG_NEWLINE
 	PCRE_CONFIG_LINK_SIZE
 	PCRE_CONFIG_POSIX_MALLOC_THRESHOLD
@@ -222,12 +231,10 @@ fn dummy_func_to_avoid_a_v_bug(){
 	PCRE_CONFIG_UTF32
 	PCRE_CONFIG_PARENS_LIMIT
 */
-
 // Request types for pcre_study()
 /*
-	PCRE_STUDY_JIT_COMPILE
+PCRE_STUDY_JIT_COMPILE
 	PCRE_STUDY_JIT_PARTIAL_SOFT_COMPILE
 	PCRE_STUDY_JIT_PARTIAL_HARD_COMPILE
 	PCRE_STUDY_EXTRA_NEEDED
 */
-

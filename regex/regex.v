@@ -1,20 +1,17 @@
 /*
-	* V bindings for lpcre library
+* V bindings for lpcre library
 	* http://www.pcre.org/
 	* regex.v
 	* https://github.com/shellbear/v-regex
 */
-
 module regex
 
 struct Regex {
 pub:
 	// A pointer to pcre structure
-	re &C.pcre
-
+	re       &C.pcre
 	// A pointer to pcre_extra structure
-	extra &C.pcre_extra
-
+	extra    &C.pcre_extra
 	// The number of capture groups
 	captures int
 }
@@ -28,7 +25,8 @@ pub fn (r Regex) free() {
 	}
 }
 
-/* Returns a MatchData structure containing matched strings and informations
+/*
+Returns a MatchData structure containing matched strings and informations
 	* str: the string to test
 	* pos: the position of the beginning of the string (default: 0)
 	* options: the options as mentioned in the PCRE documentation
@@ -37,16 +35,12 @@ pub fn (r Regex) match_str(str string, pos int, options int) ?MatchData {
 	if pos < 0 || pos >= str.len {
 		return error('Invalid position')
 	}
-
 	ovector_size := (r.captures + 1) * 3
 	ovector := [0].repeat(ovector_size)
-
 	ret := C.pcre_exec(r.re, r.extra, str.str, str.len, pos, options, ovector.data, ovector_size)
-
 	if ret <= 0 {
 		return error('No match!')
 	}
-
 	return MatchData{
 		re: r.re
 		str: str
@@ -56,7 +50,8 @@ pub fn (r Regex) match_str(str string, pos int, options int) ?MatchData {
 	}
 }
 
-/* Create a new regex
+/*
+Create a new regex
 	* source: the string representing the regex
 	* options: the options as mentioned in the PCRE documentation
 */
@@ -65,20 +60,14 @@ pub fn new_regex(source string, options int) ?Regex {
 	studyerr := ''
 	erroffset := 0
 	captures := 0
-
 	re := C.pcre_compile(source.str, options, &err, &erroffset, 0)
-
 	if isnil(re) {
 		return error('Failed to compile regex')
 	}
-
 	extra := C.pcre_study(re, 0, &studyerr)
-
 	if studyerr.len != 0 {
 		return error('Failed to study regex')
 	}
-
 	C.pcre_fullinfo(re, 0, C.PCRE_INFO_CAPTURECOUNT, &captures)
-
 	return Regex{re, extra, captures}
 }
