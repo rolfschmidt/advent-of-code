@@ -13,18 +13,26 @@ fn read_day(path string) []string {
 }
 
 fn regex_match(value string, query string) []string {
-	mut re := regex.regex_opt(query) or { panic(err) }
-	start, end := re.match_string(value)
-	mut result := []string{}
-	if start != -1 {
-		result << value[start..end]
-	}
-	for gi := 0; gi < re.groups.len; gi += 2 {
-		if re.groups[gi] == -1 {
-			result << ''
-			continue
-		}
-		result << value[re.groups[gi]..re.groups[gi + 1]]
-	}
-	return result
+    r := regex.new_regex(query, 0) or {
+        return []
+    }
+
+    m := r.match_str(value, 0, 0) or {
+        return []
+    }
+
+    mut result := []string{}
+    mut match_index := 0
+    for {
+        match_value := m.get(match_index) or {
+            break
+        }
+
+        result << match_value
+        match_index++
+    }
+
+    r.free()
+
+    return result
 }
