@@ -13,15 +13,13 @@ fn read_day(path string) []string {
 }
 
 fn regex_match(value string, query string) []string {
-	r := regex.new_regex(query, 0) or { return [] }
-	m := r.match_str(value, 0, 0) or { return [] }
-	mut result := []string{}
-	mut match_index := 0
-	for {
-		match_value := m.get(match_index) or { break }
-		result << match_value
-		match_index++
-	}
-	r.free()
-	return result
+    r := regex.new_regex(query, 0) or { return [] }
+    m := r.match_str(value, 0, 0) or { return [] }
+    mut result := []string{}
+    for i := 0; i < m.group_size; i++ {
+        match_value := m.get(i) or { '' }
+        result << match_value
+    }
+    r.free()
+    return result
 }
