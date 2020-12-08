@@ -6,12 +6,12 @@ fn d8_replace_run(from string, to string, lines []string, index int) int {
 	return d8_run(sub_lines, true, false)
 }
 
-fn d8_run(acc_lines []string, fail_on_break bool, bruteforce bool) int {
+fn d8_run(acc_lines []string, return_seen bool, bruteforce bool) int {
 	mut result := 0
 	mut seen := map[string]bool{}
 	for i := 0; i < acc_lines.len; i++ {
 		if seen[i.str()] {
-			if fail_on_break {
+			if return_seen {
 				return -1
 			}
 			break
