@@ -22,8 +22,8 @@ fn d8_run(acc_lines []string, return_seen bool, bruteforce bool) int {
 		value := line[5..].int()
 		seen[i.str()] = true
 		if bruteforce && ['jmp', 'nop'].contains(command) {
-			sub_result := d8_replace_run(command, command.replace_each(['jmp', 'nop', 'nop', 'jmp']),
-				acc_lines, i)
+			to := command.replace_each(['jmp', 'nop', 'nop', 'jmp'])
+			sub_result := d8_replace_run(command, to, acc_lines, i)
 			if sub_result != -1 {
 				result = sub_result
 				break
