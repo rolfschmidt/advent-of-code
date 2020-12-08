@@ -1,7 +1,7 @@
 module main
 
 fn d8_replace_run(from string, to string, lines []string, index int) int {
-	mut sub_lines := lines.map(it.clone())
+	mut sub_lines := lines.clone()
 	sub_lines[index] = sub_lines[index].replace(from, to)
 	return d8_run(sub_lines, true, false)
 }
