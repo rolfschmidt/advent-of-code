@@ -41,7 +41,6 @@ fn (arr []u64) min() u64 {
 			found = true
 		}
 	}
-
 	return low
 }
 
@@ -54,7 +53,6 @@ fn (arr []u64) max() u64 {
 			found = true
 		}
 	}
-
 	return high
 }
 
@@ -64,10 +62,6 @@ fn (arr []u64) sum() u64 {
 		result += value
 	}
 	return result
-}
-
-fn (arr []u64) weakness() u64 {
-	return arr.min() + arr.max()
 }
 
 fn d9_set(lines []string, find u64) u64 {
@@ -82,7 +76,7 @@ fn d9_set(lines []string, find u64) u64 {
 				continue
 			}
 			if values.sum() == find {
-				return values.weakness()
+				return values.min() + values.max()
 			}
 		}
 	}
@@ -96,5 +90,5 @@ fn day09a() u64 {
 
 fn day09b() u64 {
 	lines := read_day('day09.txt')
-	return d9_set(lines, d9_run(lines, 25))
+	return d9_set(lines, day09a())
 }
