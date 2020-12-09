@@ -1,7 +1,7 @@
 module main
 
 import os
-import regex // https://github.com/spytheman/v-regex
+import regex
 
 fn read_day_string(path string) string {
 	mut data := os.read_file(path) or { panic(err) }
@@ -12,6 +12,7 @@ fn read_day(path string) []string {
 	return read_day_string(path).split_into_lines()
 }
 
+// https://github.com/spytheman/v-regex
 fn regex_match(value string, query string) []string {
 	r := regex.new_regex(query, 0) or { return [] }
 	m := r.match_str(value, 0, 0) or { return [] }

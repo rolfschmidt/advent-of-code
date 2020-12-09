@@ -12,11 +12,7 @@ fn d9_run(lines []string, base int) u64 {
 		mut found := false
 		for x := 0; x < pre.len; x++ {
 			for y := 0; y < pre.len; y++ {
-				if pre[x] == pre[y] {
-					continue
-				}
-				val := pre[x] + pre[y]
-				if val == lines[i + base].u64() {
+				if pre[x] != pre[y] && pre[x] + pre[y] == lines[i + base].u64() {
 					found = true
 					break
 				}
