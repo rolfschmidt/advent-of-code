@@ -5,10 +5,7 @@ fn d9_run(lines []u64, base int) u64 {
 		if lines.len < i + base * 2 {
 			break
 		}
-		mut pre := []u64{}
-		for j := i; j < i + base; j++ {
-			pre << lines[j]
-		}
+		mut pre := lines.slice(i, i + base)
 		mut found := false
 		for x := 0; x < pre.len; x++ {
 			for y := 0; y < pre.len; y++ {
