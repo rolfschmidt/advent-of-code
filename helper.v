@@ -1,7 +1,7 @@
 module main
 
 import os
-import regex
+import regex // https://github.com/spytheman/v-regex
 
 fn read_day_string(path string) string {
 	mut data := os.read_file(path) or { panic(err) }
@@ -21,5 +21,37 @@ fn regex_match(value string, query string) []string {
 		result << match_value
 	}
 	r.free()
+	return result
+}
+
+fn (arr []u64) min() u64 {
+	mut low := u64(0)
+	mut found := false
+	for value in arr {
+		if value < low || !found {
+			low = value
+			found = true
+		}
+	}
+	return low
+}
+
+fn (arr []u64) max() u64 {
+	mut high := u64(0)
+	mut found := false
+	for value in arr {
+		if value > high {
+			high = value
+			found = true
+		}
+	}
+	return high
+}
+
+fn (arr []u64) sum() u64 {
+	mut result := u64(0)
+	for value in arr {
+		result += value
+	}
 	return result
 }
