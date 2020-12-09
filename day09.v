@@ -18,16 +18,10 @@ fn d9_run(lines []u64, base int) u64 {
 
 fn d9_set(lines []u64, find u64) u64 {
 	for i := 0; i < lines.len; i++ {
-		if lines.len < i + 4 {
-			break
-		}
 		mut values := []u64{}
 		for y := i; y < lines.len; y++ {
 			values << lines[y]
-			if values.len < 2 {
-				continue
-			}
-			if values.sum() == find {
+			if values.len > 1 && values.sum() == find {
 				return values.min() + values.max()
 			}
 		}
