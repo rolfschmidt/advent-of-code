@@ -32,8 +32,30 @@ fn d9_run(lines []string, base int) u64 {
 	return 0
 }
 
-pub fn (mut a []u64) sort() {
-	a.sort_with_compare(compare_ints)
+fn (arr []u64) min() u64 {
+	mut low := u64(0)
+	mut found := false
+	for value in arr {
+		if value < low || !found {
+			low = value
+			found = true
+		}
+	}
+
+	return low
+}
+
+fn (arr []u64) max() u64 {
+	mut high := u64(0)
+	mut found := false
+	for value in arr {
+		if value > high {
+			high = value
+			found = true
+		}
+	}
+
+	return high
 }
 
 fn (arr []u64) sum() u64 {
@@ -45,17 +67,7 @@ fn (arr []u64) sum() u64 {
 }
 
 fn (arr []u64) weakness() u64 {
-	mut low := u64(-1)
-	mut high := u64(-1)
-	for value in arr {
-		if value < low || low == -1 {
-			low = value
-		}
-		if value > high || high == -1 {
-			high = value
-		}
-	}
-	return low + high
+	return arr.min() + arr.max()
 }
 
 fn d9_set(lines []string, find u64) u64 {
