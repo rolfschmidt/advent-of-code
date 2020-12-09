@@ -21,8 +21,8 @@ fn d9_set(lines []u64, find u64) u64 {
 		mut values := []u64{}
 		for y := i; y < lines.len; y++ {
 			values << lines[y]
-			if values.len > 1 && values.sum() == find {
-				return values.min() + values.max()
+			if values.len > 1 && u64_sum(values) == find {
+				return u64_min(values) + u64_max(values)
 			}
 		}
 	}
