@@ -81,8 +81,7 @@ fn d9_set(lines []string, find u64) u64 {
 			if values.len < 2 {
 				continue
 			}
-			sum := values.sum()
-			if sum == find {
+			if values.sum() == find {
 				return values.weakness()
 			}
 		}
