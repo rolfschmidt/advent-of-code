@@ -25,7 +25,7 @@ fn regex_match(value string, query string) []string {
 	return result
 }
 
-fn u64_min(arr []u64) u64 {
+fn au64_min(arr []u64) u64 {
 	mut low := u64(0)
 	mut found := false
 	for value in arr {
@@ -37,7 +37,7 @@ fn u64_min(arr []u64) u64 {
 	return low
 }
 
-fn u64_max(arr []u64) u64 {
+fn au64_max(arr []u64) u64 {
 	mut high := u64(0)
 	mut found := false
 	for value in arr {
@@ -49,7 +49,7 @@ fn u64_max(arr []u64) u64 {
 	return high
 }
 
-fn u64_sum(arr []u64) u64 {
+fn au64_sum(arr []u64) u64 {
 	mut result := u64(0)
 	for value in arr {
 		result += value

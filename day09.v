@@ -1,8 +1,7 @@
 module main
 
 fn d9_run(lines []u64, base int) u64 {
-	LINES:
-	for i := 0; i < lines.len; i++ {
+	LINES: for i := 0; i < lines.len; i++ {
 		mut pre := lines[i..i + base]
 		for x := 0; x < pre.len; x++ {
 			for y := 0; y < pre.len; y++ {
@@ -21,8 +20,8 @@ fn d9_set(lines []u64, find u64) u64 {
 		mut values := []u64{}
 		for y := i; y < lines.len; y++ {
 			values << lines[y]
-			if values.len > 1 && u64_sum(values) == find {
-				return u64_min(values) + u64_max(values)
+			if values.len > 1 && au64_sum(values) == find {
+				return au64_min(values) + au64_max(values)
 			}
 		}
 	}
