@@ -90,21 +90,14 @@ fn aint_range(from int, to int) []int {
 	return range
 }
 
-// returns true if the index is valid for the array
-fn aint_valid_index(arr []int, index int) bool {
-	if index < 0 || index > arr.len - 1 {
-		return false
-	}
-	return true
-}
-
 // returns diagonal range from value a to b
 fn aint_diagonal_range(fromx int, fromy int, tox int, toy int) [][]int {
 	mut ranges := [][]int{}
 	rangex := aint_range(fromx, tox)
 	rangey := aint_range(fromy, toy)
+	lasty := rangey.len - 1
 	for i, x in rangex {
-		if !aint_valid_index(rangey, i) {
+		if i < 0 || i > lasty {
 			break
 		}
 		if x < 0 || rangey[i] < 0 {
@@ -134,14 +127,6 @@ fn astring_count(value string, arr []string) int {
 	return count
 }
 
-// returns true if the index is valid for the array
-fn astr_valid_index(arr []string, index int) bool {
-	if index < 0 || index > arr.len - 1 {
-		return false
-	}
-	return true
-}
-
 // returns count of string in array of array strings
 fn aastring_count(value string, arr [][]string) int {
 	mut count := 0
@@ -149,12 +134,4 @@ fn aastring_count(value string, arr [][]string) int {
 		count += astring_count(value, arr1)
 	}
 	return count
-}
-
-// returns true if the index is valid for the array
-fn aastr_valid_index(arr [][]string, index int) bool {
-	if index < 0 || index > arr.len - 1 {
-		return false
-	}
-	return true
 }
