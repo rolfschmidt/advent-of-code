@@ -1,13 +1,13 @@
 module main
 
-fn seat_pos(lines [][]string, x int, y int) bool {
+fn d11_seat_pos(lines [][]string, x int, y int) bool {
 	if !astr_valid_index(lines[0], x) || !aastr_valid_index(lines, y) {
 		return false
 	}
 	return lines[y][x] == 'L'
 }
 
-fn occupied_pos(lines [][]string, x int, y int) bool {
+fn d11_occupied_pos(lines [][]string, x int, y int) bool {
 	if !astr_valid_index(lines[0], x) || !aastr_valid_index(lines, y) {
 		return false
 	}
@@ -48,10 +48,10 @@ fn toggle_occupied(lines [][]string, occupied_range int, x int, y int) bool {
 			if pos[0] == x && pos[1] == y {
 				continue
 			}
-			if seat_pos(lines, pos[0], pos[1]) {
+			if d11_seat_pos(lines, pos[0], pos[1]) {
 				break
 			}
-			if occupied_pos(lines, pos[0], pos[1]) {
+			if d11_occupied_pos(lines, pos[0], pos[1]) {
 				count++
 				break
 			}
