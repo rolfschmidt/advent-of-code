@@ -104,7 +104,7 @@ fn aint_diagonal_range(fromx int, fromy int, tox int, toy int) [][]int {
 	rangex := aint_range(fromx, tox)
 	rangey := aint_range(fromy, toy)
 	for i, x in rangex {
-		if i < 0 || i > rangey.len - 1 {
+		if !aint_valid_index(rangey, i) {
 			break
 		}
 		if x < 0 || rangey[i] < 0 {

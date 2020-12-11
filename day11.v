@@ -16,54 +16,44 @@ fn occupied_pos(lines [][]string, x int, y int) bool {
 
 fn toggle_occupied(lines [][]string, occupied_range int, x int, y int) bool {
 	mut count := 0
-	if occupied_range == 5 {
-		mut ranges := [][][]int{}
-		maxx := lines[x].len
-		maxy := lines.len
-		// left
-		ranges << aint_range(x - 1, 0).map([it, y])
-		// right
-		ranges << aint_range(x + 1, maxx).map([it, y])
-		// top
-		ranges << aint_range(y - 1, 0).map([x, it])
-		// bottom
-		ranges << aint_range(y + 1, maxy).map([x, it])
-		// left top
-		ranges << aint_diagonal_range(x - 1, y - 1, 0, 0)
-		// right top
-		ranges << aint_diagonal_range(x + 1, y - 1, maxx, 0)
-		// left bottom
-		ranges << aint_diagonal_range(x - 1, y + 1, 0, maxy)
-		// right bottom
-		ranges << aint_diagonal_range(x + 1, y + 1, maxx, maxy)
-		for rr in ranges {
-			for pos in rr {
-				if pos[0] == x && pos[1] == y {
-					continue
-				}
-				if seat_pos(lines, pos[0], pos[1]) {
-					break
-				}
-				if occupied_pos(lines, pos[0], pos[1]) {
-					count++
-					break
-				}
+	mut ranges := [][][]int{}
+	mut minx := 0
+	mut miny := 0
+	mut maxx := lines[x].len
+	mut maxy := lines.len
+	if occupied_range != 5 {
+		minx = x - 1
+		miny = y - 1
+		maxx = x + 1
+		maxy = y + 1
+	}
+	// left
+	ranges << aint_range(x - 1, minx).map([it, y])
+	// right
+	ranges << aint_range(x + 1, maxx).map([it, y])
+	// top
+	ranges << aint_range(y - 1, miny).map([x, it])
+	// bottom
+	ranges << aint_range(y + 1, maxy).map([x, it])
+	// left top
+	ranges << aint_diagonal_range(x - 1, y - 1, minx, miny)
+	// right top
+	ranges << aint_diagonal_range(x + 1, y - 1, maxx, miny)
+	// left bottom
+	ranges << aint_diagonal_range(x - 1, y + 1, 0, maxy)
+	// right bottom
+	ranges << aint_diagonal_range(x + 1, y + 1, maxx, maxy)
+	for rr in ranges {
+		for pos in rr {
+			if pos[0] == x && pos[1] == y {
+				continue
 			}
-		}
-	} else {
-		mut range := [-1, 0, 1]
-		mut coords := [][]int{}
-		for val1 in range {
-			for val2 in range {
-				if val1 == 0 && val2 == 0 {
-					continue
-				}
-				coords << [x + val1, y + val2]
+			if seat_pos(lines, pos[0], pos[1]) {
+				break
 			}
-		}
-		for pos in coords {
 			if occupied_pos(lines, pos[0], pos[1]) {
 				count++
+				break
 			}
 		}
 	}
