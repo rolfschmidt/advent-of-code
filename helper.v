@@ -25,6 +25,7 @@ fn regex_match(value string, query string) []string {
 	return result
 }
 
+// returns min value of array u64
 fn au64_min(arr []u64) u64 {
 	mut low := u64(0)
 	mut found := false
@@ -37,6 +38,7 @@ fn au64_min(arr []u64) u64 {
 	return low
 }
 
+// returns max value of array u64
 fn au64_max(arr []u64) u64 {
 	mut high := u64(0)
 	mut found := false
@@ -49,10 +51,110 @@ fn au64_max(arr []u64) u64 {
 	return high
 }
 
+// returns sum value of array u64
 fn au64_sum(arr []u64) u64 {
 	mut result := u64(0)
 	for value in arr {
 		result += value
 	}
 	return result
+}
+
+// returns sum value of array int
+fn aint_sum(arr []int) int {
+	mut result := 0
+	for value in arr {
+		result += value
+	}
+	return result
+}
+
+// returns range from value a to b
+fn aint_range(from int, to int) []int {
+	mut range := []int{}
+	if to > from {
+		for i := from; i <= to; i++ {
+			if i < 0 {
+				break
+			}
+			range << i
+		}
+	} else {
+		for i := from; i >= to; i-- {
+			if i < 0 {
+				break
+			}
+			range << i
+		}
+	}
+	return range
+}
+
+// returns true if the index is valid for the array
+fn aint_valid_index(arr []int, index int) bool {
+	if index < 0 || index > arr.len - 1 {
+		return false
+	}
+	return true
+}
+
+// returns diagonal range from value a to b
+fn aint_diagonal_range(fromx int, fromy int, tox int, toy int) [][]int {
+	mut ranges := [][]int{}
+	rangex := aint_range(fromx, tox)
+	rangey := aint_range(fromy, toy)
+	for i, x in rangex {
+		if i < 0 || i > rangey.len - 1 {
+			break
+		}
+		if x < 0 || rangey[i] < 0 {
+			break
+		}
+		ranges << [x, rangey[i]]
+	}
+	return ranges
+}
+
+// returns flipped value
+fn str_flip(value string, a string, b string) string {
+	if value == a {
+		return b
+	}
+	return a
+}
+
+// returns count of string in array string
+fn astring_count(value string, arr []string) int {
+	mut count := 0
+	for avalue in arr {
+		if avalue == value {
+			count++
+		}
+	}
+	return count
+}
+
+// returns true if the index is valid for the array
+fn astr_valid_index(arr []string, index int) bool {
+	if index < 0 || index > arr.len - 1 {
+		return false
+	}
+	return true
+}
+
+// returns count of string in array of array strings
+fn aastring_count(value string, arr [][]string) int {
+	mut count := 0
+	for arr1 in arr {
+		count += astring_count(value, arr1)
+	}
+	return count
+}
+
+// returns true if the index is valid for the array
+fn aastr_valid_index(arr [][]string, index int) bool {
+	if index < 0 || index > arr.len - 1 {
+		return false
+	}
+	return true
 }

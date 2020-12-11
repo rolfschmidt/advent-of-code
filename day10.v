@@ -9,9 +9,15 @@ fn d10_run(lines []int) int {
 			prev_value = lines[i - 1]
 		}
 		match value - prev_value {
-			1 { one++ }
-			3 { three++ }
-			else { break }
+			1 {
+				one++
+			}
+			3 {
+				three++
+			}
+			else {
+				break
+			}
 		}
 	}
 	three++
