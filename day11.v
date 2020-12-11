@@ -14,7 +14,7 @@ fn d11_occupied_pos(lines [][]string, x int, y int) bool {
 	return lines[y][x] == '#'
 }
 
-fn toggle_occupied(lines [][]string, occupied_range int, x int, y int) bool {
+fn d11_toggle_occupied(lines [][]string, occupied_range int, x int, y int) bool {
 	mut count := 0
 	mut ranges := [][][]int{}
 	mut minx := 0
@@ -66,7 +66,7 @@ fn d11_run(mut lines [][]string, occupied_range int) int {
 		mut changes := [][]int{}
 		for y, line in lines {
 			for x, _ in line {
-				toggle := toggle_occupied(lines, occupied_range, x, y)
+				toggle := d11_toggle_occupied(lines, occupied_range, x, y)
 				if toggle {
 					changes << [x, y]
 				}
