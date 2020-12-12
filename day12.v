@@ -33,7 +33,8 @@ fn d12_ld(d string) string {
 	return ld[d]
 }
 
-fn d12_run(lines []string) int {
+fn day12a() int {
+	mut lines := read_day('day12.txt')
 	mut n := 0
 	mut e := 0
 	mut s := 0
@@ -84,7 +85,8 @@ fn d12_run(lines []string) int {
 	return n + e + s + w
 }
 
-fn d12_waypoint(lines []string) int {
+fn day12b() int {
+	mut lines := read_day('day12.txt')
 	mut n := 0
 	mut e := 0
 	mut s := 0
@@ -141,20 +143,9 @@ fn d12_waypoint(lines []string) int {
 				w, e = d12_moved(w, e, number * wp['w'])
 			}
 			else {
-				println('fail $command.str()')
 				break
 			}
 		}
 	}
 	return n + e + s + w
-}
-
-fn day12a() int {
-	mut lines := read_day('day12.txt')
-	return d12_run(lines)
-}
-
-fn day12b() int {
-	mut lines := read_day('day12.txt')
-	return d12_waypoint(lines)
 }
