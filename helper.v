@@ -27,11 +27,11 @@ fn regex_match(value string, query string) []string {
 
 // returns product of a u64 array
 fn au64_product(arr []u64) u64 {
-    mut v := u64(1)
-    for i in 0 .. arr.len {
-        v *= arr[i]
-    }
-    return v
+	mut v := u64(1)
+	for i in 0 .. arr.len {
+		v *= arr[i]
+	}
+	return v
 }
 
 // returns min value of array u64
