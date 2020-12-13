@@ -1,6 +1,5 @@
 module main
 
-// 410
 fn day13a() int {
 	mut lines := read_day('day13.txt')
 	starttime := lines[0].int()
