@@ -32,7 +32,7 @@ fn day13b() u64 {
 	mut time := u64(0)
 	mut busses := lines[1].split(',').map(it.u64())
 	mut jmp := u64(1)
-	daytime: for {
+	for {
 		mut found := true
 		mut found_busses := []u64{}
 		for index, bus in busses {
