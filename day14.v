@@ -86,7 +86,6 @@ fn day14b() u64 {
 				}
 				if v == `X` {
 					xarr << i
-					bin[i] = '0'
 					continue
 				}
 				bin[i] = v.str()
