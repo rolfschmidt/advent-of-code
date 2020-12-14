@@ -5,5 +5,5 @@ fn test_day14a() {
 }
 
 fn test_day14b() {
-	assert day14b() == 0
+	assert day14b() == 2900994392308
 }
