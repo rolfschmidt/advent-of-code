@@ -5,7 +5,6 @@ fn bit_combos(arr []int, pos int) [][]int {
 	if pos > arr.len - 1 {
 		return result
 	}
-
 	mut arr_pos := []int{}
 	mut arr_neg := []int{}
 	for index, value in arr {
@@ -19,14 +18,12 @@ fn bit_combos(arr []int, pos int) [][]int {
 	}
 	result << arr_pos
 	result << arr_neg
-
 	for sub in bit_combos(arr_pos, pos + 1) {
 		result << sub
 	}
 	for sub in bit_combos(arr_neg, pos + 1) {
 		result << sub
 	}
-
 	return result
 }
 
@@ -81,7 +78,6 @@ fn day14b() u64 {
 		for mask_data in masks[mask] {
 			addr := mask_data[0]
 			number := mask_data[1]
-
 			mut bin := decbin(addr, 35).split('')
 			mut xarr := []int{}
 			for i, v in mask {
@@ -95,7 +91,6 @@ fn day14b() u64 {
 				}
 				bin[i] = v.str()
 			}
-
 			mut addrs := map[string]bool{}
 			mut combos := bit_combos(xarr.map(int(0)), 0)
 			for combo in combos {
@@ -104,7 +99,6 @@ fn day14b() u64 {
 				}
 				addrs[bin.join('')] = true
 			}
-
 			for key in addrs.keys() {
 				memory[bindec(key).str()] = number
 			}
