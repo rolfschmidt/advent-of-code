@@ -44,7 +44,7 @@ fn day14a() u64 {
 		for mask_data in masks[mask] {
 			addr := mask_data[0]
 			number := mask_data[1]
-			mut bin := decbin(number, 35).split('')
+			mut bin := decbin(number, 36).split('')
 			for i, v in mask {
 				if v == `X` {
 					continue
@@ -78,7 +78,7 @@ fn day14b() u64 {
 		for mask_data in masks[mask] {
 			addr := mask_data[0]
 			number := mask_data[1]
-			mut bin := decbin(addr, 35).split('')
+			mut bin := decbin(addr, 36).split('')
 			mut xarr := []int{}
 			for i, v in mask {
 				if v == `0` {
