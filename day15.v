@@ -21,10 +21,7 @@ fn d15_run(lines string, find int) int {
 			spoken_before[number_str] = spoken[number_str]
 			spoken[number_str] = i
 			last_index = spoken[number_str]
-			last_index2 = 0
-			if spoken_before.exists(number_str) {
-				last_index2 = spoken_before[number_str]
-			}
+			last_index2 = spoken_before[number_str]
 			if last_index == i && last_index2 == i - 1 {
 				last_number = '1'
 			} else {
