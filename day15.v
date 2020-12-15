@@ -8,20 +8,20 @@ fn d15_run(lines string, find int) int {
 	for i, number in numbers {
 		spoken[number.str()] = i
 	}
+	mut current_number := ''
 	mut last_number := numbers.last()
 	mut last_index := 0
 	mut last_index2 := 0
-	mut number_str := ''
 	for i := numbers.len - 1; i < find - 1; i++ {
-		number_str = last_number
-		if !spoken.exists(number_str) {
+		current_number = last_number
+		if !spoken.exists(current_number) {
 			last_number = '0'
-			spoken[number_str] = i
+			spoken[current_number] = i
 		} else {
-			spoken_before[number_str] = spoken[number_str]
-			spoken[number_str] = i
-			last_index = spoken[number_str]
-			last_index2 = spoken_before[number_str]
+			spoken_before[current_number] = spoken[current_number]
+			spoken[current_number] = i
+			last_index = spoken[current_number]
+			last_index2 = spoken_before[current_number]
 			if last_index == i && last_index2 == i - 1 {
 				last_number = '1'
 			} else {
