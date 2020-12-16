@@ -49,9 +49,9 @@ fn d16_run(part2 bool) u64 {
 	}
 	mut result := u64(aint_sum(errors))
 	if part2 {
-		mut class2index := map[string]int{}
+		mut class_indexes := map[string]int{}
 		mut skip_indexes := []int{}
-		for class2index.keys().len < classes.len {
+		for class_indexes.keys().len < classes.len {
 			for class, tickets in class_matrix {
 				mut all_match_indexes := []int{}
 				for ticket_index, ticket_matches in tickets {
@@ -71,13 +71,13 @@ fn d16_run(part2 bool) u64 {
 					}
 				}
 				if all_match_indexes.len == 1 {
-					class2index[class] = all_match_indexes[0]
+					class_indexes[class] = all_match_indexes[0]
 					skip_indexes << all_match_indexes[0]
 				}
 			}
 		}
 		result = u64(1)
-		for class, index in class2index {
+		for class, index in class_indexes {
 			if !class.contains('departure') {
 				continue
 			}
