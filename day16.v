@@ -51,7 +51,7 @@ fn d16_run(part2 bool) u64 {
 	if part2 {
 		mut class2index := map[string]int{}
 		mut skip_indexes := []int{}
-		for class2index.keys().len < 20 {
+		for class2index.keys().len < classes.len {
 			for class, tickets in class_matrix {
 				mut all_match_indexes := []int{}
 				for ticket_index, ticket_matches in tickets {
