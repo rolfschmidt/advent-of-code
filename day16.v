@@ -18,7 +18,7 @@ fn d16_run(part2 bool) u64 {
 	}
 	mut errors := []int{}
 	mut class_matrix := map[string]map[string]map[string]bool{} // [class]->[ticket_index]->[ticket]->true
-	for row_index, row in nearby {
+	for _, row in nearby {
 		for ticket_index, ticket in row {
 			mut in_range := false
 			for class, ranges in classes {
