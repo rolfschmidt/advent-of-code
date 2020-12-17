@@ -11,14 +11,6 @@ fn d17_run(part2 bool) int {
 			}
 		}
 	}
-	mut xmin := 0
-	mut ymin := 0
-	mut zmin := 0
-	mut wmin := 0
-	mut xmax := 0
-	mut ymax := 0
-	mut zmax := 0
-	mut wmax := 1
 	mut swmin := 0
 	mut swmax := 1
 	if part2 {
@@ -28,6 +20,14 @@ fn d17_run(part2 bool) int {
 	mut total := 0
 	for _ in 0 .. 6 {
 		mut ch := []string{}
+		mut xmin := 0
+		mut ymin := 0
+		mut zmin := 0
+		mut wmin := 0
+		mut xmax := 0
+		mut ymax := 0
+		mut zmax := 0
+		mut wmax := 1
 		for c in cubes.keys() {
 			cs := c.split('_').map(it.int())
 			xmin = int_min(cs[0], xmin)
