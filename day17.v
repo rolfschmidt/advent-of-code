@@ -95,7 +95,6 @@ fn day17a() int {
 	return d17_run(false)
 }
 
-[inline]
 fn day17b() int {
 	return d17_run(true)
 }
