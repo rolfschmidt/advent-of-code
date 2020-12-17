@@ -71,6 +71,48 @@ fn au64_sum(arr []u64) u64 {
 	return result
 }
 
+// returns min value of int
+fn int_min(a int, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+// returns max value of int
+fn int_max(a int, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+// returns min value of array int
+fn aint_min(arr []int) int {
+	mut low := int(0)
+	mut found := false
+	for value in arr {
+		if value < low || !found {
+			low = value
+			found = true
+		}
+	}
+	return low
+}
+
+// returns max value of array int
+fn aint_max(arr []int) int {
+	mut high := int(0)
+	mut found := false
+	for value in arr {
+		if value > high {
+			high = value
+			found = true
+		}
+	}
+	return high
+}
+
 // returns sum value of array int
 fn aint_sum(arr []int) int {
 	mut result := 0
