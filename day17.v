@@ -3,7 +3,6 @@ module main
 [inline]
 fn d17_run(part2 bool) int {
 	mut lines := read_day('day17.txt')
-
 	mut cubes := map[string]bool{}
 	for y, line in lines {
 		for x, row in line.split('') {
@@ -26,7 +25,6 @@ fn d17_run(part2 bool) int {
 		swmin = -1
 		swmax = 2
 	}
-
 	mut total := 0
 	for _ in 0 .. 6 {
 		mut ch := []string{}
@@ -53,13 +51,11 @@ fn d17_run(part2 bool) int {
 			wmin--
 			wmax += 2
 		}
-
 		for x in xmin .. xmax {
 			for y in ymin .. ymax {
 				for z in zmin .. zmax {
 					for w in wmin .. wmax {
-						mut c := cubes['${x}_${y}_${z}_${w}']
-
+						mut c := cubes['${x}_${y}_${z}_$w']
 						mut nc := 0
 						for sx in -1 .. 2 {
 							for sy in -1 .. 2 {
@@ -68,27 +64,23 @@ fn d17_run(part2 bool) int {
 										if sx == 0 && sy == 0 && sz == 0 && sw == 0 {
 											continue
 										}
-										if !cubes['${sx+x}_${sy+y}_${sz+z}_${sw+w}'] {
+										if !cubes['${sx + x}_${sy + y}_${sz + z}_${sw + w}'] {
 											continue
 										}
-
 										nc++
 									}
 								}
 							}
 						}
-
 						if nc >= 2 && nc <= 3 && c {
-							ch << '${x}_${y}_${z}_${w}'
-						}
-						else if nc == 3 && !c {
-							ch << '${x}_${y}_${z}_${w}'
+							ch << '${x}_${y}_${z}_$w'
+						} else if nc == 3 && !c {
+							ch << '${x}_${y}_${z}_$w'
 						}
 					}
 				}
 			}
 		}
-
 		total = 0
 		cubes = map[string]bool{}
 		for e in ch {
@@ -96,10 +88,8 @@ fn d17_run(part2 bool) int {
 			total++
 		}
 	}
-
 	return total
 }
-
 
 fn day17a() int {
 	return d17_run(false)
