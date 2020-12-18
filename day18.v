@@ -8,7 +8,7 @@ fn d18_combine(val string, part2 bool) (bool, string) {
 	mut regex_add := r'(\d+)(\+)(\d+)'
 	mut regex := regex_equal
 	if part2 {
-		regex_equal = r'(?:^(\d+)(\*)(\d+)$|^(\d+)(\*)(\d+)[*\(\)]|[*\(\)](\d+)(\*)(\d+)[*\(\)]|[*\(\)](\d+)(\*)(\d+)$)'
+		regex_equal = r'(?:^|[*\(\)])(\d+)(\*)(\d+)(?:$|[*\(\)])'
 		regex = regex_add
 	}
 	for {
