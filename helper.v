@@ -1,7 +1,7 @@
 module main
 
 import os
-import regex
+import pcre
 
 fn read_day_string(path string) string {
 	mut data := os.read_file(path) or { panic(err) }
@@ -13,9 +13,8 @@ fn read_day(path string) []string {
 }
 
 // returns a array of the regex matched strings
-// https://github.com/spytheman/v-regex
 fn regex_match(value string, query string) []string {
-	r := regex.new_regex(query, 0) or { return [] }
+	r := pcre.new_regex(query, 0) or { return [] }
 	m := r.match_str(value, 0, 0) or { return [] }
 	mut result := []string{}
 	for i := 0; i < m.group_size; i++ {
