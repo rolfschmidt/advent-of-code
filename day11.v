@@ -174,7 +174,7 @@ fn d11_run(mut lines [][]string, occupied_range int) int {
 			}
 		}
 		for p in changes {
-			lines[p[1]][p[0]] = str_flip(lines[p[1]][p[0]], '#', 'L')
+			lines[p[1]][p[0]] = string_flip(lines[p[1]][p[0]], '#', 'L')
 		}
 		if changes.len < 1 {
 			break

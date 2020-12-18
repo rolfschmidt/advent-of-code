@@ -182,11 +182,13 @@ fn aint_diagonal_range(fromx int, fromy int, tox int, toy int) [][]int {
 }
 
 // returns flipped value
-fn str_flip(value string, a string, b string) string {
+fn string_flip(value string, a string, b string) string {
 	if value == a {
 		return b
+	} else if value == b {
+		return a
 	}
-	return a
+	return value
 }
 
 // returns count of string in array string

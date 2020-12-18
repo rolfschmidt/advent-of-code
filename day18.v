@@ -54,11 +54,7 @@ fn d18_string_drop_clamps(val string) string {
 fn d18_reverse_calculation(ls string) string {
 	mut ls_split := regex_split(ls, r'(\d+|.)').reverse()
 	for i, v in ls_split {
-		if v == ')' {
-			ls_split[i] = str_flip(v, ')', '(')
-		} else if v == '(' {
-			ls_split[i] = str_flip(v, '(', ')')
-		}
+		ls_split[i] = string_flip(v, ')', '(')
 	}
 	return ls_split.join('')
 }
