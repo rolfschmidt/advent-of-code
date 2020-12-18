@@ -238,7 +238,7 @@ fn decbin(value u64, length u64) string {
 		i++
 	}
 	if length > 0 {
-		for v.len < length - 1 {
+		for v.len < length {
 			v += '0'
 		}
 	}
