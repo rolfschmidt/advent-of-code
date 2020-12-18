@@ -3,7 +3,6 @@ module main
 fn d18_combine(val string, part2 bool) (bool, string) {
 	mut ls := val
 	mut changed := false
-
 	mut regex_default := r'(\d+)(\*|\+)(\d+)'
 	mut regex_equal := regex_default
 	mut regex_add := r'(\d+)(\+)(\d+)'
@@ -31,14 +30,12 @@ fn d18_combine(val string, part2 bool) (bool, string) {
 				regex = regex_add
 				ls = d18_reverse_calculation(ls)
 			}
-		}
-		else {
+		} else {
 			ls = ls.replace_once(operation[0], (operation[1].u64() + operation[3].u64()).str())
 		}
 		ls = d18_string_drop_clamps(ls)
 		changed = true
 	}
-
 	return changed, ls
 }
 
@@ -59,8 +56,7 @@ fn d18_reverse_calculation(ls string) string {
 	for i, v in ls_split {
 		if v == ')' {
 			ls_split[i] = str_flip(v, ')', '(')
-		}
-		else if v == '(' {
+		} else if v == '(' {
 			ls_split[i] = str_flip(v, '(', ')')
 		}
 	}
@@ -84,24 +80,20 @@ fn d18_string_calculate(val string, part2 bool) u64 {
 
 fn day18a() u64 {
 	mut lines := read_day('day18.txt')
-
 	mut result := u64(0)
 	for line in lines {
 		mut ls := d18_string_calculate(line, false)
 		result += ls
 	}
-
 	return result
 }
 
 fn day18b() u64 {
 	mut lines := read_day('day18.txt')
-
 	mut result := u64(0)
 	for line in lines {
 		mut ls := d18_string_calculate(line, true)
 		result += ls
 	}
-
 	return result
 }

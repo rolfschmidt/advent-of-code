@@ -36,8 +36,8 @@ fn regex_split(value string, query string) []string {
 			break
 		}
 		index := match_string.index(groups[0]) or { 0 }
-		result << match_string[0 .. index + groups[0].len]
-		match_string = match_string[index + groups[0].len ..]
+		result << match_string[0..index + groups[0].len]
+		match_string = match_string[index + groups[0].len..]
 	}
 	if result.len > 0 && match_string.len > 0 {
 		result << match_string
