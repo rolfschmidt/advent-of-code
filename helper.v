@@ -211,7 +211,6 @@ fn aastring_count(value string, arr [][]string) int {
 }
 
 // returns a decimal number out of binary number
-// https://www.php.net/manual/de/function.bindec.php
 // Big thanks to @JalonSolov
 fn bindec(b string) u64 {
 	mut i := u64(0)
@@ -225,21 +224,18 @@ fn bindec(b string) u64 {
 }
 
 // returns binary number out of decimal number
-// https://www.php.net/manual/de/function.decbin.php
-// https://www.javatpoint.com/c-program-to-convert-decimal-to-binary
-fn decbin(value u64, length u64) string {
-	mut n := value
-	mut v := ''
-	mut i := 0
-	for n > 0 {
-		v += (n % 2).str()
-		n = n / 2
-		i++
+// Big thanks to @JalonSolov
+fn decbin(n u64, length u64) string {
+	mut s := ''
+	mut u := n
+	for u > 0 {
+		s += if u & 1 == 1 { '1' } else { '0' }
+		u = u >> 1
 	}
 	if length > 0 {
-		for v.len < length {
-			v += '0'
+		for s.len < length {
+			s += '0'
 		}
 	}
-	return v.reverse()
+	return s.reverse()
 }
