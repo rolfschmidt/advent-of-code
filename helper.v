@@ -12,6 +12,7 @@ fn read_day(path string) []string {
 	return read_day_string(path).split_into_lines()
 }
 
+// returns a array of the regex matched strings
 // https://github.com/spytheman/v-regex
 fn regex_match(value string, query string) []string {
 	r := regex.new_regex(query, 0) or { return [] }
@@ -22,6 +23,25 @@ fn regex_match(value string, query string) []string {
 		result << match_value
 	}
 	r.free()
+	return result
+}
+
+// returns a array of the string splitted by the regex
+fn regex_split(value string, query string) []string {
+	mut result := []string{}
+	mut match_string := value
+	for {
+		groups := regex_match(match_string, query)
+		if groups.len == 0 {
+			break
+		}
+		index := match_string.index(groups[0]) or { 0 }
+		result << match_string[0 .. index + groups[0].len]
+		match_string = match_string[index + groups[0].len ..]
+	}
+	if result.len > 0 && match_string.len > 0 {
+		result << match_string
+	}
 	return result
 }
 
