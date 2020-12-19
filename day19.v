@@ -52,7 +52,7 @@ fn day19b() int {
 		rules[line.all_before(': ')] = line.all_after(': ')
 	}
 	rules['8'] = '42+'
-	rules['11'] = '42 31 | 42{2} 31{2} | 42{3} 31{3} | 42{4} 31{4} | 42{5} 31{5}'
+	rules['11'] = '42 31 | 42{2} 31{2} | 42{3} 31{3} | 42{4} 31{4}'
 	regex := d19_get_rule(rules, 0, '', '')
 	mut count := 0
 	for value in data[1].split('\n') {
