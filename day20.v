@@ -21,7 +21,7 @@ fn (tile Tile) clone() Tile {
 fn (tile Tile) flip() Tile {
 	return Tile{
 		number: tile.number
-        data: tile.data.map(it.clone().reverse())
+		data: tile.data.map(it.clone().reverse())
 	}
 }
 
@@ -72,7 +72,7 @@ fn (tile Tile) right() string {
 
 fn (tile Tile) borderless() Tile {
 	mut result := tile.clone()
-    result.data = result.data[1..tile.data.len - 1].map(it[1..it.len - 1])
+	result.data = result.data[1..tile.data.len - 1].map(it[1..it.len - 1])
 	return result
 }
 
