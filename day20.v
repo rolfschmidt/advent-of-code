@@ -19,17 +19,10 @@ fn (tile Tile) clone() Tile {
 }
 
 fn (tile Tile) flip() Tile {
-	mut result := Tile{
+	return Tile{
 		number: tile.number
+        data: tile.data.map(it.clone().reverse())
 	}
-	for _, yv in tile.data {
-		mut xnew := []string{}
-		for x, _ in yv {
-			xnew << yv[yv.len - 1 - x]
-		}
-		result.data << xnew
-	}
-	return result
 }
 
 fn (tile Tile) rotate() Tile {
