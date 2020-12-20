@@ -103,6 +103,38 @@ fn (tile Tile) borderless() Tile {
 	return result
 }
 
+fn (tile Tile) monster() [][]int {
+	return [[0, 0], [1, 1], [3, 0], [1, -1],
+		[1, 0], [1, 1], [3, 0], [1, -1], [1, 0],
+		[1, 1], [3, 0], [1, -1], [1, 0], [0, -1],
+		[1, 1],
+	]
+}
+
+fn (tile Tile) monsters() int {
+	mut count := 0
+	for sy, yv in tile.data {
+		for sx, _ in yv {
+			mut x := sx
+			mut y := sy
+			mut found := true
+			for pos in tile.monster() {
+				x += pos[0]
+				y += pos[1]
+				if y < tile.data.len && x < tile.data[y].len && tile.data[y][x] == '#' {
+					continue
+				}
+				found = false
+				break
+			}
+			if found {
+				count++
+			}
+		}
+	}
+	return count
+}
+
 fn result_exists(mut rm map[string]map[string]Tile, x int, y int) bool {
 	if !rm.exists(x.str()) {
 		return false
@@ -195,7 +227,10 @@ fn d20_run(part2 bool) u64 {
 			if num_bottom_right[2] == -1 ||
 				(num_bottom_right[0] <= x.int() && num_bottom_right[1] >= y.int()) {
 				num_bottom_right = [
-					x.int(), y.int(), rtile.number.int()]
+					x.int(),
+					y.int(),
+					rtile.number.int(),
+				]
 			}
 		}
 	}
@@ -220,39 +255,12 @@ fn d20_run(part2 bool) u64 {
 				monster_tile.data << lg[y.str()][x.str()].split('')
 			}
 		}
-		mut monster_count := 0
-		mut hash_count := 0
-		monster_hunt := [[0, 0], [1, 1],
-			[3, 0], [1, -1], [1, 0], [1, 1], [3, 0],
-			[1, -1], [1, 0], [1, 1], [3, 0], [1, -1],
-			[1, 0], [0, -1], [1, 1]]
 		for combo in monster_tile.combos() {
-			for sy, yv in combo.data {
-				for sx, _ in yv {
-					mut x := sx
-					mut y := sy
-					mut found := true
-					for pos in monster_hunt {
-						x += pos[0]
-						y += pos[1]
-						if y < combo.data.len && x < combo.data[y].len && combo.data[y][x] == '#' {
-							continue
-						}
-						found = false
-						break
-					}
-					if found {
-						monster_count++
-					}
-				}
-			}
+			monster_count := combo.monsters()
 			if monster_count > 0 {
-				hash_count += combo.str().count('#')
-				hash_count -= monster_count * monster_hunt.len
-				break
+				return u64(combo.str().count('#') - (monster_count * combo.monster().len))
 			}
 		}
-		return u64(hash_count)
 	}
 	return u64(0)
 }
