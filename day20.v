@@ -228,7 +228,7 @@ fn d20_run(part2 bool) u64 {
 			[1, 0], [0, -1], [1, 1]]
 		for combo in monster_tile.combos() {
 			for sy, yv in combo.data {
-				for sx, xv in yv {
+				for sx, _ in yv {
 					mut x := sx
 					mut y := sy
 					mut found := true
