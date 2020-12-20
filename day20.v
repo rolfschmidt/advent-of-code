@@ -55,35 +55,19 @@ fn (ctile Tile) combos() []Tile {
 }
 
 fn (tile Tile) top() string {
-	mut result := ''
-	for xv in tile.data[0] {
-		result += xv
-	}
-	return result
+	return tile.data[0].join('')
 }
 
 fn (tile Tile) bottom() string {
-	mut result := ''
-	for xv in tile.data[tile.data.len - 1] {
-		result += xv
-	}
-	return result
+	return tile.data.last().join('')
 }
 
 fn (tile Tile) left() string {
-	mut result := ''
-	for xv in tile.data {
-		result += xv[0]
-	}
-	return result
+	return tile.data.map(it[0]).join('')
 }
 
 fn (tile Tile) right() string {
-	mut result := ''
-	for xv in tile.data {
-		result += xv[xv.len - 1]
-	}
-	return result
+	return tile.data.map(it[tile.data.len - 1]).join('')
 }
 
 fn (tile Tile) borderless() Tile {
