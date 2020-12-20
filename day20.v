@@ -72,11 +72,7 @@ fn (tile Tile) right() string {
 
 fn (tile Tile) borderless() Tile {
 	mut result := tile.clone()
-	mut new := [][]string{}
-	for _, xv in result.data[1..result.data.len - 1] {
-		new << xv[1..xv.len - 1]
-	}
-	result.data = new
+    result.data = result.data[1..tile.data.len - 1].map(it[1..it.len - 1])
 	return result
 }
 
