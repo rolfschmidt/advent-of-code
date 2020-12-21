@@ -197,13 +197,13 @@ fn astring_intersect(arr1 []string, arr2 []string) []string {
 
 // returns the intersectino of a array
 fn astring_flatten(arr [][]string) []string {
-    mut result := []string{}
-    for v in arr {
-        for sv in v {
-            result << sv
-        }
-    }
-    return result
+	mut result := []string{}
+	for v in arr {
+		for sv in v {
+			result << sv
+		}
+	}
+	return result
 }
 
 // returns count of string in array string
