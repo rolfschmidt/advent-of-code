@@ -190,11 +190,6 @@ fn string_flip(value string, a string, b string) string {
 	return value
 }
 
-// returns the intersectino of a array
-fn astring_intersect(arr1 []string, arr2 []string) []string {
-	return arr1.filter(arr2.contains(it))
-}
-
 // returns the 2d array flattend
 fn astring_flatten(arr [][]string) []string {
 	mut result := []string{}
