@@ -195,7 +195,7 @@ fn astring_intersect(arr1 []string, arr2 []string) []string {
 	return arr1.filter(arr2.contains(it))
 }
 
-// returns the intersectino of a array
+// returns the 2d array flattend
 fn astring_flatten(arr [][]string) []string {
 	mut result := []string{}
 	for v in arr {
