@@ -45,14 +45,12 @@ fn d21_run(part2 bool) string {
 		}
 	}
 	mut found_alling := map[string]string{}
-	mut found_alli := []string{}
 	mut found_ings := []string{}
 	for {
 		a, i := find_alli(alling)
 		if a == '' {
 			break
 		}
-		found_alli << a
 		found_ings << i
 		found_alling[a] = i
 		remove_alli(mut alling, a, i)
