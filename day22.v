@@ -56,7 +56,7 @@ fn d22_run(part2 bool) int {
 		}
 		players[pi].reverse_in_place()
 	}
-	return int_max(aint_sum(players[0].map(it)), aint_sum(players[1].map(it)))
+	return int_max(aint_sum(players[0]), aint_sum(players[1]))
 }
 
 fn day22a() int {
