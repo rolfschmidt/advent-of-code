@@ -106,6 +106,15 @@ fn int_max(a int, b int) int {
 	return b
 }
 
+// returns a list of indexes of the array
+fn aint_index(arr []int) []int {
+	mut result := []int{}
+	for i, _ in arr {
+		result << i
+	}
+	return result
+}
+
 // returns min value of array int
 fn aint_min(arr []int) int {
 	mut low := int(0)

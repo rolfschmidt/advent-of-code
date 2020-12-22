@@ -45,16 +45,11 @@ fn d22_run(part2 bool) int {
 	mut players := [][]int{}
 	players << blocks[0].all_after(':\n').split('\n').map(it.int())
 	players << blocks[1].all_after(':\n').split('\n').map(it.int())
-	pm1, pm2 := d22_game(players[0], players[1], part2)
-	players[0] = pm1
-	players[1] = pm2
-	for pi, player in players {
-		players[pi].reverse_in_place()
-		for i, card in player {
-			players[pi][i] = (i + 1) * card
-		}
-		players[pi].reverse_in_place()
-	}
+	mut pm1, mut pm2 := d22_game(players[0], players[1], part2)
+	pm1.reverse_in_place()
+	pm2.reverse_in_place()
+	players[0] = aint_index(pm1).map((it + 1) * pm1[it])
+	players[1] = aint_index(pm2).map((it + 1) * pm2[it])
 	return int_max(aint_sum(players[0]), aint_sum(players[1]))
 }
 
