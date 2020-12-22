@@ -42,15 +42,14 @@ fn d22_game(pp1 []int, pp2 []int, part2 bool) ([]int, []int) {
 fn d22_run(part2 bool) int {
 	mut lines := read_day_string('day22.txt')
 	blocks := lines.split('\n\n')
-	mut players := [][]int{}
-	players << blocks[0].all_after(':\n').split('\n').map(it.int())
-	players << blocks[1].all_after(':\n').split('\n').map(it.int())
-	mut pm1, mut pm2 := d22_game(players[0], players[1], part2)
-	pm1.reverse_in_place()
-	pm2.reverse_in_place()
-	players[0] = aint_index(pm1).map((it + 1) * pm1[it])
-	players[1] = aint_index(pm2).map((it + 1) * pm2[it])
-	return int_max(aint_sum(players[0]), aint_sum(players[1]))
+	mut player1 := blocks[0].all_after(':\n').split('\n').map(it.int())
+	mut player2 := blocks[1].all_after(':\n').split('\n').map(it.int())
+	player1, player2 = d22_game(player1, player2, part2)
+	player1.reverse_in_place()
+	player2.reverse_in_place()
+	player1 = aint_index(player1).map((it + 1) * player1[it])
+	player2 = aint_index(player2).map((it + 1) * player2[it])
+	return int_max(aint_sum(player1), aint_sum(player2))
 }
 
 fn day22a() int {
