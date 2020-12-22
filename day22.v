@@ -1,6 +1,5 @@
 module main
 
-[direct_array_access]
 fn d22_game(pp1 []int, pp2 []int, part2 bool) ([]int, []int) {
 	mut p1 := pp1.clone()
 	mut p2 := pp2.clone()
