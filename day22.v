@@ -44,14 +44,8 @@ fn d22_run(part2 bool) int {
 	mut lines := read_day_string('day22.txt')
 	blocks := lines.split('\n\n')
 	mut players := [][]int{}
-	players << []int{}
-	players << []int{}
-	for card in blocks[0].all_after(':\n').split('\n').map(it.int()) {
-		players[0] << card
-	}
-	for card in blocks[1].all_after(':\n').split('\n').map(it.int()) {
-		players[1] << card
-	}
+	players << blocks[0].all_after(':\n').split('\n').map(it.int())
+	players << blocks[1].all_after(':\n').split('\n').map(it.int())
 	pm1, pm2 := d22_game(players[0], players[1], part2)
 	players[0] = pm1
 	players[1] = pm2
