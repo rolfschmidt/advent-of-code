@@ -109,7 +109,7 @@ fn int_max(a int, b int) int {
 // returns a list of indexes of the array
 fn aint_index(arr []int) []int {
 	mut result := []int{}
-	for i, _ in arr {
+	for i in 0..arr.len {
 		result << i
 	}
 	return result
