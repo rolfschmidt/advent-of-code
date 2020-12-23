@@ -2,7 +2,7 @@ module main
 
 fn d23_run(part2 bool) string {
 	mut input := read_day_string('day23.txt').split('')
-	mut ring := map[string]string{}
+	mut cups := map[string]string{}
 	mut curr := ''
 	mut prev := ''
 	mut input_min := 999
@@ -13,7 +13,7 @@ fn d23_run(part2 bool) string {
 			curr = v
 		}
 		if prev.len > 0 {
-			ring[prev] = v
+			cups[prev] = v
 		}
 		prev = v
 		input_min = int_min(input_min, v.int())
@@ -23,17 +23,17 @@ fn d23_run(part2 bool) string {
 		rounds = 10000000
 		input_max = 1000000
 		for v in 10 .. 1000001 {
-			ring[prev] = v.str()
+			cups[prev] = v.str()
 			prev = v.str()
 		}
-		ring['1000000'] = curr
+		cups['1000000'] = curr
 	} else {
-		ring[input.last()] = curr
+		cups[input.last()] = curr
 	}
 	for r := 0; r < rounds; r++ {
-		p1 := ring[curr]
-		p2 := ring[p1]
-		p3 := ring[p2]
+		p1 := cups[curr]
+		p2 := cups[p1]
+		p3 := cups[p2]
 		mut d := curr.int()
 		for d == curr.int() || d == p1.int() || d == p2.int() || d == p3.int() {
 			d--
@@ -41,17 +41,17 @@ fn d23_run(part2 bool) string {
 				d = input_max
 			}
 		}
-		ring[curr] = ring[p3]
-		dt := ring[d.str()]
-		ring[d.str()] = p1
-		ring[p3] = dt
-		curr = ring[curr]
+		cups[curr] = cups[p3]
+		dt := cups[d.str()]
+		cups[d.str()] = p1
+		cups[p3] = dt
+		curr = cups[curr]
 	}
 	if !part2 {
 		mut result := ''
 		mut si := '1'
 		for {
-			val := ring[si]
+			val := cups[si]
 			if val == '1' {
 				break
 			}
@@ -60,7 +60,7 @@ fn d23_run(part2 bool) string {
 		}
 		return result
 	} else {
-		return (ring['1'].u64() * ring[ring['1']].u64()).str()
+		return (cups['1'].u64() * cups[cups['1']].u64()).str()
 	}
 	return '-1'
 }
