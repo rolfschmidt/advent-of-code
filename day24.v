@@ -54,7 +54,8 @@ fn d24_run(part2 bool) int {
 				} else {
 					mut white_black_count := 0
 					for white_nbr in nbrs {
-                        white_nbr_pos_str := '${pos[0] + nbr[0] + white_nbr[0]}_${pos[1] + nbr[1] + white_nbr[1]}_${pos[2] + nbr[2] + white_nbr[2]}'
+						white_nbr_pos_str := '${pos[0] + nbr[0] + white_nbr[0]}_${pos[1] + nbr[1] +
+							white_nbr[1]}_${pos[2] + nbr[2] + white_nbr[2]}'
 						if white_nbr_pos_str in matrix {
 							white_black_count++
 						}
