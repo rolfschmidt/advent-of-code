@@ -10,10 +10,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: vlang/v
-    - name: Install requirements
-      run: |
-        sudo apt-get install -y libssl-dev libpcre3 libpcre3-dev
-        v install pcre
     - name: Checkout advent-of-code-2020
       uses: actions/checkout@v2
       with:
@@ -22,6 +18,10 @@ jobs:
       run: |
         make
         sudo ./v symlink
+    - name: Install requirements
+      run: |
+        sudo apt-get install -y libssl-dev libpcre3 libpcre3-dev
+        v install pcre
     - name: Build tests
       run: |
         cd ./vlib/advent-of-code-2020/
