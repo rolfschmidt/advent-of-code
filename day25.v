@@ -1,12 +1,12 @@
 module main
 
 fn d25_loop_size(subj u64, value u64) u64 {
-	mut loop_value := u64(1)
+	mut lv := u64(1)
 	mut i := u64(0)
-	for loop_value != value {
+	for lv != value {
 		i++
-		loop_value *= subj
-		loop_value = loop_value % 20201227
+		lv *= subj
+		lv = lv % 20201227
 	}
 	return i
 }
