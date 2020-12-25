@@ -6,7 +6,7 @@ fn d25_loop_size(subj u64, value u64) u64 {
 	for lv != value {
 		i++
 		lv *= subj
-		lv = lv % 20201227
+		lv %= 20201227
 	}
 	return i
 }
@@ -15,7 +15,7 @@ fn d25_transform(value u64, range u64) u64 {
 	mut result := u64(1)
 	for _ in 0 .. range {
 		result *= value
-		result = result % 20201227
+		result %= 20201227
 	}
 	return result
 }
