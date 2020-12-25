@@ -1,0 +1,28 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  ubuntu-20-action:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout V
+      uses: actions/checkout@v2
+      with:
+        repository: vlang/v
+    - name: Install requirements
+      run: |
+        sudo apt-get install -y libssl-dev libpcre3 libpcre3-dev
+        v install pcre
+    - name: Checkout advent-of-code-2020
+      uses: actions/checkout@v2
+      with:
+        path: vlib/advent-of-code-2020
+    - name: Build V
+      run: |
+        make
+        sudo ./v symlink
+    - name: Build tests
+      run: |
+        cd ./vlib/advent-of-code-2020/
+        v test .
