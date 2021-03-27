@@ -49,7 +49,7 @@ fn day14a() u64 {
 				if v == `X` {
 					continue
 				}
-				bin[i] = v.str()
+				bin[i] = v.ascii_str()
 			}
 			memory[addr.str()] = bindec(bin.join(''))
 		}
@@ -88,7 +88,7 @@ fn day14b() u64 {
 					xarr << i
 					continue
 				}
-				bin[i] = v.str()
+				bin[i] = v.ascii_str()
 			}
 			mut addrs := map[string]bool{}
 			mut combos := bit_combos(xarr.map(int(0)), 0)

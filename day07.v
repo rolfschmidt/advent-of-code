@@ -8,7 +8,7 @@ pub mut:
 	shiny bool
 }
 
-fn (bags []D7Bag) make_shiny(name string) []D7Bag {
+fn (mut bags []D7Bag) make_shiny(name string) []D7Bag {
 	for mut bag in bags {
 		if bag.shiny {
 			continue
@@ -24,7 +24,7 @@ fn (bags []D7Bag) make_shiny(name string) []D7Bag {
 	return bags
 }
 
-fn (bags []D7Bag) count_shiny(name string) int {
+fn (mut bags []D7Bag) count_shiny(name string) int {
 	mut result := 0
 	for mut bag in bags {
 		if bag.name != name {

@@ -30,15 +30,9 @@ fn d16_run(part2 bool) u64 {
 						break
 					}
 				}
-				if !class_matrix.exists(class) {
-					class_matrix[class] = map[string]map[string]bool{}
-				}
-				if !class_matrix[class].exists(ticket_index.str()) {
-					class_matrix[class][ticket_index.str()] = map[string]bool{}
-				}
 				if !in_class_range {
 					class_matrix[class][ticket_index.str()][ticket.str()] = false
-				} else if !class_matrix[class][ticket_index.str()].exists(ticket.str()) {
+				} else if ticket.str() !in class_matrix[class][ticket_index.str()].keys() {
 					class_matrix[class][ticket_index.str()][ticket.str()] = true
 				}
 			}

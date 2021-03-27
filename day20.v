@@ -109,17 +109,17 @@ fn (tile Tile) monsters() int {
 }
 
 fn result_exists(mut rm map[string]map[string]Tile, x int, y int) bool {
-	if !rm.exists(x.str()) {
+	if x.str() !in rm.keys() {
 		return false
 	}
-	if !rm[x.str()].exists(y.str()) {
+	if y.str() !in rm[x.str()].keys() {
 		return false
 	}
 	return true
 }
 
 fn add_result(mut rm map[string]map[string]Tile, x int, y int, tile Tile) {
-	if !rm.exists(x.str()) {
+	if x.str() !in rm.keys() {
 		rm[x.str()] = map[string]Tile{}
 	}
 	rm[x.str()][y.str()] = tile

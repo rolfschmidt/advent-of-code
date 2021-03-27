@@ -2,7 +2,7 @@ module main
 
 fn d19_get_rule(rules map[string]string, pos int, crule string, search string) string {
 	if rules[pos.str()].contains('"') {
-		return rules[pos.str()][1].str()
+		return rules[pos.str()][1].ascii_str()
 	}
 	mut rule := '(?:'
 	if pos == 0 {

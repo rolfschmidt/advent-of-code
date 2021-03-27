@@ -14,7 +14,7 @@ fn d15_run(lines string, find int) int {
 	mut last_index2 := 0
 	for i := numbers.len - 1; i < find - 1; i++ {
 		current_number = last_number
-		if !spoken.exists(current_number) {
+		if current_number !in spoken.keys() {
 			last_number = '0'
 			spoken[current_number] = i
 		} else {

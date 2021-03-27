@@ -36,7 +36,7 @@ fn d21_run(part2 bool) string {
 		ings := data[0]
 		alls := data[1]
 		for a in alls {
-			if !alling.exists(a.str()) {
+			if a.str() !in alling.keys() {
 				alling[a] = map[string]int{}
 			}
 			for i in ings {

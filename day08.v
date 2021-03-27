@@ -18,7 +18,7 @@ fn d8_run(acc_lines []string, return_seen bool, bruteforce bool) int {
 		}
 		line := acc_lines[i].str()
 		command := line[..3]
-		operator := line[4].str()
+		operator := line[4].ascii_str()
 		value := line[5..].int()
 		seen[i.str()] = true
 		if bruteforce && ['jmp', 'nop'].contains(command) {
