@@ -32,7 +32,7 @@ fn d16_run(part2 bool) u64 {
 				}
 				if !in_class_range {
 					class_matrix[class][ticket_index.str()][ticket.str()] = false
-				} else if ticket.str() !in class_matrix[class][ticket_index.str()].keys() {
+				} else if ticket.str() !in class_matrix[class][ticket_index.str()] {
 					class_matrix[class][ticket_index.str()][ticket.str()] = true
 				}
 			}
