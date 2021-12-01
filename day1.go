@@ -6,6 +6,11 @@ import (
 )
 
 func main() {
+    fmt.Println("part 1: ", Part1())
+    fmt.Println("part 2: ", Part2())
+}
+
+func Part1() int64 {
     last := int64(0)
     result := int64(0)
     var numbers []int64
@@ -18,9 +23,12 @@ func main() {
         last = val
     }
 
-    fmt.Println("part 1: ", result)
+    return result
+}
 
-    result = 0
+func Part2() int64 {
+    numbers := helper.StringArray2Int64Array(helper.ReadFile("day1.txt"))
+    result := int64(0)
     for i, _ := range numbers {
         val1 := int64(0)
         val2 := int64(0)
@@ -35,6 +43,5 @@ func main() {
             result += 1
         }
     }
-
-    fmt.Println("part 2: ", result)
+    return result
 }

@@ -26,3 +26,11 @@ func String2Int64(value string) int64 {
 	result, _ := strconv.ParseInt(value, 10, 64)
 	return result
 }
+
+func StringArray2Int64Array(strings []string) []int64 {
+	var result []int64
+	for _, value := range strings {
+		result = append(result, String2Int64(value))
+	}
+	return result
+}
