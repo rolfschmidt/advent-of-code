@@ -7,7 +7,7 @@ import (
 )
 
 func ReadFile(path string) []string {
-    file, err := os.Open("day1.txt")
+    file, err := os.Open(path)
 	if err != nil {
 		panic(err.Error() + `: ` + path)
 	}
@@ -33,4 +33,28 @@ func StringArray2Int64Array(strings []string) []int64 {
 		result = append(result, String2Int64(value))
 	}
 	return result
+}
+
+func Int64Min(vars ...int64) int64 {
+    min := vars[0]
+
+    for _, i := range vars {
+        if min > i {
+            min = i
+        }
+    }
+
+    return min
+}
+
+func Int64Max(vars ...int64) int64 {
+    min := vars[0]
+
+    for _, i := range vars {
+        if min < i {
+            min = i
+        }
+    }
+
+    return min
 }
