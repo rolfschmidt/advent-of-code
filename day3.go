@@ -61,7 +61,6 @@ func Run(Part2 bool) int {
     }
 
     if Part2 {
-        // fmt.Println("zeros", zeros)
         oxygen_vals := val_strings
         scrubber_vals := val_strings
         for i, _ := range zeros {
