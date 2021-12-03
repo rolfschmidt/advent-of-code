@@ -3,6 +3,7 @@ package helper
 import (
     "os"
     "bufio"
+    "math"
     "strconv"
 )
 
@@ -22,6 +23,11 @@ func ReadFile(path string) []string {
 	return result
 }
 
+func String2Int(value string) int {
+    result, _ := strconv.Atoi(value)
+    return result
+}
+
 func String2Int64(value string) int64 {
 	result, _ := strconv.ParseInt(value, 10, 64)
 	return result
@@ -33,6 +39,20 @@ func StringArray2Int64Array(strings []string) []int64 {
 		result = append(result, String2Int64(value))
 	}
 	return result
+}
+
+func Binary2Decimal(number int) int {
+    decimal := 0
+    counter := 0.0
+    remainder := 0
+
+    for number != 0 {
+        remainder = number % 10
+        decimal += remainder * int(math.Pow(2.0, counter))
+        number = number / 10
+        counter++
+    }
+    return decimal
 }
 
 func Int64Min(vars ...int64) int64 {
