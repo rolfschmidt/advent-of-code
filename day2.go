@@ -1,25 +1,19 @@
 package main
 
 import (
-    "fmt"
     "strings"
     "./helper"
 )
 
-func main() {
-    fmt.Println("part 1: ", Part1())
-    fmt.Println("part 2: ", Part2())
+func Day2Part1() int64 {
+    return Day2Run(false)
 }
 
-func Part1() int64 {
-    return Run(false)
+func Day2Part2() int64 {
+    return Day2Run(true)
 }
 
-func Part2() int64 {
-    return Run(true)
-}
-
-func Run(Part2 bool) int64 {
+func Day2Run(Part2 bool) int64 {
     distance := int64(0)
     depth := int64(0)
     aim := int64(0)

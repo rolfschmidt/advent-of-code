@@ -1,16 +1,10 @@
 package main
 
 import (
-    "fmt"
     "./helper"
 )
 
-func main() {
-    fmt.Println("part 1: ", Part1())
-    fmt.Println("part 2: ", Part2())
-}
-
-func Part1() int64 {
+func Day1Part1() int64 {
     last := int64(0)
     result := int64(0)
     var numbers []int64
@@ -26,7 +20,7 @@ func Part1() int64 {
     return result
 }
 
-func Part2() int64 {
+func Day1Part2() int64 {
     numbers := helper.StringArray2Int64Array(helper.ReadFile("day1.txt"))
     result := int64(0)
     for i, _ := range numbers {

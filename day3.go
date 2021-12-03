@@ -1,25 +1,19 @@
 package main
 
 import (
-    "fmt"
     "strings"
     "./helper"
 )
 
-func main() {
-    fmt.Println("part 1: ", Part1())
-    fmt.Println("part 2: ", Part2())
+func Day3Part1() int {
+    return Day3Run(false)
 }
 
-func Part1() int {
-    return Run(false)
+func Day3Part2() int {
+    return Day3Run(true)
 }
 
-func Part2() int {
-    return Run(true)
-}
-
-func ValueStats(val_strings [][]string) ([]int, []int) {
+func Day3ValueStats(val_strings [][]string) ([]int, []int) {
     zeros := []int{0,0,0,0,0,0,0,0,0,0,0,0}
     ones := []int{0,0,0,0,0,0,0,0,0,0,0,0}
     for _, line := range val_strings {
@@ -35,14 +29,14 @@ func ValueStats(val_strings [][]string) ([]int, []int) {
     return zeros, ones
 }
 
-func Run(Part2 bool) int {
+func Day3Run(Part2 bool) int {
     val_strings := [][]string{}
     for _, line := range helper.ReadFile("day3.txt") {
         vals := strings.Split(line, "")
         val_strings = append(val_strings, vals)
     }
 
-    zeros, ones := ValueStats(val_strings)
+    zeros, ones := Day3ValueStats(val_strings)
 
     gamma := ""
     epsilon := ""
@@ -64,8 +58,8 @@ func Run(Part2 bool) int {
         oxygen_vals := val_strings
         scrubber_vals := val_strings
         for i, _ := range zeros {
-            oxygen_zeros, oxygen_ones := ValueStats(oxygen_vals)
-            scrubber_zeros, scrubber_ones := ValueStats(scrubber_vals)
+            oxygen_zeros, oxygen_ones := Day3ValueStats(oxygen_vals)
+            scrubber_zeros, scrubber_ones := Day3ValueStats(scrubber_vals)
 
             oxygen_keep := ""
             if oxygen_zeros[i] == oxygen_ones[i] {
