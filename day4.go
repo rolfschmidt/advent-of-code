@@ -115,7 +115,6 @@ func Day4Run(Part2 bool) int {
                 }
 
                 new_line = append(new_line, Day4BingoNumber{ val: helper.String2Int(block_number) })
-                // fmt.Println("block number `", block_number, "`")
             }
 
             new_block = append(new_block, new_line)
