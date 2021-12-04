@@ -17,10 +17,34 @@ func ReadFile(path string) []string {
 	var result []string
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		result = append(result, string(scanner.Text()))
+    	result = append(result, string(scanner.Text()))
 	}
 
 	return result
+}
+
+func ReadFileString(path string) string {
+    file, err := os.Open(path)
+    if err != nil {
+        panic(err.Error() + `: ` + path)
+    }
+    defer file.Close()
+
+    var result string
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        result = result + string(scanner.Text()) + "\n"
+    }
+
+    return result
+}
+
+func StringArrayInt(strings []string) []int {
+    var result []int
+    for _, value := range strings {
+        result = append(result, String2Int(value))
+    }
+    return result
 }
 
 func String2Int(value string) int {
