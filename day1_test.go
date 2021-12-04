@@ -16,6 +16,6 @@ func TestDay1Part2(t *testing.T) {
 	result := Day1Part2()
 	t.Log("Day 1 Part 2:", result)
     if result != int64(1743) {
-        t.Errorf("part 1 failing")
+        t.Errorf("part 2 failing")
     }
 }

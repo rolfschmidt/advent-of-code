@@ -8,6 +8,7 @@ import (
 
 func main() {
     fmt.Println("Part: 1", Day4Part1())
+    fmt.Println("Part: 2", Day4Part2())
 }
 
 func Day4Part1() int {
@@ -25,6 +26,7 @@ type Day4BingoNumber struct {
 
 type Day4Bingo struct {
     matrix [][]Day4BingoNumber
+    won bool
 }
 
 func (b Day4Bingo) find(number int) {
@@ -93,10 +95,6 @@ func (b Day4Bingo) sum() int {
 }
 
 func Day4Run(Part2 bool) int {
-    if Part2 {
-        return 0
-    }
-
     content := helper.ReadFileString("day4.txt")
     block_parts := strings.Split(content, "\n\n")
     numbers, block_parts := helper.StringArrayInt(strings.Split(block_parts[0], ",")), block_parts[1:]
@@ -127,15 +125,29 @@ func Day4Run(Part2 bool) int {
     }
 
     var check_numbers []int
+    var last_sum int
+    var last_number int
     for _, number := range numbers {
         check_numbers = append(check_numbers, number)
-        for _, bingo := range blocks {
+        for bi, bingo := range blocks {
+            if bingo.won {
+                continue
+            }
+
             bingo.find(number)
             if bingo.match_horizontal() || bingo.match_vertical() {
-                fmt.Println("winning number", number)
-                return bingo.sum() * number
+                blocks[bi].won = true
+                last_sum = bingo.sum()
+                last_number = number
+                if !Part2 {
+                    return last_sum * number
+                }
             }
         }
+    }
+
+    if Part2 {
+        return last_sum * last_number
     }
 
     return 0

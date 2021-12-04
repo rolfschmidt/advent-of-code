@@ -16,6 +16,6 @@ func TestDay3Part2(t *testing.T) {
 	result := Day3Part2()
 	t.Log("Day 3 Part 2:", result)
     if result != 2555739 {
-        t.Errorf("part 1 failing")
+        t.Errorf("part 2 failing")
     }
 }
