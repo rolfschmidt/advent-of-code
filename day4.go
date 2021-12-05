@@ -1,15 +1,9 @@
 package main
 
 import (
-    "fmt"
     "strings"
     "./helper"
 )
-
-func main() {
-    fmt.Println("Part: 1", Day4Part1())
-    fmt.Println("Part: 2", Day4Part2())
-}
 
 func Day4Part1() int {
     return Day4Run(false)

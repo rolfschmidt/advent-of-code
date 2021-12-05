@@ -79,7 +79,7 @@ func Binary2Decimal(number int) int {
     return decimal
 }
 
-func Int64Min(vars ...int64) int64 {
+func IntMin(vars ...int) int {
     min := vars[0]
 
     for _, i := range vars {
@@ -91,7 +91,7 @@ func Int64Min(vars ...int64) int64 {
     return min
 }
 
-func Int64Max(vars ...int64) int64 {
+func IntMax(vars ...int) int {
     min := vars[0]
 
     for _, i := range vars {
