@@ -1,15 +1,9 @@
 package main
 
 import (
-    "fmt"
     "strings"
     "./helper"
 )
-
-func main() {
-    fmt.Println("Part: 1", Day6Part1())
-    fmt.Println("Part: 2", Day6Part2())
-}
 
 func Day6Part1() int {
     content := helper.StringArrayInt(strings.Split(strings.TrimSpace(helper.ReadFileString("day6.txt")), ","))
