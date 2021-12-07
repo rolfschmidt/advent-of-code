@@ -54,10 +54,8 @@ func Fuel(middle int, content []int, Part2 bool) int {
         if !Part2 {
             result += helper.IntMax(number, middle) - helper.IntMin(number, middle)
         } else {
-            tn := 0
             for i := 1; i <= (helper.IntMax(number, middle) - helper.IntMin(number, middle)); i++ {
                 result += i
-                tn += i
             }
         }
     }
