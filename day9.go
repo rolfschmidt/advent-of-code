@@ -13,22 +13,6 @@ func Day9Part2() int {
     return Day9Run(true)
 }
 
-func Day9PointExist(matrix [][]Day9Point, x int , y int) bool {
-    if x < 0 || y < 0 || y > len(matrix) - 1 || x > len(matrix[y]) - 1 {
-        return false
-    }
-
-    return true
-}
-
-func Day9Checked(checked map[string]bool, x int , y int) bool {
-    if _, ok := checked[helper.Int2String(x) + "," + helper.Int2String(y)]; ok {
-        return true
-    }
-
-    return false
-}
-
 type Day9Point struct {
     value int
     x int
@@ -65,6 +49,26 @@ func (p Day9Point) low(matrix [][]Day9Point) bool {
     return true
 }
 
+func (p Day9Point) risk() int {
+    return p.value + 1
+}
+
+func Day9PointExist(matrix [][]Day9Point, x int , y int) bool {
+    if x < 0 || y < 0 || y > len(matrix) - 1 || x > len(matrix[y]) - 1 {
+        return false
+    }
+
+    return true
+}
+
+func Day9Checked(checked map[string]bool, x int , y int) bool {
+    if _, ok := checked[helper.Int2String(x) + "," + helper.Int2String(y)]; ok {
+        return true
+    }
+
+    return false
+}
+
 func Day9Basin(matrix [][]Day9Point, px int, py int, checked map[string]bool) (int, map[string]bool) {
     if !Day9PointExist(matrix, px, py) || Day9Checked(checked, px,  py) || matrix[py][px].value == 9 {
         checked[helper.Int2String(px) + "," + helper.Int2String(py)] = true
@@ -95,10 +99,6 @@ func Day9Basin(matrix [][]Day9Point, px int, py int, checked map[string]bool) (i
     result += basin
 
     return result, checked
-}
-
-func (p Day9Point) risk() int {
-    return p.value + 1
 }
 
 func Day9Run(Part2 bool) int {
