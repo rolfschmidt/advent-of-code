@@ -4,6 +4,7 @@ import (
     "os"
     "bufio"
     "math"
+    "sort"
     "strconv"
 )
 
@@ -45,6 +46,10 @@ func StringArrayInt(strings []string) []int {
         result = append(result, String2Int(value))
     }
     return result
+}
+
+func Int2String(value int) string {
+    return strconv.Itoa(value)
 }
 
 func String2Int(value string) int {
@@ -101,4 +106,19 @@ func IntMax(vars ...int) int {
     }
 
     return min
+}
+
+func StringArraySelect(arr []string, filter func(string) bool) string {
+    for _, value := range arr {
+        if filter(value) {
+            return value
+        }
+    }
+    return ""
+}
+
+func StringSort(word string) string {
+    s := []rune(word)
+    sort.Slice(s, func(i int, j int) bool { return s[i] < s[j] })
+    return string(s)
 }

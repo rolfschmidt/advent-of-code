@@ -1,16 +1,10 @@
 package main
 
 import (
-    "fmt"
     "strings"
     "sort"
     "./helper"
 )
-
-func main() {
-    fmt.Println("Part: 1", Day7Part1())
-    fmt.Println("Part: 2", Day7Part2())
-}
 
 func Day7Part1() int {
     return Run(false)

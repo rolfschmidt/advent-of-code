@@ -4,39 +4,23 @@ import (
     "fmt"
     "strings"
     "strconv"
-    "sort"
     "./helper"
 )
 
 func main() {
-    fmt.Println("Part: 1", Day7Part1())
-    fmt.Println("Part: 2", Day7Part2())
+    fmt.Println("Part: 1", Day8Part1())
+    fmt.Println("Part: 2", Day8Part2())
 }
 
-func Day7Part1() int {
-    return Run(false)
+func Day8Part1() int {
+    return Day8Run(false)
 }
 
-func Day7Part2() int {
-    return Run(true)
+func Day8Part2() int {
+    return Day8Run(true)
 }
 
-func StringSort(word string) string {
-    s := []rune(word)
-    sort.Slice(s, func(i int, j int) bool { return s[i] < s[j] })
-    return string(s)
-}
-
-func StringArraySelect(arr []string, filter func(string) bool) string {
-    for _, value := range arr {
-        if filter(value) {
-            return value
-        }
-    }
-    return ""
-}
-
-func DiffSeq(s1 string, s2 string) []string {
+func Day8DiffSeq(s1 string, s2 string) []string {
     seq1 := strings.Split(s1, "")
     seq2 := strings.Split(s2, "")
     result := []string{}
@@ -60,7 +44,7 @@ func DiffSeq(s1 string, s2 string) []string {
     return result
 }
 
-func ContainsSeq(s1 string, s2 string) bool {
+func Day8ContainsSeq(s1 string, s2 string) bool {
     seq1 := strings.Split(s1, "")
     seq2 := strings.Split(s2, "")
 
@@ -81,7 +65,7 @@ func ContainsSeq(s1 string, s2 string) bool {
     return true
 }
 
-func ContainsSeqCount(s1 string, s2 string) int {
+func Day8Day8ContainsSeqCount(s1 string, s2 string) int {
     seq1 := strings.Split(s1, "")
     seq2 := strings.Split(s2, "")
 
@@ -97,7 +81,7 @@ func ContainsSeqCount(s1 string, s2 string) int {
     return count
 }
 
-func Run(Part2 bool) int {
+func Day8Run(Part2 bool) int {
 
     content := [][]string{}
     for _, line := range helper.ReadFile("day8.txt") {
@@ -113,7 +97,7 @@ func Run(Part2 bool) int {
                 break
             }
 
-            configs = append(configs, StringSort(seq))
+            configs = append(configs, helper.StringSort(seq))
         }
 
         targets := []string{}
@@ -127,7 +111,7 @@ func Run(Part2 bool) int {
                 continue
             }
 
-            targets = append(targets, StringSort(seq))
+            targets = append(targets, helper.StringSort(seq))
         }
 
         if !Part2 {
@@ -151,40 +135,40 @@ func Run(Part2 bool) int {
             // 7    2
             // 7    2
             //  3333
-            one := StringArraySelect(configs, func(value string) bool {
+            one := helper.StringArraySelect(configs, func(value string) bool {
                 return len(value) == 2
             })
-            four := StringArraySelect(configs, func(value string) bool {
+            four := helper.StringArraySelect(configs, func(value string) bool {
                 return len(value) == 4
             })
-            seven := StringArraySelect(configs, func(value string) bool {
+            seven := helper.StringArraySelect(configs, func(value string) bool {
                 return len(value) == 3
             })
-            eight := StringArraySelect(configs, func(value string) bool {
+            eight := helper.StringArraySelect(configs, func(value string) bool {
                 return len(value) == 7
             })
 
-            leftmiddle := strings.Join(DiffSeq(four, one)[:], "")
-            leftbottom := strings.Join(DiffSeq(strings.Join(DiffSeq(eight, seven)[:], ""), four)[:], "")
+            leftmiddle := strings.Join(Day8DiffSeq(four, one)[:], "")
+            leftbottom := strings.Join(Day8DiffSeq(strings.Join(Day8DiffSeq(eight, seven)[:], ""), four)[:], "")
 
-            zero := StringArraySelect(configs, func(value string) bool {
-                return len(value) == 6 && ContainsSeq(value, one) && !ContainsSeq(value, leftmiddle) && ContainsSeq(value, leftbottom)
+            zero := helper.StringArraySelect(configs, func(value string) bool {
+                return len(value) == 6 && Day8ContainsSeq(value, one) && !Day8ContainsSeq(value, leftmiddle) && Day8ContainsSeq(value, leftbottom)
             })
-            six := StringArraySelect(configs, func(value string) bool {
-                return len(value) == 6 && !ContainsSeq(value, one) && ContainsSeq(value, leftmiddle) && ContainsSeq(value, leftbottom)
+            six := helper.StringArraySelect(configs, func(value string) bool {
+                return len(value) == 6 && !Day8ContainsSeq(value, one) && Day8ContainsSeq(value, leftmiddle) && Day8ContainsSeq(value, leftbottom)
             })
-            nine := StringArraySelect(configs, func(value string) bool {
-                return len(value) == 6 && ContainsSeq(value, one) && ContainsSeq(value, leftmiddle) && !ContainsSeq(value, leftbottom)
+            nine := helper.StringArraySelect(configs, func(value string) bool {
+                return len(value) == 6 && Day8ContainsSeq(value, one) && Day8ContainsSeq(value, leftmiddle) && !Day8ContainsSeq(value, leftbottom)
             })
 
-            two := StringArraySelect(configs, func(value string) bool {
-                return len(value) == 5 && !ContainsSeq(value, one) && ContainsSeqCount(value, four) == 2 && !ContainsSeq(value, leftmiddle) && ContainsSeq(value, leftbottom)
+            two := helper.StringArraySelect(configs, func(value string) bool {
+                return len(value) == 5 && !Day8ContainsSeq(value, one) && Day8Day8ContainsSeqCount(value, four) == 2 && !Day8ContainsSeq(value, leftmiddle) && Day8ContainsSeq(value, leftbottom)
             })
-            three := StringArraySelect(configs, func(value string) bool {
-                return len(value) == 5 && ContainsSeq(value, one) && ContainsSeqCount(value, six) == 4 && !ContainsSeq(value, leftmiddle) && !ContainsSeq(value, leftbottom)
+            three := helper.StringArraySelect(configs, func(value string) bool {
+                return len(value) == 5 && Day8ContainsSeq(value, one) && Day8Day8ContainsSeqCount(value, six) == 4 && !Day8ContainsSeq(value, leftmiddle) && !Day8ContainsSeq(value, leftbottom)
             })
-            five := StringArraySelect(configs, func(value string) bool {
-                return len(value) == 5 && !ContainsSeq(value, one) && ContainsSeqCount(value, four) == 3 && ContainsSeqCount(value, six) == 5 && ContainsSeq(value, leftmiddle) && !ContainsSeq(value, leftbottom)
+            five := helper.StringArraySelect(configs, func(value string) bool {
+                return len(value) == 5 && !Day8ContainsSeq(value, one) && Day8Day8ContainsSeqCount(value, four) == 3 && Day8Day8ContainsSeqCount(value, six) == 5 && Day8ContainsSeq(value, leftmiddle) && !Day8ContainsSeq(value, leftbottom)
             })
 
             numbers := []string{one, two, three, four, five, six, seven, eight, nine}
@@ -192,30 +176,27 @@ func Run(Part2 bool) int {
             TARGET:
             for _, target := range targets {
                 for ni, seq := range numbers {
-                    //fmt.Println("check seq", target, seq)
-
                     if target == seq {
-                        fmt.Println("match", ni+1, "'" + target + "'", "'" + seq + "'")
                         line_number += strconv.Itoa(ni+1)
                         continue TARGET
                     }
                 }
             }
 
-            if line_number == "5" {
+            if 1 == 0 {
                 fmt.Println("configs", configs)
                 fmt.Println("targets", targets)
                 fmt.Println("numbers", numbers)
-                fmt.Println("zero", zero, StringSort("cagedb"))
-                fmt.Println("one", one, StringSort("ab"))
-                fmt.Println("two", two, StringSort("gcdfa"))
-                fmt.Println("three", three, StringSort("fbcad"))
-                fmt.Println("four", four, StringSort("eafb"))
-                fmt.Println("five", five, StringSort("cdfbe"))
-                fmt.Println("six", six, StringSort("cdfgeb"))
-                fmt.Println("seven", seven, StringSort("dab"))
-                fmt.Println("eight", eight, StringSort("acedgfb"))
-                fmt.Println("nine", nine, StringSort("cefabd"))
+                fmt.Println("zero", zero, helper.StringSort("cagedb"))
+                fmt.Println("one", one, helper.StringSort("ab"))
+                fmt.Println("two", two, helper.StringSort("gcdfa"))
+                fmt.Println("three", three, helper.StringSort("fbcad"))
+                fmt.Println("four", four, helper.StringSort("eafb"))
+                fmt.Println("five", five, helper.StringSort("cdfbe"))
+                fmt.Println("six", six, helper.StringSort("cdfgeb"))
+                fmt.Println("seven", seven, helper.StringSort("dab"))
+                fmt.Println("eight", eight, helper.StringSort("acedgfb"))
+                fmt.Println("nine", nine, helper.StringSort("cefabd"))
                 fmt.Println("leftmiddle", leftmiddle)
                 fmt.Println("leftbottom", leftbottom)
                 fmt.Println("")
@@ -223,7 +204,7 @@ func Run(Part2 bool) int {
 
                 return 0
             }
-            fmt.Println("line_number", helper.String2Int(line_number))
+            // fmt.Println("line_number", helper.String2Int(line_number))
 
             result += helper.String2Int(line_number)
         }
