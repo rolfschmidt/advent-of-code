@@ -102,7 +102,7 @@ func Day4Run(Part2 bool) int {
             }
 
             var new_line []Day4BingoNumber
-            for _, block_number := range helper.Split(helper.Trim(block_line), " ") {
+            for _, block_number := range helper.Split(block_line, " ") {
                 if block_number == "" {
                     continue
                 }
