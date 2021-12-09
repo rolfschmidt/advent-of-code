@@ -1,7 +1,6 @@
 package main
 
 import (
-    "strings"
     "sort"
     "./helper"
 )
@@ -15,7 +14,7 @@ func Day7Part2() int {
 }
 
 func Day7Run(Part2 bool) int {
-    content := helper.StringArrayInt(strings.Split(strings.TrimSpace(helper.ReadFileString("day7.txt")), ","))
+    content := helper.StringArrayInt(helper.Split(helper.Trim(helper.ReadFileString("day7.txt")), ","))
 
     sort.Ints(content)
 

@@ -2,7 +2,6 @@ package main
 
 import (
     "sort"
-    "strings"
     "./helper"
 )
 
@@ -105,7 +104,7 @@ func (p Day9Point) risk() int {
 func Day9Run(Part2 bool) int {
     matrix := [][]Day9Point{}
     for y, line := range helper.ReadFile("day9.txt") {
-        line := strings.Split(strings.TrimSpace(line), "")
+        line := helper.Split(helper.Trim(line), "")
 
         line_points := []Day9Point{}
         for x, v := range line {

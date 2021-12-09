@@ -1,7 +1,6 @@
 package main
 
 import (
-    "strings"
     "./helper"
 )
 
@@ -14,8 +13,8 @@ func Day8Part2() int {
 }
 
 func Day8DiffSeq(s1 string, s2 string) []string {
-    seq1 := strings.Split(s1, "")
-    seq2 := strings.Split(s2, "")
+    seq1 := helper.Split(s1, "")
+    seq2 := helper.Split(s2, "")
     result := []string{}
 
     for _, v1 := range seq1 {
@@ -38,8 +37,8 @@ func Day8DiffSeq(s1 string, s2 string) []string {
 }
 
 func Day8ContainsSeq(s1 string, s2 string) bool {
-    seq1 := strings.Split(s1, "")
-    seq2 := strings.Split(s2, "")
+    seq1 := helper.Split(s1, "")
+    seq2 := helper.Split(s2, "")
 
     for _, v2 := range seq2 {
         found := false
@@ -59,8 +58,8 @@ func Day8ContainsSeq(s1 string, s2 string) bool {
 }
 
 func Day8Day8ContainsSeqCount(s1 string, s2 string) int {
-    seq1 := strings.Split(s1, "")
-    seq2 := strings.Split(s2, "")
+    seq1 := helper.Split(s1, "")
+    seq2 := helper.Split(s2, "")
 
     count := 0
     for _, v2 := range seq2 {
@@ -78,7 +77,7 @@ func Day8Run(Part2 bool) int {
 
     content := [][]string{}
     for _, line := range helper.ReadFile("day8.txt") {
-        line := strings.Split(strings.TrimSpace(line), " ")
+        line := helper.Split(helper.Trim(line), " ")
         content = append(content, line)
     }
 
@@ -141,8 +140,8 @@ func Day8Run(Part2 bool) int {
                 return len(value) == 7
             })
 
-            leftmiddle := strings.Join(Day8DiffSeq(four, one)[:], "")
-            leftbottom := strings.Join(Day8DiffSeq(strings.Join(Day8DiffSeq(eight, seven)[:], ""), four)[:], "")
+            leftmiddle := helper.Join(Day8DiffSeq(four, one), "")
+            leftbottom := helper.Join(Day8DiffSeq(helper.Join(Day8DiffSeq(eight, seven), ""), four), "")
 
             zero := helper.StringArraySelect(configs, func(value string) bool {
                 return len(value) == 6 && Day8ContainsSeq(value, one) && !Day8ContainsSeq(value, leftmiddle) && !Day8ContainsSeq(value, leftmiddle)

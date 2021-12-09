@@ -5,6 +5,7 @@ import (
     "bufio"
     "math"
     "sort"
+    "strings"
     "strconv"
 )
 
@@ -121,4 +122,16 @@ func StringSort(word string) string {
     s := []rune(word)
     sort.Slice(s, func(i int, j int) bool { return s[i] < s[j] })
     return string(s)
+}
+
+func Split(value string, delimiter string) []string {
+    return strings.Split(value, delimiter)
+}
+
+func Join(value []string, delimiter string) string {
+    return strings.Join(value[:], delimiter)
+}
+
+func Trim(value string) string {
+    return strings.TrimSpace(value)
 }

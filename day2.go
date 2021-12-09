@@ -1,7 +1,6 @@
 package main
 
 import (
-    "strings"
     "./helper"
 )
 
@@ -18,7 +17,7 @@ func Day2Run(Part2 bool) int64 {
     depth := int64(0)
     aim := int64(0)
     for _, line := range helper.ReadFile("day2.txt") {
-        vals := strings.Split(line, " ")
+        vals := helper.Split(line, " ")
         valType := vals[0]
         valVal := helper.String2Int64(vals[1])
 

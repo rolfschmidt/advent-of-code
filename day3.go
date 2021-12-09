@@ -1,7 +1,6 @@
 package main
 
 import (
-    "strings"
     "./helper"
 )
 
@@ -32,7 +31,7 @@ func Day3ValueStats(val_strings [][]string) ([]int, []int) {
 func Day3Run(Part2 bool) int {
     val_strings := [][]string{}
     for _, line := range helper.ReadFile("day3.txt") {
-        vals := strings.Split(line, "")
+        vals := helper.Split(line, "")
         val_strings = append(val_strings, vals)
     }
 
@@ -96,8 +95,8 @@ func Day3Run(Part2 bool) int {
             scrubber_vals = new_scrubber_vals
         }
 
-        gamma   = strings.Join(oxygen_vals[0][:], "")
-        epsilon = strings.Join(scrubber_vals[0][:], "")
+        gamma   = helper.Join(oxygen_vals[0], "")
+        epsilon = helper.Join(scrubber_vals[0], "")
     }
 
     return helper.Binary2Decimal(helper.String2Int(gamma)) * helper.Binary2Decimal(helper.String2Int(epsilon))

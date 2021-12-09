@@ -1,7 +1,6 @@
 package main
 
 import (
-    "strings"
     "./helper"
 )
 
@@ -90,20 +89,20 @@ func (b Day4Bingo) sum() int {
 
 func Day4Run(Part2 bool) int {
     content := helper.ReadFileString("day4.txt")
-    block_parts := strings.Split(content, "\n\n")
-    numbers, block_parts := helper.StringArrayInt(strings.Split(block_parts[0], ",")), block_parts[1:]
+    block_parts := helper.Split(content, "\n\n")
+    numbers, block_parts := helper.StringArrayInt(helper.Split(block_parts[0], ",")), block_parts[1:]
 
     var blocks []Day4Bingo
     for _, block := range block_parts {
 
         var new_block [][]Day4BingoNumber
-        for _, block_line := range strings.Split(block, "\n") {
+        for _, block_line := range helper.Split(block, "\n") {
             if block_line == "" {
                 continue
             }
 
             var new_line []Day4BingoNumber
-            for _, block_number := range strings.Split(strings.TrimSpace(block_line), " ") {
+            for _, block_number := range helper.Split(helper.Trim(block_line), " ") {
                 if block_number == "" {
                     continue
                 }

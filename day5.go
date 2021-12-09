@@ -1,7 +1,6 @@
 package main
 
 import (
-    "strings"
     "./helper"
 )
 
@@ -19,13 +18,13 @@ func Day5Run(Part2 bool) int {
 
     for _, line := range content {
         numbers := []int{}
-        parts := strings.Split(line, " ")
+        parts := helper.Split(line, " ")
         for _, part := range parts {
             if part == "->" {
                 continue
             }
 
-            line_numbers := strings.Split(part, ",")
+            line_numbers := helper.Split(part, ",")
             for _, line_number := range line_numbers {
                 numbers = append(numbers, helper.String2Int(line_number))
             }
