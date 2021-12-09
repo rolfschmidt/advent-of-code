@@ -77,7 +77,7 @@ func Day8Run(Part2 bool) int {
 
     content := [][]string{}
     for _, line := range helper.ReadFile("day8.txt") {
-        line := helper.Split(helper.Trim(line), " ")
+        line := helper.Split(line, " ")
         content = append(content, line)
     }
 

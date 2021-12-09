@@ -19,7 +19,7 @@ func ReadFile(path string) []string {
 	var result []string
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-    	result = append(result, string(scanner.Text()))
+    	result = append(result, Trim(string(scanner.Text())))
 	}
 
 	return result
