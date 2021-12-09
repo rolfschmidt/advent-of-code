@@ -38,7 +38,7 @@ func ReadFileString(path string) string {
         result = result + string(scanner.Text()) + "\n"
     }
 
-    return result
+    return Trim(result)
 }
 
 func StringArrayInt(strings []string) []int {

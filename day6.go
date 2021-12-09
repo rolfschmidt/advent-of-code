@@ -5,7 +5,7 @@ import (
 )
 
 func Day6Part1() int {
-    content := helper.StringArrayInt(helper.Split(helper.Trim(helper.ReadFileString("day6.txt")), ","))
+    content := helper.StringArrayInt(helper.Split(helper.ReadFileString("day6.txt"), ","))
 
     new_fish := 0
     days := 80
@@ -35,7 +35,7 @@ func Day6RemoveFish(slice [][]int, s int) [][]int {
 }
 
 func Day6Part2() int {
-    content_str := helper.StringArrayInt(helper.Split(helper.Trim(helper.ReadFileString("day6.txt")), ","))
+    content_str := helper.StringArrayInt(helper.Split(helper.ReadFileString("day6.txt"), ","))
 
     var content [][]int
     for _, v := range content_str {
