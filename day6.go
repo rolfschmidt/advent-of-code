@@ -31,7 +31,7 @@ func Day6Part1() int {
     return len(content)
 }
 
-func RemoveFish(slice [][]int, s int) [][]int {
+func Day6RemoveFish(slice [][]int, s int) [][]int {
     return append(slice[:s], slice[s+1:]...)
 }
 
@@ -53,7 +53,7 @@ func Day6Part2() int {
             } else {
                 new_fish6 += content[fi][1]
                 new_fish8 += content[fi][1]
-                content = RemoveFish(content, fi)
+                content = Day6RemoveFish(content, fi)
                 fi -= 1
             }
         }

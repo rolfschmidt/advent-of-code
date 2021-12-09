@@ -7,14 +7,14 @@ import (
 )
 
 func Day7Part1() int {
-    return Run(false)
+    return Day7Run(false)
 }
 
 func Day7Part2() int {
-    return Run(true)
+    return Day7Run(true)
 }
 
-func Run(Part2 bool) int {
+func Day7Run(Part2 bool) int {
     content := helper.StringArrayInt(strings.Split(strings.TrimSpace(helper.ReadFileString("day7.txt")), ","))
 
     sort.Ints(content)
@@ -24,7 +24,7 @@ func Run(Part2 bool) int {
     if Part2 {
         result := (1 << 31) - 1
         for middle := 0; middle <= content[len(content) - 1]; middle++ {
-            check := Fuel(middle, content, Part2)
+            check := Day7Fuel(middle, content, Part2)
             if check < result {
                 result = check
             } else {
@@ -35,10 +35,10 @@ func Run(Part2 bool) int {
         return result
     }
 
-    return Fuel(middle, content, Part2)
+    return Day7Fuel(middle, content, Part2)
 }
 
-func Fuel(middle int, content []int, Part2 bool) int {
+func Day7Fuel(middle int, content []int, Part2 bool) int {
     result := 0
     for _, number := range content {
         if number == middle {

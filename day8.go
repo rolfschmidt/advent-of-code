@@ -1,16 +1,9 @@
 package main
 
 import (
-    "fmt"
     "strings"
-    "strconv"
     "./helper"
 )
-
-func main() {
-    fmt.Println("Part: 1", Day8Part1())
-    fmt.Println("Part: 2", Day8Part2())
-}
 
 func Day8Part1() int {
     return Day8Run(false)
@@ -152,7 +145,7 @@ func Day8Run(Part2 bool) int {
             leftbottom := strings.Join(Day8DiffSeq(strings.Join(Day8DiffSeq(eight, seven)[:], ""), four)[:], "")
 
             zero := helper.StringArraySelect(configs, func(value string) bool {
-                return len(value) == 6 && Day8ContainsSeq(value, one) && !Day8ContainsSeq(value, leftmiddle) && Day8ContainsSeq(value, leftbottom)
+                return len(value) == 6 && Day8ContainsSeq(value, one) && !Day8ContainsSeq(value, leftmiddle) && !Day8ContainsSeq(value, leftmiddle)
             })
             six := helper.StringArraySelect(configs, func(value string) bool {
                 return len(value) == 6 && !Day8ContainsSeq(value, one) && Day8ContainsSeq(value, leftmiddle) && Day8ContainsSeq(value, leftbottom)
@@ -171,45 +164,22 @@ func Day8Run(Part2 bool) int {
                 return len(value) == 5 && !Day8ContainsSeq(value, one) && Day8Day8ContainsSeqCount(value, four) == 3 && Day8Day8ContainsSeqCount(value, six) == 5 && Day8ContainsSeq(value, leftmiddle) && !Day8ContainsSeq(value, leftbottom)
             })
 
-            numbers := []string{one, two, three, four, five, six, seven, eight, nine}
+            numbers := []string{zero, one, two, three, four, five, six, seven, eight, nine}
             var line_number string
             TARGET:
             for _, target := range targets {
                 for ni, seq := range numbers {
                     if target == seq {
-                        line_number += strconv.Itoa(ni+1)
+                        line_number += helper.Int2String(ni)
                         continue TARGET
                     }
                 }
             }
 
-            if 1 == 0 {
-                fmt.Println("configs", configs)
-                fmt.Println("targets", targets)
-                fmt.Println("numbers", numbers)
-                fmt.Println("zero", zero, helper.StringSort("cagedb"))
-                fmt.Println("one", one, helper.StringSort("ab"))
-                fmt.Println("two", two, helper.StringSort("gcdfa"))
-                fmt.Println("three", three, helper.StringSort("fbcad"))
-                fmt.Println("four", four, helper.StringSort("eafb"))
-                fmt.Println("five", five, helper.StringSort("cdfbe"))
-                fmt.Println("six", six, helper.StringSort("cdfgeb"))
-                fmt.Println("seven", seven, helper.StringSort("dab"))
-                fmt.Println("eight", eight, helper.StringSort("acedgfb"))
-                fmt.Println("nine", nine, helper.StringSort("cefabd"))
-                fmt.Println("leftmiddle", leftmiddle)
-                fmt.Println("leftbottom", leftbottom)
-                fmt.Println("")
-                fmt.Println("line_number", helper.String2Int(line_number))
-
-                return 0
-            }
-            // fmt.Println("line_number", helper.String2Int(line_number))
-
             result += helper.String2Int(line_number)
         }
     }
 
-    return result // 726404
+    return result
 }
 
