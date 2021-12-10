@@ -16,7 +16,7 @@ func Day2Run(Part2 bool) int64 {
     distance := int64(0)
     depth := int64(0)
     aim := int64(0)
-    for _, line := range helper.ReadFile("day2.txt") {
+    for _, line := range helper.ReadFile("day02.txt") {
         vals := helper.Split(line, " ")
         valType := vals[0]
         valVal := helper.String2Int64(vals[1])

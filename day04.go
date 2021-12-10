@@ -88,7 +88,7 @@ func (b Day4Bingo) sum() int {
 }
 
 func Day4Run(Part2 bool) int {
-    content := helper.ReadFileString("day4.txt")
+    content := helper.ReadFileString("day04.txt")
     block_parts := helper.Split(content, "\n\n")
     numbers, block_parts := helper.StringArrayInt(helper.Split(block_parts[0], ",")), block_parts[1:]
 

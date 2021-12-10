@@ -8,7 +8,7 @@ func Day1Part1() int64 {
     last := int64(0)
     result := int64(0)
     var numbers []int64
-    for _, line := range helper.ReadFile("day1.txt") {
+    for _, line := range helper.ReadFile("day01.txt") {
         val := helper.String2Int64(line)
         numbers = append(numbers, val)
         if val > last && last != 0 {
@@ -21,7 +21,7 @@ func Day1Part1() int64 {
 }
 
 func Day1Part2() int64 {
-    numbers := helper.StringArray2Int64Array(helper.ReadFile("day1.txt"))
+    numbers := helper.StringArray2Int64Array(helper.ReadFile("day01.txt"))
     result := int64(0)
     for i, _ := range numbers {
         val1 := int64(0)

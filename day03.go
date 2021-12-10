@@ -30,7 +30,7 @@ func Day3ValueStats(val_strings [][]string) ([]int, []int) {
 
 func Day3Run(Part2 bool) int {
     val_strings := [][]string{}
-    for _, line := range helper.ReadFile("day3.txt") {
+    for _, line := range helper.ReadFile("day03.txt") {
         vals := helper.Split(line, "")
         val_strings = append(val_strings, vals)
     }

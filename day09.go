@@ -103,7 +103,7 @@ func Day9Basin(matrix [][]Day9Point, px int, py int, checked map[string]bool) (i
 
 func Day9Run(Part2 bool) int {
     matrix := [][]Day9Point{}
-    for y, line := range helper.ReadFile("day9.txt") {
+    for y, line := range helper.ReadFile("day09.txt") {
         line := helper.Split(line, "")
 
         line_points := []Day9Point{}

@@ -14,7 +14,7 @@ func Day7Part2() int {
 }
 
 func Day7Run(Part2 bool) int {
-    content := helper.StringArrayInt(helper.Split(helper.ReadFileString("day7.txt"), ","))
+    content := helper.StringArrayInt(helper.Split(helper.ReadFileString("day07.txt"), ","))
 
     sort.Ints(content)
 

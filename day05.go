@@ -14,7 +14,7 @@ func Day5Part2() int {
 
 func Day5Run(Part2 bool) int {
     matrix := map[int]map[int]int{}
-    content := helper.ReadFile("day5.txt")
+    content := helper.ReadFile("day05.txt")
 
     for _, line := range content {
         numbers := []int{}

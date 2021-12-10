@@ -76,7 +76,7 @@ func Day8Day8ContainsSeqCount(s1 string, s2 string) int {
 func Day8Run(Part2 bool) int {
 
     content := [][]string{}
-    for _, line := range helper.ReadFile("day8.txt") {
+    for _, line := range helper.ReadFile("day08.txt") {
         line := helper.Split(line, " ")
         content = append(content, line)
     }
