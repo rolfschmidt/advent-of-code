@@ -60,7 +60,7 @@ func Day10Run(Part2 bool) int {
                     break
                 }
 
-                last, blocks = blocks[len(blocks) - 1], blocks[:len(blocks) - 1]
+                last, blocks = helper.StringArrayPop(blocks)
                 if pairs[last] != char {
                     if !Part2 {
                         p1_result += p1_points[char]

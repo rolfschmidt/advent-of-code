@@ -118,6 +118,10 @@ func StringArraySelect(arr []string, filter func(string) bool) string {
     return ""
 }
 
+func StringArrayPop(arr []string) (string, []string) {
+    return arr[len(arr) - 1], arr[:len(arr) - 1]
+}
+
 func StringSort(word string) string {
     s := []rune(word)
     sort.Slice(s, func(i int, j int) bool { return s[i] < s[j] })
