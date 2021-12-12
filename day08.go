@@ -164,18 +164,18 @@ func Day8Run(Part2 bool) int {
             })
 
             numbers := []string{zero, one, two, three, four, five, six, seven, eight, nine}
-            var line_number string
+            var lineNumber string
             TARGET:
             for _, target := range targets {
                 for ni, seq := range numbers {
                     if target == seq {
-                        line_number += helper.Int2String(ni)
+                        lineNumber += helper.Int2String(ni)
                         continue TARGET
                     }
                 }
             }
 
-            result += helper.String2Int(line_number)
+            result += helper.String2Int(lineNumber)
         }
     }
 

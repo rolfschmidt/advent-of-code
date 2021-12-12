@@ -23,9 +23,9 @@ type Day4Bingo struct {
 }
 
 func (b Day4Bingo) find(number int) {
-    for i, block_line := range b.matrix {
-        for y, block_number := range block_line {
-            if block_number.val != number {
+    for i, blockLine := range b.matrix {
+        for y, blockNumber := range blockLine {
+            if blockNumber.val != number {
                 continue
             }
 
@@ -34,12 +34,12 @@ func (b Day4Bingo) find(number int) {
     }
 }
 
-func (b Day4Bingo) match_horizontal() bool {
+func (b Day4Bingo) matchHorizontal() bool {
     LINE:
-    for _, block_line := range b.matrix {
+    for _, blockLine := range b.matrix {
         count := 0
-        for _, block_number := range block_line {
-            if !block_number.found {
+        for _, blockNumber := range blockLine {
+            if !blockNumber.found {
                 continue LINE
             }
 
@@ -53,7 +53,7 @@ func (b Day4Bingo) match_horizontal() bool {
     return false
 }
 
-func (b Day4Bingo) match_vertical() bool {
+func (b Day4Bingo) matchVertical() bool {
     LINE:
     for i := range b.matrix {
         count := 0
@@ -74,13 +74,13 @@ func (b Day4Bingo) match_vertical() bool {
 
 func (b Day4Bingo) sum() int {
     result := 0
-    for _, block_line := range b.matrix {
-        for _, block_number := range block_line {
-            if block_number.found {
+    for _, blockLine := range b.matrix {
+        for _, blockNumber := range blockLine {
+            if blockNumber.found {
                 continue
             }
 
-            result += block_number.val
+            result += blockNumber.val
         }
     }
 
@@ -89,57 +89,57 @@ func (b Day4Bingo) sum() int {
 
 func Day4Run(Part2 bool) int {
     content := helper.ReadFileString("day04.txt")
-    block_parts := helper.Split(content, "\n\n")
-    numbers, block_parts := helper.StringArrayInt(helper.Split(block_parts[0], ",")), block_parts[1:]
+    blockParts := helper.Split(content, "\n\n")
+    numbers, blockParts := helper.StringArrayInt(helper.Split(blockParts[0], ",")), blockParts[1:]
 
     var blocks []Day4Bingo
-    for _, block := range block_parts {
+    for _, block := range blockParts {
 
-        var new_block [][]Day4BingoNumber
-        for _, block_line := range helper.Split(block, "\n") {
-            if block_line == "" {
+        var newBlock [][]Day4BingoNumber
+        for _, blockLine := range helper.Split(block, "\n") {
+            if blockLine == "" {
                 continue
             }
 
-            var new_line []Day4BingoNumber
-            for _, block_number := range helper.Split(block_line, " ") {
-                if block_number == "" {
+            var newLine []Day4BingoNumber
+            for _, blockNumber := range helper.Split(blockLine, " ") {
+                if blockNumber == "" {
                     continue
                 }
 
-                new_line = append(new_line, Day4BingoNumber{ val: helper.String2Int(block_number) })
+                newLine = append(newLine, Day4BingoNumber{ val: helper.String2Int(blockNumber) })
             }
 
-            new_block = append(new_block, new_line)
+            newBlock = append(newBlock, newLine)
         }
 
-        blocks = append(blocks, Day4Bingo{ matrix: new_block })
+        blocks = append(blocks, Day4Bingo{ matrix: newBlock })
     }
 
-    var check_numbers []int
-    var last_sum int
-    var last_number int
+    var checkNumbers []int
+    var lastSum int
+    var lastNumber int
     for _, number := range numbers {
-        check_numbers = append(check_numbers, number)
+        checkNumbers = append(checkNumbers, number)
         for bi, bingo := range blocks {
             if bingo.won {
                 continue
             }
 
             bingo.find(number)
-            if bingo.match_horizontal() || bingo.match_vertical() {
+            if bingo.matchHorizontal() || bingo.matchVertical() {
                 blocks[bi].won = true
-                last_sum = bingo.sum()
-                last_number = number
+                lastSum = bingo.sum()
+                lastNumber = number
                 if !Part2 {
-                    return last_sum * number
+                    return lastSum * number
                 }
             }
         }
     }
 
     if Part2 {
-        return last_sum * last_number
+        return lastSum * lastNumber
     }
 
     return 0

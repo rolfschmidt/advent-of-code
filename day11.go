@@ -95,11 +95,11 @@ func Day11Run(Part2 bool) int {
     for y, line := range helper.ReadFile("day11.txt") {
         line := helper.Split(line, "")
 
-        line_points := []Day11Point{}
+        linePoints := []Day11Point{}
         for x, v := range line {
-            line_points = append(line_points, Day11Point{ value: helper.String2Int(v), x: x, y: y })
+            linePoints = append(linePoints, Day11Point{ value: helper.String2Int(v), x: x, y: y })
         }
-        matrix = append(matrix, line_points)
+        matrix = append(matrix, linePoints)
     }
 
     result := 0

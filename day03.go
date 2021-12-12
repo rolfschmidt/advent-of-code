@@ -12,10 +12,10 @@ func Day3Part2() int {
     return Day3Run(true)
 }
 
-func Day3ValueStats(val_strings [][]string) ([]int, []int) {
+func Day3ValueStats(valStrings [][]string) ([]int, []int) {
     zeros := []int{0,0,0,0,0,0,0,0,0,0,0,0}
     ones := []int{0,0,0,0,0,0,0,0,0,0,0,0}
-    for _, line := range val_strings {
+    for _, line := range valStrings {
         for i, number := range line {
             if number == "0" {
                 zeros[i] += 1
@@ -29,13 +29,13 @@ func Day3ValueStats(val_strings [][]string) ([]int, []int) {
 }
 
 func Day3Run(Part2 bool) int {
-    val_strings := [][]string{}
+    valStrings := [][]string{}
     for _, line := range helper.ReadFile("day03.txt") {
         vals := helper.Split(line, "")
-        val_strings = append(val_strings, vals)
+        valStrings = append(valStrings, vals)
     }
 
-    zeros, ones := Day3ValueStats(val_strings)
+    zeros, ones := Day3ValueStats(valStrings)
 
     gamma := ""
     epsilon := ""
@@ -54,49 +54,49 @@ func Day3Run(Part2 bool) int {
     }
 
     if Part2 {
-        oxygen_vals := val_strings
-        scrubber_vals := val_strings
+        oxygenVals := valStrings
+        scrubberVals := valStrings
         for i, _ := range zeros {
-            oxygen_zeros, oxygen_ones := Day3ValueStats(oxygen_vals)
-            scrubber_zeros, scrubber_ones := Day3ValueStats(scrubber_vals)
+            oxygenZeros, oxygenOnes := Day3ValueStats(oxygenVals)
+            scrubberZeros, scrubberOnes := Day3ValueStats(scrubberVals)
 
-            oxygen_keep := ""
-            if oxygen_zeros[i] == oxygen_ones[i] {
-                oxygen_keep = "1"
-            } else if oxygen_zeros[i] > oxygen_ones[i] {
-                oxygen_keep = "0"
+            oxygenKeep := ""
+            if oxygenZeros[i] == oxygenOnes[i] {
+                oxygenKeep = "1"
+            } else if oxygenZeros[i] > oxygenOnes[i] {
+                oxygenKeep = "0"
             } else {
-                oxygen_keep = "1"
+                oxygenKeep = "1"
             }
 
-            scrubber_keep := ""
-            if scrubber_zeros[i] == scrubber_ones[i] {
-                scrubber_keep = "0"
-            } else if scrubber_zeros[i] < scrubber_ones[i] {
-                scrubber_keep = "0"
+            scrubberKeep := ""
+            if scrubberZeros[i] == scrubberOnes[i] {
+                scrubberKeep = "0"
+            } else if scrubberZeros[i] < scrubberOnes[i] {
+                scrubberKeep = "0"
             } else {
-                scrubber_keep = "1"
+                scrubberKeep = "1"
             }
 
-            var new_oxygen_vals [][]string
-            var new_scrubber_vals [][]string
-            for _, numbers := range oxygen_vals {
-                if numbers[i] == oxygen_keep || len(oxygen_vals) == 1 {
-                    new_oxygen_vals = append(new_oxygen_vals, numbers)
+            var newOxygenVals [][]string
+            var newScrubberVals [][]string
+            for _, numbers := range oxygenVals {
+                if numbers[i] == oxygenKeep || len(oxygenVals) == 1 {
+                    newOxygenVals = append(newOxygenVals, numbers)
                 }
             }
-            for _, numbers := range scrubber_vals {
-                if numbers[i] == scrubber_keep || len(scrubber_vals) == 1 {
-                    new_scrubber_vals = append(new_scrubber_vals, numbers)
+            for _, numbers := range scrubberVals {
+                if numbers[i] == scrubberKeep || len(scrubberVals) == 1 {
+                    newScrubberVals = append(newScrubberVals, numbers)
                 }
             }
 
-            oxygen_vals = new_oxygen_vals
-            scrubber_vals = new_scrubber_vals
+            oxygenVals = newOxygenVals
+            scrubberVals = newScrubberVals
         }
 
-        gamma   = helper.Join(oxygen_vals[0], "")
-        epsilon = helper.Join(scrubber_vals[0], "")
+        gamma   = helper.Join(oxygenVals[0], "")
+        epsilon = helper.Join(scrubberVals[0], "")
     }
 
     return helper.Binary2Decimal(helper.String2Int(gamma)) * helper.Binary2Decimal(helper.String2Int(epsilon))

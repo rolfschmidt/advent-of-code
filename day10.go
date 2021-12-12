@@ -20,22 +20,22 @@ func Day10Run(Part2 bool) int {
         "<": ">",
         "{": "}",
     }
-    p1_points := map[string]int{
+    p1Points := map[string]int{
         ")": 3,
         "]": 57,
         "}": 1197,
         ">": 25137,
     }
 
-    p2_points := map[string]int{
+    p2Points := map[string]int{
         "(": 1,
         "[": 2,
         "{": 3,
         "<": 4,
     }
 
-    p1_result := 0
-    p2_result := []int{}
+    p1Result := 0
+    p2Result := []int{}
     last := ""
     for _, line := range helper.ReadFile("day10.txt") {
         blocks := []string{}
@@ -48,7 +48,7 @@ func Day10Run(Part2 bool) int {
             } else {
                 if len(blocks) < 0 {
                     if !Part2 {
-                        p1_result += p1_points[char]
+                        p1Result += p1Points[char]
                     }
                     corrupted = true
                     break
@@ -57,7 +57,7 @@ func Day10Run(Part2 bool) int {
                 last, blocks = helper.StringArrayPop(blocks)
                 if pairs[last] != char {
                     if !Part2 {
-                        p1_result += p1_points[char]
+                        p1Result += p1Points[char]
                     }
                     corrupted = true
                     break
@@ -75,18 +75,18 @@ func Day10Run(Part2 bool) int {
                 char := blocks[i]
 
                 count *= 5
-                count += p2_points[char]
+                count += p2Points[char]
             }
 
-            p2_result = append(p2_result, count)
+            p2Result = append(p2Result, count)
         }
     }
 
     if Part2 {
-        sort.Ints(p2_result)
-        return p2_result[len(p2_result)/2]
+        sort.Ints(p2Result)
+        return p2Result[len(p2Result)/2]
     }
 
-    return p1_result
+    return p1Result
 }
 

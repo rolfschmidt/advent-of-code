@@ -24,26 +24,26 @@ func Day5Run(Part2 bool) int {
                 continue
             }
 
-            line_numbers := helper.Split(part, ",")
-            for _, line_number := range line_numbers {
-                numbers = append(numbers, helper.String2Int(line_number))
+            lineNumbers := helper.Split(part, ",")
+            for _, lineNumber := range lineNumbers {
+                numbers = append(numbers, helper.String2Int(lineNumber))
             }
         }
 
-        max_x := helper.IntMax(numbers[0], numbers[2])
-        min_x := helper.IntMin(numbers[0], numbers[2])
-        max_y := helper.IntMax(numbers[1], numbers[3])
-        min_y := helper.IntMin(numbers[1], numbers[3])
+        maxX := helper.IntMax(numbers[0], numbers[2])
+        minX := helper.IntMin(numbers[0], numbers[2])
+        maxY := helper.IntMax(numbers[1], numbers[3])
+        minY := helper.IntMin(numbers[1], numbers[3])
 
         if numbers[1] == numbers[3] {
-            for i := min_x; i <= max_x; i++ {
+            for i := minX; i <= maxX; i++ {
                 if _, ok := matrix[i]; !ok {
                     matrix[i] = map[int]int{}
                 }
                 matrix[i][numbers[1]] += 1
             }
         } else if numbers[0] == numbers[2] {
-            for i := min_y; i <= max_y; i++ {
+            for i := minY; i <= maxY; i++ {
                 if _, ok := matrix[numbers[0]]; !ok {
                     matrix[numbers[0]] = map[int]int{}
                 }
@@ -51,29 +51,29 @@ func Day5Run(Part2 bool) int {
             }
         }
 
-        if Part2 && ( max_x - min_x ) == ( max_y - min_y ) {
-            check_x := numbers[0]
-            check_y := numbers[1]
+        if Part2 && ( maxX - minX ) == ( maxY - minY ) {
+            checkX := numbers[0]
+            checkY := numbers[1]
 
             for true {
-                if _, ok := matrix[check_x]; !ok {
-                    matrix[check_x] = map[int]int{}
+                if _, ok := matrix[checkX]; !ok {
+                    matrix[checkX] = map[int]int{}
                 }
-                matrix[check_x][check_y] += 1
+                matrix[checkX][checkY] += 1
 
-                if check_x == numbers[2] && check_y == numbers[3] {
+                if checkX == numbers[2] && checkY == numbers[3] {
                     break
                 }
 
                 if numbers[0] <= numbers[2] {
-                    check_x += 1
+                    checkX += 1
                 } else {
-                    check_x -= 1
+                    checkX -= 1
                 }
                 if numbers[1] <= numbers[3] {
-                    check_y += 1
+                    checkY += 1
                 } else {
-                    check_y -= 1
+                    checkY -= 1
                 }
             }
         }
