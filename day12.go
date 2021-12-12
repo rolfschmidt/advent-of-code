@@ -2,6 +2,7 @@ package main
 
 import (
     "fmt"
+    "strings"
     "./helper"
 )
 
@@ -19,14 +20,6 @@ func Day12Part1() int {
 
 func Day12Part2() int {
     return Day12Run(true)
-}
-
-func Day12CheckedDup(checked map[string]int) map[string]int {
-    result := map[string]int{}
-    for key, value := range checked {
-        result[key] = value
-    }
-    return result
 }
 
 type Day12Cave struct {
@@ -58,8 +51,8 @@ func (ca *Day12Cave) Routes() []*Day12Cave {
     return result
 }
 
-func (ca *Day12Cave) Single(checked map[string]int) bool {
-    if checked["SINGLE"] > 0 {
+func (ca *Day12Cave) Single(checked string) bool {
+    if checkedIsSingle(checked) {
         return false
     }
 
@@ -72,19 +65,36 @@ func (ca *Day12Cave) Single(checked map[string]int) bool {
     return false
 }
 
+func (ca *Day12Cave) checkCount(checked string) int {
+    return strings.Count(checked, "," + ca.pos + ",")
+}
+
+func (ca *Day12Cave) setChecked(checked string) string {
+    return checked + "," + ca.pos + ","
+}
+
+func checkedIsSingle(checked string) bool {
+    return strings.Count(checked, ",SINGLE,") > 0
+}
+
+func checkedSetSingle(checked string) string {
+    return checked + ",SINGLE,"
+}
+
 //     start
 //     /   \
 // c--A-----b--d
 //     \   /
 //      end
 
-func (ca *Day12Cave) Paths(target string, checked map[string]int, Part2 bool) int {
-    if checked[ca.pos] > 0 {
+func (ca *Day12Cave) Paths(target string, checked string, Part2 bool) int {
+    check_count := ca.checkCount(checked)
+    if check_count > 0 {
         if !Part2 {
             return 0
         } else {
             single := ca.Single(checked)
-            if ca.pos == "start" || (single && checked[ca.pos] == 2) || !single {
+            if ca.pos == "start" || (single && check_count == 2) || !single {
                 return 0
             }
         }
@@ -92,18 +102,18 @@ func (ca *Day12Cave) Paths(target string, checked map[string]int, Part2 bool) in
 
     result := 0
     if ca.pos == target {
-        checked[ca.pos] += 1
+        checked = ca.setChecked(checked)
         return 1
     }
     if !ca.IsBig() {
-        checked[ca.pos] += 1
-        if checked[ca.pos] == 2 {
-            checked["SINGLE"] = 1
+        checked = ca.setChecked(checked)
+        if check_count == 1 {
+            checked = checkedSetSingle(checked)
         }
     }
 
     for _, cave := range ca.Routes() {
-        result += cave.Paths(target, Day12CheckedDup(checked), Part2)
+        result += cave.Paths(target, checked, Part2)
     }
 
     return result
@@ -119,6 +129,6 @@ func Day12Run(Part2 bool) int {
         Day12Caves[line[1]] = &Day12Cave{pos: line[1]}
     }
 
-    return Day12Caves["start"].Paths("end", map[string]int{}, Part2)
+    return Day12Caves["start"].Paths("end", "", Part2)
 }
 
