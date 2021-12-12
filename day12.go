@@ -31,25 +31,25 @@ func Day12CheckedDup(checked map[string]int) map[string]int {
 
 type Day12Cave struct {
     pos string
-    data_routes [][]string
+    data_routes []*Day12Cave
 }
 
 func (ca Day12Cave) isBig() bool {
     return helper.IsUpper(ca.pos)
 }
 
-func (ca *Day12Cave) routes() [][]string {
+func (ca *Day12Cave) routes() []*Day12Cave {
     if len(ca.data_routes) > 0 {
         return ca.data_routes
     }
 
-    result := [][]string{}
+    result := []*Day12Cave{}
     for _, value := range Day12Matrix {
         if value[0] == ca.pos {
-            result = append(result, []string{ca.pos, value[1]})
+            result = append(result, Day12Caves[value[1]])
         }
         if value[1] == ca.pos {
-            result = append(result, []string{ca.pos, value[0]})
+            result = append(result, Day12Caves[value[0]])
         }
     }
 
@@ -63,8 +63,8 @@ func (ca *Day12Cave) single(checked map[string]int) bool {
         return false
     }
 
-    for _, route := range ca.routes() {
-        if (Day12Cave{pos: route[1]}.isBig()) {
+    for _, cave := range ca.routes() {
+        if (cave.isBig()) {
             return true
         }
     }
@@ -102,8 +102,8 @@ func (ca *Day12Cave) paths(target string, checked map[string]int, Part2 bool) in
         }
     }
 
-    for _, route := range ca.routes() {
-        result += Day12Caves[route[1]].paths(target, Day12CheckedDup(checked), Part2)
+    for _, cave := range ca.routes() {
+        result += cave.paths(target, Day12CheckedDup(checked), Part2)
     }
 
     return result
