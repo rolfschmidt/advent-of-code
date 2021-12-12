@@ -88,13 +88,13 @@ func checkedSetSingle(checked string) string {
 //      end
 
 func (ca *Day12Cave) Paths(target string, checked string, Part2 bool) int {
-    check_count := ca.checkCount(checked)
-    if check_count > 0 {
+    checkCount := ca.checkCount(checked)
+    if checkCount > 0 {
         if !Part2 {
             return 0
         } else {
             single := ca.Single(checked)
-            if ca.pos == "start" || (single && check_count == 2) || !single {
+            if ca.pos == "start" || (single && checkCount == 2) || !single {
                 return 0
             }
         }
@@ -107,7 +107,7 @@ func (ca *Day12Cave) Paths(target string, checked string, Part2 bool) int {
     }
     if !ca.IsBig() {
         checked = ca.setChecked(checked)
-        if check_count == 1 {
+        if checkCount == 1 {
             checked = checkedSetSingle(checked)
         }
     }
