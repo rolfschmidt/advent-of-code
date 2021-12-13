@@ -1,0 +1,1 @@
+for d in ./d*/ ; do (echo "\n$d" && cd $d && go run -v main.go); done
