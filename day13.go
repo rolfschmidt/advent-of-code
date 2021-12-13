@@ -46,10 +46,10 @@ func Day13MatrixMax(matrix map[int]map[int]bool) (int, int) {
     return maxX, maxY
 }
 
-func Day13FoldUp(old_matrix map[int]map[int]bool, fY int) map[int]map[int]bool {
+func Day13FoldUp(oldMatrix map[int]map[int]bool, fY int) map[int]map[int]bool {
     matrix := map[int]map[int]bool{}
-    for x, _ := range old_matrix {
-        for y, _ := range old_matrix[x] {
+    for x, _ := range oldMatrix {
+        for y, _ := range oldMatrix[x] {
             if y <= fY {
                 matrix = Day13AddPoint(matrix, x, y)
             } else {
@@ -61,10 +61,10 @@ func Day13FoldUp(old_matrix map[int]map[int]bool, fY int) map[int]map[int]bool {
     return matrix
 }
 
-func Day13FoldLeft(old_matrix map[int]map[int]bool, fX int) map[int]map[int]bool {
+func Day13FoldLeft(oldMatrix map[int]map[int]bool, fX int) map[int]map[int]bool {
     matrix := map[int]map[int]bool{}
-    for x, _ := range old_matrix {
-        for y, _ := range old_matrix[x] {
+    for x, _ := range oldMatrix {
+        for y, _ := range oldMatrix[x] {
             if x <= fX {
                 matrix = Day13AddPoint(matrix, x, y)
             } else {
@@ -82,10 +82,10 @@ func Day13Run(Part2 bool) int {
     content := helper.ReadFileString("day13.txt");
     parts := helper.Split(content, "\n\n")
     for _, line := range helper.Split(parts[0], "\n") {
-        line_parts := helper.Split(line, ",")
+        lineParts := helper.Split(line, ",")
 
-        lx := helper.String2Int(line_parts[0])
-        ly := helper.String2Int(line_parts[1])
+        lx := helper.String2Int(lineParts[0])
+        ly := helper.String2Int(lineParts[1])
 
         matrix = Day13AddPoint(matrix, lx, ly)
     }
