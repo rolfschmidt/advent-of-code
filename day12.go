@@ -1,18 +1,12 @@
 package main
 
 import (
-    "fmt"
     "strings"
     "./helper"
 )
 
 var Day12Matrix [][]string = [][]string{}
 var Day12Caves map[string]*Day12Cave
-
-func main() {
-    fmt.Println("p1", Day12Part1())
-    fmt.Println("p2", Day12Part2())
-}
 
 func Day12Part1() int {
     return Day12Run(false)
