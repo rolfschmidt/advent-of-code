@@ -94,8 +94,7 @@ func Day13Run(Part2 bool) int {
         if strings.Count(line, "fold along y=") > 0 {
             y := helper.String2Int(strings.Replace(line, "fold along y=", "", -1))
             folds = append(folds, []int{0, y})
-        }
-        if strings.Count(line, "fold along x=") > 0 {
+        } else if strings.Count(line, "fold along x=") > 0 {
             x := helper.String2Int(strings.Replace(line, "fold along x=", "", -1))
             folds = append(folds, []int{1, x})
         }
