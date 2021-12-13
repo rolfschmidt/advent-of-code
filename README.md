@@ -3,5 +3,12 @@
 ## Run
 
 ```
-go test -v *.go
+GO111MODULE=off sh run.sh
 ```
+
+## Test
+
+```
+GO111MODULE=off sh test.sh
+```
+
