@@ -46,17 +46,14 @@ func Day13MatrixMax(matrix map[int]map[int]bool) (int, int) {
     return maxX, maxY
 }
 
-func Day13FoldUp(old_matrix map[int]map[int]bool, fY int, maxX int, maxY int) map[int]map[int]bool {
+func Day13FoldUp(old_matrix map[int]map[int]bool, fY int) map[int]map[int]bool {
     matrix := map[int]map[int]bool{}
-    for y := 0; y <= maxY; y++ {
-
-        for x := 0; x <= maxX; x++ {
-            if _, ok := old_matrix[x][y]; ok {
-                if y <= fY {
-                    matrix = Day13AddPoint(matrix, x, y)
-                } else {
-                    matrix = Day13AddPoint(matrix, x, fY - (y - fY))
-                }
+    for x, _ := range old_matrix {
+        for y, _ := range old_matrix[x] {
+            if y <= fY {
+                matrix = Day13AddPoint(matrix, x, y)
+            } else {
+                matrix = Day13AddPoint(matrix, x, fY - (y - fY))
             }
         }
     }
@@ -64,17 +61,14 @@ func Day13FoldUp(old_matrix map[int]map[int]bool, fY int, maxX int, maxY int) ma
     return matrix
 }
 
-func Day13FoldLeft(old_matrix map[int]map[int]bool, fX int, maxX int, maxY int) map[int]map[int]bool {
+func Day13FoldLeft(old_matrix map[int]map[int]bool, fX int) map[int]map[int]bool {
     matrix := map[int]map[int]bool{}
-    for y := 0; y <= maxY; y++ {
-
-        for x := 0; x <= maxX; x++ {
-            if _, ok := old_matrix[x][y]; ok {
-                if x <= fX {
-                    matrix = Day13AddPoint(matrix, x, y)
-                } else {
-                    matrix = Day13AddPoint(matrix, fX - (x - fX), y)
-                }
+    for x, _ := range old_matrix {
+        for y, _ := range old_matrix[x] {
+            if x <= fX {
+                matrix = Day13AddPoint(matrix, x, y)
+            } else {
+                matrix = Day13AddPoint(matrix, fX - (x - fX), y)
             }
         }
     }
@@ -113,10 +107,10 @@ func Day13Run(Part2 bool) int {
     for _, fold := range folds {
         count = 0
         if fold[0] == 0 {
-            matrix = Day13FoldUp(matrix, fold[1], maxX, maxY)
+            matrix = Day13FoldUp(matrix, fold[1])
             maxY = fold[1] - 1
         } else if fold[0] == 1 {
-            matrix = Day13FoldLeft(matrix, fold[1], maxX, maxY)
+            matrix = Day13FoldLeft(matrix, fold[1])
             maxX = fold[1] - 1
         }
 
