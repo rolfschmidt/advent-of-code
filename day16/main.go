@@ -18,15 +18,15 @@ func Part2() int {
     return Run(true)
 }
 
-type Package struct {
+type Packet struct {
     version int
     typeID int
     literal int
-    subs []Package
+    subs []Packet
 }
 
-func ParseNext(input string) (string, []Package) {
-    result := []Package{}
+func ParseNext(input string) (string, []Packet) {
+    result := []Packet{}
 
     version := helper.Binary2Int(input[0:3])
     typeID := helper.Binary2Int(input[3:6])
@@ -48,7 +48,7 @@ func ParseNext(input string) (string, []Package) {
 
         literal := helper.Binary2Int(total)
 
-        pkg := Package{
+        pkg := Packet{
             version: version,
             typeID: typeID,
             literal: literal,
@@ -61,7 +61,7 @@ func ParseNext(input string) (string, []Package) {
         if length == "0" {
             valueL := helper.Binary2Int(input[7:22])
 
-            subs := []Package{}
+            subs := []Packet{}
             start := input[22:]
             for valueL > 0 && len(start) > 0 {
                 inputSub, subSub := ParseNext(start)
@@ -72,7 +72,7 @@ func ParseNext(input string) (string, []Package) {
                 subs = append(subs, subSub...)
             }
 
-            pkg := Package{
+            pkg := Packet{
                 version: version,
                 typeID: typeID,
                 subs: subs,
@@ -83,7 +83,7 @@ func ParseNext(input string) (string, []Package) {
         } else if length == "1" {
             valueL := helper.Binary2Int(input[7:18])
 
-            subs := []Package{}
+            subs := []Packet{}
             start := input[18:]
             for i := 0; i < valueL; i++ {
                 inputSub, subSub := ParseNext(start)
@@ -91,7 +91,7 @@ func ParseNext(input string) (string, []Package) {
                 subs = append(subs, subSub...)
             }
 
-            pkg := Package{
+            pkg := Packet{
                 version: version,
                 typeID: typeID,
                 subs: subs,
@@ -107,16 +107,16 @@ func ParseNext(input string) (string, []Package) {
     return input, result
 }
 
-func PackageVersionCount(packages []Package) int {
+func PacketVersionCount(packets []Packet) int {
     result := 0
-    for _, pp := range packages {
+    for _, pp := range packets {
         result += pp.version
-        result += PackageVersionCount(pp.subs)
+        result += PacketVersionCount(pp.subs)
     }
     return result
 }
 
-func (pp *Package) calculate() *Package {
+func (pp *Packet) calculate() *Packet {
     newValue := 0
 
     for pi := range pp.subs {
@@ -169,7 +169,7 @@ func (pp *Package) calculate() *Package {
     return pp
 }
 
-func (pp Package) print() {
+func (pp Packet) print() {
 
     if pp.typeID != 4 {
         fmt.Print("(")
@@ -215,10 +215,10 @@ func Run(Part2 bool) int {
     input := helper.ReadFileString("input.txt")
     input_binary := String2Binary(input)
 
-    _, packages := ParseNext(input_binary)
+    _, packets := ParseNext(input_binary)
     if Part2 {
-        return packages[0].calculate().literal
+        return packets[0].calculate().literal
     }
 
-    return PackageVersionCount(packages)
+    return PacketVersionCount(packets)
 }
