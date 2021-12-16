@@ -65,26 +65,26 @@ func Run(Part2 bool) int {
 
     graph := dijkstra.NewGraph()
 
-    for i, row := range matrix {
-        for j := range row {
-            graph.AddVertex(i*len(row) + j)
+    for y := range matrix {
+        for x := range matrix[y] {
+            graph.AddVertex(y * len(matrix[y]) + x)
         }
     }
 
-    for i, row := range matrix {
-        for j, value := range row {
-            index := i*len(row) + j
-            if PointExist(matrix, i-1, j) {
-                graph.AddArc((i-1)*len(row)+j, index, int64(value))
+    for y := range matrix {
+        for x := range matrix[y] {
+            index := y * len(matrix[y]) + x
+            if PointExist(matrix, y - 1, x) {
+                graph.AddArc((y - 1) * len(matrix[y]) + x, index, int64(matrix[y][x]))
             }
-            if PointExist(matrix, i+1, j) {
-                graph.AddArc((i+1)*len(row)+j, index, int64(value))
+            if PointExist(matrix, y + 1, x) {
+                graph.AddArc((y + 1) * len(matrix[y]) + x, index, int64(matrix[y][x]))
             }
-            if PointExist(matrix, i, j-1) {
-                graph.AddArc((i)*len(row)+j-1, index, int64(value))
+            if PointExist(matrix, y, x - 1) {
+                graph.AddArc(y * len(matrix[y]) + x - 1, index, int64(matrix[y][x]))
             }
-            if PointExist(matrix, i, j+1) {
-                graph.AddArc((i)*len(row)+j+1, index, int64(value))
+            if PointExist(matrix, y, x + 1) {
+                graph.AddArc(y * len(matrix[y]) + x + 1, index, int64(matrix[y][x]))
             }
         }
     }
