@@ -1,9 +1,9 @@
 package helper
 
 import (
+    "fmt"
     "os"
     "bufio"
-    "math"
     "sort"
     "strings"
     "strconv"
@@ -72,18 +72,35 @@ func StringArray2Int64Array(strings []string) []int64 {
 	return result
 }
 
-func Binary2Decimal(number int) int {
-    decimal := 0
-    counter := 0.0
-    remainder := 0
-
-    for number != 0 {
-        remainder = number % 10
-        decimal += remainder * int(math.Pow(2.0, counter))
-        number = number / 10
-        counter++
+func Binary2Int(b string) int {
+    v, err := strconv.ParseInt(b, 2, 64)
+    if err != nil {
+        panic(err)
     }
-    return decimal
+    n, err := strconv.Atoi(fmt.Sprintf("%d", v))
+    if err != nil {
+        panic(err)
+    }
+
+    return n
+}
+
+func Hex2Binary(input string) []uint64 {
+    val, err := strconv.ParseUint(input, 16, 32)
+    if err != nil {
+        fmt.Printf("%s", err)
+    }
+
+    bits := []uint64{}
+    for i := 20; i < 24; i++ {
+        bits = append([]uint64{val & 0x1}, bits...)
+        // or
+        // bits = append(bits, val & 0x1)
+        // depending on the order you want
+        val = val >> 1
+    }
+
+    return bits
 }
 
 func IntMin(vars ...int) int {

@@ -105,5 +105,5 @@ func Run(Part2 bool) int {
         epsilon = helper.Join(scrubberVals[0], "")
     }
 
-    return helper.Binary2Decimal(helper.String2Int(gamma)) * helper.Binary2Decimal(helper.String2Int(epsilon))
+    return helper.Binary2Int(gamma) * helper.Binary2Int(epsilon)
 }
