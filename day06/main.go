@@ -16,7 +16,7 @@ func Part1() int {
     newFish := 0
     days := 80
     for i := 0; i < days; i++ {
-        for fi, _ := range content {
+        for fi := range content {
             if content[fi] > 0 {
                 content[fi] -= 1
             } else {

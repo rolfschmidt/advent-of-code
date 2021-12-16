@@ -119,7 +119,7 @@ func PackageVersionCount(packages []Package) int {
 func (pp *Package) calculate() *Package {
     newValue := 0
 
-    for pi, _ := range pp.subs {
+    for pi := range pp.subs {
         pp.subs[pi].calculate()
     }
 
@@ -192,7 +192,7 @@ func (pp Package) print() {
         fmt.Print("=")
     }
 
-    for pi, _ := range pp.subs {
+    for pi := range pp.subs {
         pp.subs[pi].print()
     }
 

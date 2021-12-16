@@ -86,8 +86,8 @@ func Run(Part2 bool) int {
     }
 
     var result int
-    for x, _ := range matrix {
-        for y, _ := range matrix[x] {
+    for x := range matrix {
+        for y := range matrix[x] {
             if matrix[x][y] > 1 {
                 result += 1
             }

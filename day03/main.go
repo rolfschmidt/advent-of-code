@@ -45,7 +45,7 @@ func Run(Part2 bool) int {
 
     gamma := ""
     epsilon := ""
-    for i, _ := range zeros {
+    for i := range zeros {
         if zeros[i] > ones[i] {
             gamma = gamma + "0"
         } else {
@@ -62,7 +62,7 @@ func Run(Part2 bool) int {
     if Part2 {
         oxygenVals := valStrings
         scrubberVals := valStrings
-        for i, _ := range zeros {
+        for i := range zeros {
             oxygenZeros, oxygenOnes := ValueStats(oxygenVals)
             scrubberZeros, scrubberOnes := ValueStats(scrubberVals)
 

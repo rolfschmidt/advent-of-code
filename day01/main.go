@@ -29,7 +29,7 @@ func Part1() int64 {
 func Part2() int64 {
     numbers := helper.StringArray2Int64Array(helper.ReadFile("input.txt"))
     result := int64(0)
-    for i, _ := range numbers {
+    for i := range numbers {
         val1 := int64(0)
         val2 := int64(0)
         for y := i; y < len(numbers) && y < i + 3; y++ {

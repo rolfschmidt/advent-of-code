@@ -32,8 +32,8 @@ func AddPoint(matrix map[int]map[int]bool, x int, y int) map[int]map[int]bool {
 func MatrixMax(matrix map[int]map[int]bool) (int, int) {
     maxX := 0
     maxY := 0
-    for x, _ := range matrix {
-        for y, _ := range matrix[x] {
+    for x := range matrix {
+        for y := range matrix[x] {
             if x > maxX {
                 maxX = x
             }
@@ -48,8 +48,8 @@ func MatrixMax(matrix map[int]map[int]bool) (int, int) {
 
 func FoldUp(oldMatrix map[int]map[int]bool, fY int) map[int]map[int]bool {
     matrix := map[int]map[int]bool{}
-    for x, _ := range oldMatrix {
-        for y, _ := range oldMatrix[x] {
+    for x := range oldMatrix {
+        for y := range oldMatrix[x] {
             if y <= fY {
                 matrix = AddPoint(matrix, x, y)
             } else {
@@ -63,8 +63,8 @@ func FoldUp(oldMatrix map[int]map[int]bool, fY int) map[int]map[int]bool {
 
 func FoldLeft(oldMatrix map[int]map[int]bool, fX int) map[int]map[int]bool {
     matrix := map[int]map[int]bool{}
-    for x, _ := range oldMatrix {
-        for y, _ := range oldMatrix[x] {
+    for x := range oldMatrix {
+        for y := range oldMatrix[x] {
             if x <= fX {
                 matrix = AddPoint(matrix, x, y)
             } else {
