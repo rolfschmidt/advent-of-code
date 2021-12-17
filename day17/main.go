@@ -57,10 +57,6 @@ func Run(Part2 bool) int {
                 py += ry
                 hp = helper.IntMax(hp, py)
 
-                if _, ok := matrix[py]; !ok {
-                    matrix[py] = map[int]int{}
-                }
-
                 if matrix[py][px] == 1 {
                     if !Part2 {
                         result = helper.IntMax(hp, result)
