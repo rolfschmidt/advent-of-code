@@ -3,7 +3,7 @@ package main
 import (
     "fmt"
     "sort"
-    "../helper"
+    "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
 func main() {

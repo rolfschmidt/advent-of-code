@@ -3,12 +3,12 @@
 ## Run
 
 ```
-GO111MODULE=off sh run.sh
+sh run.sh
 ```
 
 ## Test
 
 ```
-GO111MODULE=off sh test.sh
+sh test.sh
 ```
 
