@@ -83,97 +83,44 @@ func (ni *NestedInt) Split() bool {
 }
 
 func (ni *NestedInt) Explode() bool {
+    var explodeLast *NestedInt
+    var explodeFunc func(ni *NestedInt, depth int) bool
+    var explodePop []int
+    var exploded bool
 
-    popValues := []int{}
-    exploded := false
-    var lastLiteral *NestedInt
-
-    // 1
-    for ci1 := range ni.children {
-        child1 := &ni.children[ci1]
-        if child1.IsValue() {
-            lastLiteral = child1
-            if len(popValues) > 0 {
-                lastLiteral.value += popValues[1]
-                popValues = []int{}
+    explodeFunc = func(ni *NestedInt, depth int) bool {
+        if ni.IsValue() {
+            explodeLast = ni
+            if len(explodePop) > 0 {
+                explodeLast.value += explodePop[1]
+                explodePop = []int{}
             }
-            continue
+            // fmt.Println("yo3")
+            return false
+        }
+        if len(ni.children) == 2 && ni.children[0].IsValue() && ni.children[1].IsValue() && depth == 4 && !exploded {
+            exploded = true
+            explodePop = []int{ ni.children[0].value, ni.children[1].value }
+            ni.children = []NestedInt{}
+
+            if explodeLast != nil {
+                explodeLast.value += explodePop[0]
+            }
+            explodeLast = nil
+
+            // fmt.Println("yo2")
+            return true
         }
 
-        // 2
-        for ci2 := range child1.children {
-            child2 := &child1.children[ci2]
-            if child2.IsValue() {
-                lastLiteral = child2
-                if len(popValues) > 0 {
-                    lastLiteral.value += popValues[1]
-                    popValues = []int{}
-                }
-                continue
-            }
-
-            // 3
-            for ci3 := range child2.children {
-                child3 := &child2.children[ci3]
-                if child3.IsValue() {
-                    lastLiteral = child3
-                    if len(popValues) > 0 {
-                        lastLiteral.value += popValues[1]
-                        popValues = []int{}
-                    }
-                    continue
-                }
-
-                // 4
-                for ci4 := range child3.children {
-                    child4 := &child3.children[ci4]
-                    if child4.IsValue() {
-                        lastLiteral = child4
-                        if len(popValues) > 0 {
-                            lastLiteral.value += popValues[1]
-                            popValues = []int{}
-                        }
-                        continue
-                    }
-
-                    // 5
-                    for ci5 := range child4.children {
-                        child5 := &child4.children[ci5]
-                        if !child5.IsValue() {
-                            panic("Level 5 children has children for some reason")
-                        }
-
-
-                        if !exploded {
-                            popValues = append(popValues, child5.value)
-                        } else {
-                            lastLiteral = child5
-                            if len(popValues) > 0 {
-                                lastLiteral.value += popValues[1]
-                                popValues = []int{}
-                            }
-                        }
-                    }
-
-                    if !exploded {
-                        exploded = true
-
-                        child4.children = []NestedInt{}
-
-                        if len(popValues) != 2 {
-                            panic("popValues do not contain 2 values")
-                        }
-
-                        if lastLiteral != nil {
-                            lastLiteral.value += popValues[0]
-                        }
-
-                        lastLiteral = nil
-                    }
-                }
-            }
+        // fmt.Println("yo1")
+        result := false
+        for ci := range ni.children {
+            result = explodeFunc(&ni.children[ci], depth + 1)
         }
+
+        return result
     }
+    explodeFunc(ni, 0)
 
     return exploded
 }
