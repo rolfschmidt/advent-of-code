@@ -84,21 +84,18 @@ func (ni *NestedInt) Split() bool {
 
 func (ni *NestedInt) Explode() bool {
     var explodeLast *NestedInt
-    var explodeFunc func(ni *NestedInt, depth int) bool
+    var explodeFunc func(ni *NestedInt, depth int)
     var explodePop []int
     var exploded bool
 
-    explodeFunc = func(ni *NestedInt, depth int) bool {
+    explodeFunc = func(ni *NestedInt, depth int) {
         if ni.IsValue() {
             explodeLast = ni
             if len(explodePop) > 0 {
                 explodeLast.value += explodePop[1]
                 explodePop = []int{}
             }
-
-            return false
-        }
-        if len(ni.children) == 2 && ni.children[0].IsValue() && ni.children[1].IsValue() && depth == 4 && !exploded {
+        } else if len(ni.children) == 2 && ni.children[0].IsValue() && ni.children[1].IsValue() && depth == 4 && !exploded {
             exploded = true
             explodePop = []int{ ni.children[0].value, ni.children[1].value }
             ni.children = []NestedInt{}
@@ -107,16 +104,11 @@ func (ni *NestedInt) Explode() bool {
                 explodeLast.value += explodePop[0]
             }
             explodeLast = nil
-
-            return true
+        } else {
+            for ci := range ni.children {
+                explodeFunc(&ni.children[ci], depth + 1)
+            }
         }
-
-        result := false
-        for ci := range ni.children {
-            result = explodeFunc(&ni.children[ci], depth + 1)
-        }
-
-        return result
     }
     explodeFunc(ni, 0)
 
