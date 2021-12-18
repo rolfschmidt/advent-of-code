@@ -95,7 +95,7 @@ func (ni *NestedInt) Explode() bool {
                 explodeLast.value += explodePop[1]
                 explodePop = []int{}
             }
-            // fmt.Println("yo3")
+
             return false
         }
         if len(ni.children) == 2 && ni.children[0].IsValue() && ni.children[1].IsValue() && depth == 4 && !exploded {
@@ -108,11 +108,9 @@ func (ni *NestedInt) Explode() bool {
             }
             explodeLast = nil
 
-            // fmt.Println("yo2")
             return true
         }
 
-        // fmt.Println("yo1")
         result := false
         for ci := range ni.children {
             result = explodeFunc(&ni.children[ci], depth + 1)
