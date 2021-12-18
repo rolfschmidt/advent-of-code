@@ -239,12 +239,12 @@ func ParseNestedInt(line string) NestedInt {
 }
 
 func Run(Part2 bool) int {
-    if Part2 {
-        lines := []string{}
-        for _, line := range helper.ReadFile("input.txt") {
-            lines = append(lines, line)
-        }
+    lines := []string{}
+    for _, line := range helper.ReadFile("input.txt") {
+        lines = append(lines, line)
+    }
 
+    if Part2 {
         hotMagnitude := 0
         for i := 0; i < len(lines); i++ {
             for j := 0; j < len(lines); j++ {
@@ -264,7 +264,7 @@ func Run(Part2 bool) int {
     }
 
     var final NestedInt
-    for _, line := range helper.ReadFile("input.txt") {
+    for _, line := range lines {
         node := ParseNestedInt(line)
         if len(final.children) < 1 {
             final = node
