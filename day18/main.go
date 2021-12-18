@@ -3,7 +3,6 @@ package main
 import (
     "fmt"
     "encoding/json"
-    // "reflect"
     "math"
     "bytes"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
