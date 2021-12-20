@@ -183,23 +183,9 @@ func (co *Coord) Directions() []Coord {
 
 func (co *Coord) Variants(co2 Coord) []Coord {
     result := []Coord{}
-    bAdd := co.Add(co2)
-    bSub := co.Sub(co2)
-    for _, wantFindX := range []int{ bAdd.x, bSub.x } {
-        for _, wantFindY := range []int{ bAdd.y, bSub.y } {
-            for _, wantFindZ := range []int{ bAdd.z, bSub.z } {
-                check := Coord{
-                    x: wantFindX,
-                    y: wantFindY,
-                    z: wantFindZ,
-                }
-                result = append(result, check)
-            }
-        }
-    }
 
-    bAdd = co2.Add(*co)
-    bSub = co2.Sub(*co)
+    bAdd := co2.Add(*co)
+    bSub := co2.Sub(*co)
     for _, wantFindX := range []int{ bAdd.x, bSub.x } {
         for _, wantFindY := range []int{ bAdd.y, bSub.y } {
             for _, wantFindZ := range []int{ bAdd.z, bSub.z } {
@@ -236,14 +222,6 @@ type Scanner struct {
     beaconsRelativeAbsCount map[string][]Coord
 }
 
-func (sc *Scanner) Init() *Scanner {
-    if sc.name == "scanner 0" {
-        // sc.known = true
-    }
-
-    return sc
-}
-
 func ListRelatives(list []Coord) map[string][]Coord {
     result := map[string][]Coord{}
     for _, cA := range list {
@@ -278,7 +256,7 @@ func (sc *Scanner) OverlapCoordsMap(sc2 Scanner, work func(bA string, bACoords [
     }
 }
 
-func (sc *Scanner) Overlap(sc2 Scanner) ([]Coord, []Coord, []Coord) {
+func (sc *Scanner) Overlap(sc2 Scanner) ([]Coord, []Coord) {
     overlapCountRequired := 12
     overlapCountRequired = (overlapCountRequired - 1) * overlapCountRequired
 
@@ -286,7 +264,6 @@ func (sc *Scanner) Overlap(sc2 Scanner) ([]Coord, []Coord, []Coord) {
 
     hotRelativesA := []Coord{}
     hotRelativesB := []Coord{}
-    hotList := []Coord{}
     for _, list := range RotateList(sc2.beacons) {
 
         matchRelativesA := []Coord{}
@@ -312,19 +289,19 @@ func (sc *Scanner) Overlap(sc2 Scanner) ([]Coord, []Coord, []Coord) {
         if len(matchRelativesB) > len(hotRelativesB) {
             hotRelativesA = matchRelativesA
             hotRelativesB = matchRelativesB
-            hotList = list
         }
     }
 
     // fmt.Println("hotRelativesB", len(hotRelativesB))
     if len(hotRelativesB) >= 12 {
-        return hotRelativesA, hotRelativesB, hotList
+        return hotRelativesA, hotRelativesB
     }
 
-    return hotRelativesA, hotRelativesB, hotList
+    return hotRelativesA, hotRelativesB
 }
 
-func (sc *Scanner) SetPos(sc2 *Scanner, hotRelativesA []Coord, hotRelativesB []Coord, hotList []Coord) {
+func (sc *Scanner) SetPos(sc2 *Scanner, hotRelativesA []Coord, hotRelativesB []Coord) {
+
     counts := map[string]int{}
     for _, coordB := range hotRelativesB {
         for _, coordA := range hotRelativesA {
@@ -390,15 +367,12 @@ func Run(Part2 bool) int {
             scanner.beacons = append(scanner.beacons, Coord{ x: beacons[0], y: beacons[1], z: beacons[2], })
         }
 
-        scanner.Init()
         scanners = append(scanners, scanner)
     }
 
     owner := 0
     done := map[int]bool{}
-    force := false
 
-    LOOP:
     for len(done) < len(scanners) {
         SCANNER:
         for s1 := range scanners {
@@ -413,10 +387,10 @@ func Run(Part2 bool) int {
                     continue
                 }
 
-                hotRelativesA, hotRelativesB, hotList := sc1.Overlap(*sc2)
-                if len(hotRelativesB) >= 12 || force {
+                hotRelativesA, hotRelativesB := sc1.Overlap(*sc2)
+                if len(hotRelativesB) >= 12 {
                     // fmt.Println(sc1.name, "overlaps with", sc2.name, " with beacon count", len(sc1.beacons))
-                    sc1.SetPos(sc2, hotRelativesA, hotRelativesB, hotList)
+                    sc1.SetPos(sc2, hotRelativesA, hotRelativesB)
                     owner = s2
                     done[s1] = true
                     done[s2] = true
@@ -425,13 +399,6 @@ func Run(Part2 bool) int {
                     continue SCANNER
                 }
             }
-
-            if !force {
-                force = true
-                continue LOOP
-            }
-
-            panic("no matches for scanner" + sc1.name)
         }
     }
 
