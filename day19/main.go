@@ -99,10 +99,6 @@ func (co *Coord) Sub(co2 Coord) Coord {
     }
 }
 
-func (a Coord) Manhattan(b Coord) int {
-    return int(math.Abs(float64(a.x) - float64(b.x))) + int(math.Abs(float64(a.y) - float64(b.y))) + int(math.Abs(float64(a.z) - float64(b.z)))
-}
-
 func (co *Coord) Rotations() []Coord {
     result := []Coord{}
 
@@ -182,6 +178,10 @@ func (co *Coord) Variants(co2 Coord) []Coord {
     }
 
     return result
+}
+
+func (co Coord) Sum() int {
+    return co.x + co.y + co.z
 }
 
 func (co Coord) Distance(co2 Coord) Coord {
@@ -394,7 +394,7 @@ func Run(Part2 bool) int {
                     continue
                 }
 
-                distance := sA.pos.Manhattan(sB.pos)
+                distance := sA.pos.Distance(sB.pos).Sum()
                 hotDistance = helper.IntMax(hotDistance, distance)
             }
         }
