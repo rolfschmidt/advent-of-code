@@ -7,6 +7,9 @@ import (
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
+var scanners []Scanner
+var owner int
+
 func main() {
     fmt.Println("Part 1", Part1())
     fmt.Println("Part 2", Part2())
@@ -79,9 +82,6 @@ func String2Coord(value string) Coord {
     }
 }
 
-func (a Coord) Manhattan(b Coord) int {
-    return int(math.Abs(float64(a.x) - float64(b.x))) + int(math.Abs(float64(a.y) - float64(b.y))) + int(math.Abs(float64(a.z) - float64(b.z)))
-}
 
 func (co *Coord) Add(co2 Coord) Coord {
     return Coord{
@@ -99,34 +99,16 @@ func (co *Coord) Sub(co2 Coord) Coord {
     }
 }
 
-func (co *Coord) All() []Coord {
-    result := []Coord{}
-    for _, cX := range []int{co.x, co.y, co.z} {
-        for _, cY := range []int{co.x, co.y, co.z} {
-            for _, cZ := range []int{co.x, co.y, co.z} {
-                for _, dX := range []int{1, -1} {
-                    for _, dY := range []int{1, -1} {
-                        for _, dZ := range []int{1, -1} {
-                            result = append(result, Coord{
-                                x: cX * dX,
-                                y: cY * dY,
-                                z: cZ * dZ,
-                            })
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return result
+func (a Coord) Manhattan(b Coord) int {
+    return int(math.Abs(float64(a.x) - float64(b.x))) + int(math.Abs(float64(a.y) - float64(b.y))) + int(math.Abs(float64(a.z) - float64(b.z)))
 }
 
 func (co *Coord) Rotations() []Coord {
     result := []Coord{}
 
-    cX := int(math.Abs(float64(co.x)))
-    cY := int(math.Abs(float64(co.y)))
-    cZ := int(math.Abs(float64(co.z)))
+    cX := co.x
+    cY := co.y
+    cZ := co.z
 
     result = append(result, Coord{ x: co.x, y: co.y, z: co.z})
 
@@ -292,7 +274,6 @@ func (sc *Scanner) Overlap(sc2 Scanner) ([]Coord, []Coord) {
         }
     }
 
-    // fmt.Println("hotRelativesB", len(hotRelativesB))
     if len(hotRelativesB) >= 12 {
         return hotRelativesA, hotRelativesB
     }
@@ -325,7 +306,7 @@ func (sc *Scanner) SetPos(sc2 *Scanner, hotRelativesA []Coord, hotRelativesB []C
 
     newCoords := map[string][]Coord{}
     for _, coord := range sc2.beacons {
-        for ri, roCoord := range coord.All() {
+        for ri, roCoord := range coord.Rotations() {
             for hi, hCoord := range highestCoord.Directions() {
                 newAdd := roCoord.Add(hCoord)
                 key := helper.Int2String(ri) + "_" + helper.Int2String(hi)
@@ -351,11 +332,10 @@ func (sc *Scanner) SetPos(sc2 *Scanner, hotRelativesA []Coord, hotRelativesB []C
     }
 }
 
-func Run(Part2 bool) int {
+func setupScanner() {
     content := helper.ReadFileString("input.txt")
     contentScanners := strings.Split(content, "\n\n")
 
-    scanners := []Scanner{}
     for _, scanner := range contentScanners {
         beacons := strings.Split(scanner, "\n")
         name := helper.Trim(strings.Replace(beacons[0], "---", "", -1))
@@ -370,9 +350,7 @@ func Run(Part2 bool) int {
         scanners = append(scanners, scanner)
     }
 
-    owner := 0
     done := map[int]bool{}
-
     for len(done) < len(scanners) {
         SCANNER:
         for s1 := range scanners {
@@ -400,6 +378,12 @@ func Run(Part2 bool) int {
                 }
             }
         }
+    }
+}
+
+func Run(Part2 bool) int {
+    if len(scanners) < 1 {
+        setupScanner()
     }
 
     if Part2 {
