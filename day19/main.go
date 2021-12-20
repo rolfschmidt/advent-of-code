@@ -8,13 +8,6 @@ import (
 )
 
 func main() {
-    fmt.Println()
-    fmt.Println()
-    fmt.Println()
-    fmt.Println()
-    fmt.Println()
-    fmt.Println()
-    fmt.Println()
     fmt.Println("Part 1", Part1())
     fmt.Println("Part 2", Part2())
 }
@@ -41,6 +34,16 @@ func ContainsCoord(list []Coord, coord Coord) bool {
     }
 
     return false
+}
+
+func ContainsCoordList(listA []Coord, listB []Coord) bool {
+    for _, check := range listB {
+        if !ContainsCoord(listA, check) {
+            return false
+        }
+    }
+
+    return true
 }
 
 func AppendCoord(list []Coord, coord Coord) []Coord {
@@ -76,6 +79,10 @@ func String2Coord(value string) Coord {
     }
 }
 
+func (a Coord) Manhattan(b Coord) int {
+    return int(math.Abs(float64(a.x) - float64(b.x))) + int(math.Abs(float64(a.y) - float64(b.y))) + int(math.Abs(float64(a.z) - float64(b.z)))
+}
+
 func (co *Coord) Add(co2 Coord) Coord {
     return Coord{
         x: co.x + co2.x,
@@ -92,12 +99,36 @@ func (co *Coord) Sub(co2 Coord) Coord {
     }
 }
 
+func (co *Coord) All() []Coord {
+    result := []Coord{}
+    for _, cX := range []int{co.x, co.y, co.z} {
+        for _, cY := range []int{co.x, co.y, co.z} {
+            for _, cZ := range []int{co.x, co.y, co.z} {
+                for _, dX := range []int{1, -1} {
+                    for _, dY := range []int{1, -1} {
+                        for _, dZ := range []int{1, -1} {
+                            result = append(result, Coord{
+                                x: cX * dX,
+                                y: cY * dY,
+                                z: cZ * dZ,
+                            })
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return result
+}
+
 func (co *Coord) Rotations() []Coord {
     result := []Coord{}
 
     cX := int(math.Abs(float64(co.x)))
     cY := int(math.Abs(float64(co.y)))
     cZ := int(math.Abs(float64(co.z)))
+
+    result = append(result, Coord{ x: co.x, y: co.y, z: co.z})
 
     // positive x
     result = append(result, Coord{ x: cX * 1, y: cY * 1, z: cZ * 1})
@@ -150,7 +181,7 @@ func (co *Coord) Directions() []Coord {
     return result
 }
 
-func (co *Coord) Variants(co2 Coord) []Coord {
+func (co *Coord) Variants2(co2 Coord) []Coord {
     result := []Coord{}
     bAdd := co.Add(co2)
     bSub := co.Sub(co2)
@@ -169,6 +200,111 @@ func (co *Coord) Variants(co2 Coord) []Coord {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    return result
+}
+
+func (co *Coord) Variants3(co2 Coord) []Coord {
+    result := []Coord{}
+    bAdd := co.Add(co2)
+    bSub := co.Sub(co2)
+    AAdd := co.Add(co2)
+    ASub := co.Sub(co2)
+    for _, wantFindX := range []int{ bAdd.x, bSub.x, AAdd.x, ASub.x } {
+        for _, wantFindY := range []int{ bAdd.y, bSub.y, AAdd.y, ASub.y } {
+            for _, wantFindZ := range []int{ bAdd.z, bSub.z, AAdd.z, ASub.z } {
+                check := Coord{
+                    x: wantFindX,
+                    y: wantFindY,
+                    z: wantFindZ,
+                }
+                result = append(result, check)
+            }
+        }
+    }
+
+    return result
+}
+
+func (co *Coord) Variants4(co2 Coord) []Coord {
+    result := []Coord{}
+    bAdd := co.Add(co2)
+    bSub := co.Sub(co2)
+    for _, wantFindX := range []int{ bAdd.x, bSub.x } {
+        for _, wantFindY := range []int{ bAdd.y, bSub.y } {
+            for _, wantFindZ := range []int{ bAdd.z, bSub.z } {
+                for _, dX := range []int{1, -1} {
+                    for _, dY := range []int{1, -1} {
+                        for _, dZ := range []int{1, -1} {
+                            check := Coord{
+                                x: wantFindX * dX,
+                                y: wantFindY * dY,
+                                z: wantFindZ * dZ,
+                            }
+                            result = append(result, check)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    bAdd = co2.Add(*co)
+    bSub = co2.Sub(*co)
+    for _, wantFindX := range []int{ bAdd.x, bSub.x } {
+        for _, wantFindY := range []int{ bAdd.y, bSub.y } {
+            for _, wantFindZ := range []int{ bAdd.z, bSub.z } {
+                for _, dX := range []int{1, -1} {
+                    for _, dY := range []int{1, -1} {
+                        for _, dZ := range []int{1, -1} {
+                            check := Coord{
+                                x: wantFindX * dX,
+                                y: wantFindY * dY,
+                                z: wantFindZ * dZ,
+                            }
+                            result = append(result, check)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return result
+}
+
+
+func (co *Coord) Variants(co2 Coord) []Coord {
+    result := []Coord{}
+    bAdd := co.Add(co2)
+    bSub := co.Sub(co2)
+    for _, wantFindX := range []int{ bAdd.x, bSub.x } {
+        for _, wantFindY := range []int{ bAdd.y, bSub.y } {
+            for _, wantFindZ := range []int{ bAdd.z, bSub.z } {
+                check := Coord{
+                    x: wantFindX,
+                    y: wantFindY,
+                    z: wantFindZ,
+                }
+                result = append(result, check)
+            }
+        }
+    }
+
+    bAdd = co2.Add(*co)
+    bSub = co2.Sub(*co)
+    for _, wantFindX := range []int{ bAdd.x, bSub.x } {
+        for _, wantFindY := range []int{ bAdd.y, bSub.y } {
+            for _, wantFindZ := range []int{ bAdd.z, bSub.z } {
+                check := Coord{
+                    x: wantFindX,
+                    y: wantFindY,
+                    z: wantFindZ,
+                }
+                result = append(result, check)
             }
         }
     }
@@ -197,7 +333,6 @@ type Scanner struct {
 }
 
 func (sc *Scanner) Init() *Scanner {
-    sc.SetRelatives()
     if sc.name == "scanner 0" {
         // sc.known = true
     }
@@ -219,22 +354,6 @@ func ListRelatives(list []Coord) map[string][]Coord {
     }
 
     return result
-}
-
-func (sc *Scanner) SetRelatives() *Scanner {
-    sc.beaconsRelativeAbsCount = map[string][]Coord{}
-    for _, cA := range sc.beacons {
-        for _, cB := range sc.beacons {
-            if cA.String() == cB.String() {
-                continue
-            }
-
-            key := cA.Distance(cB).String()
-            sc.beaconsRelativeAbsCount[key] = append(sc.beaconsRelativeAbsCount[key], cA)
-        }
-    }
-
-    return sc
 }
 
 func (sc *Scanner) OverlapCoordsMap(sc2 Scanner, work func(bA string, bACoords []Coord, bBCoords []Coord) bool ) {
@@ -293,7 +412,7 @@ func (sc *Scanner) Overlap(sc2 Scanner) ([]Coord, []Coord, []Coord) {
         }
     }
 
-    fmt.Println("hotRelativesB", len(hotRelativesB))
+    // fmt.Println("hotRelativesB", len(hotRelativesB))
     if len(hotRelativesB) >= 12 {
         return hotRelativesA, hotRelativesB, hotList
     }
@@ -301,54 +420,12 @@ func (sc *Scanner) Overlap(sc2 Scanner) ([]Coord, []Coord, []Coord) {
     return hotRelativesA, hotRelativesB, hotList
 }
 
-func (sc *Scanner) OverlapOld(sc2 Scanner) bool {
-    overlapCountRequired := 12
-    overlapCountRequired = (overlapCountRequired - 1) * overlapCountRequired
-
-    bACoordsUnique := []Coord{}
-    bBCoordsUnique := []Coord{}
-
-    overlapCount := 0
-    sc.OverlapCoordsMap(sc2, func(bA string, bACoords []Coord, bBCoords []Coord) bool {
-        overlapCount += len(bBCoords)
-
-        for _, coord := range bACoords {
-            bACoordsUnique = AppendCoord(bACoordsUnique, coord)
-        }
-        for _, coord := range bBCoords {
-            bBCoordsUnique = AppendCoord(bBCoordsUnique, coord)
-        }
-
-
-        // println("bBCoords", bBCoords[0].String(), bBCoords[1].String())
-
-        // fmt.Println("bBCoords", bBCoords)
-
-        return true
-    })
-
-    fmt.Println("overlapCount", overlapCount, overlapCountRequired, len(bACoordsUnique), len(bBCoordsUnique))
-    if overlapCount >= overlapCountRequired {
-        return true
-    }
-
-    return false
-}
-
 func (sc *Scanner) SetPos(sc2 *Scanner, hotRelativesA []Coord, hotRelativesB []Coord, hotList []Coord) {
-    // sc2.beacons = hotList
-
-    fmt.Println("hotRelativesA", len(hotRelativesA))
-    fmt.Println("hotRelativesB", len(hotRelativesB))
-
     counts := map[string]int{}
-    for _, coordA := range hotRelativesA {
-        distance := sc.pos.Distance(coordA)
-
-        for _, coordB := range hotRelativesB {
-            for _, rotatedDistance := range distance.Rotations() {
-                counts[coordB.Add(rotatedDistance).Distance(Coord{0,0,0}).String()] += 1
-                // counts[coordB.Add(rotatedDistance).String()] += 1
+    for _, coordB := range hotRelativesB {
+        for _, coordA := range hotRelativesA {
+            for _, variant := range coordB.Variants(coordA) {
+                counts[variant.String()] += 1
             }
         }
     }
@@ -359,342 +436,42 @@ func (sc *Scanner) SetPos(sc2 *Scanner, hotRelativesA []Coord, hotRelativesB []C
         if count > highestCount {
             highestPos = key
             highestCount = count
-            fmt.Println("new high", highestCount, highestPos)
         }
     }
-
-    // 68,-1246,-43
-    fmt.Println("highestCount", highestCount)
-    fmt.Println("highestPos", highestPos)
-
-
-    // X: (B - F) * -1
-    // Y: (B - F)
-    // Y: (B - F)
 
     highestCoord := String2Coord(highestPos)
+    sc2.pos = highestCoord
 
-    variantIndex := -1
-    variantCoords := map[int][]Coord{}
-    for ci, coord := range sc2.beacons {
-        for vi, newCoord := range coord.Variants(highestCoord) {
-            if ci == 0 {
-                variantCoords[vi] = []Coord{}
-            }
-
-            variantCoords[vi] = append(variantCoords[vi], newCoord)
-
-            if ContainsCoord(hotRelativesA, newCoord) {
-                if variantIndex == -1 {
-                    variantIndex = vi
-                } else if variantIndex != vi {
-                    panic("multiple variants")
+    newCoords := map[string][]Coord{}
+    for _, coord := range sc2.beacons {
+        for ri, roCoord := range coord.All() {
+            for hi, hCoord := range highestCoord.Directions() {
+                newAdd := roCoord.Add(hCoord)
+                key := helper.Int2String(ri) + "_" + helper.Int2String(hi)
+                if _, ok := newCoords[key]; !ok {
+                    newCoords[key] = []Coord{}
                 }
+
+                newCoords[key] = append(newCoords[key], newAdd)
             }
         }
     }
 
-    fmt.Println("set variant", variantIndex, len(variantCoords[variantIndex]))
-
-    sc2.beacons = variantCoords[variantIndex]
-
+    FIND:
+    for _, list := range newCoords {
+        if ContainsCoordList(list, hotRelativesA) {
+            sc2.beacons = list
+            break FIND
+        }
+    }
 
     for _, coord := range sc.beacons {
         sc2.beacons = AppendCoord(sc2.beacons, coord)
     }
 }
 
-func (sc *Scanner) SetPosOld(sc2 *Scanner) {
-    targetPosCount := map[string]int{}
-    bACoordsUnique := []Coord{}
-    bBCoordsUnique := []Coord{}
-    sc.OverlapCoordsMap(*sc2, func(bA string, bACoords []Coord, bBCoords []Coord) bool {
-        if (len(bACoords) != 2) {
-            return true
-        }
-
-        for _, bACoord := range bACoords {
-            if ContainsCoord(bACoordsUnique, bACoord) {
-                continue
-            }
-            bACoordsUnique = append(bACoordsUnique, bACoord)
-
-            distance := sc.pos.Distance(bACoord)
-            if distance.String() == "618,824,621" {
-                // fmt.Println(distance)
-            }
-
-            for _, bBCoord := range bBCoords {
-                if ContainsCoord(bBCoordsUnique, bBCoord) {
-                    continue
-                }
-                bBCoordsUnique = append(bBCoordsUnique, bBCoord)
-
-                // 618,824,621
-                // distance := String2Coord(bA)
-                // fmt.Println(distance.String())
-
-                // fmt.Println("bACoord", bACoord)
-                // fmt.Println("bBCoord", bBCoord)
-
-                for _, coordPosNew := range bBCoord.Variants(distance) {
-                    match := false
-                    for _, bBNew := range bBCoord.Directions() {
-                        if bBNew.Add(coordPosNew).String() == bACoord.String() {
-                            match = true
-                            break
-                        }
-                    }
-
-                    if !match {
-                        continue
-                    }
-
-                    targetPosCount[coordPosNew.String()] += 1
-
-                    // c := String2Coord("68,-1246,-43")
-                    // if coordPosNew.String() == c.String() {
-                    //     fmt.Println("foundx", coordPosNew.String())
-                    // }
-                }
-
-                // bAdd := coord.Add(distance)
-                // bSub := coord.Sub(distance)
-                // for _, wantFindX := range []int{ bAdd.x, bSub.x } {
-                //     for _, wantFindY := range []int{ bAdd.y, bSub.y } {
-                //         for _, wantFindZ := range []int{ bAdd.z, bSub.z } {
-                //             for _, dX := range []int{1, -1} {
-                //                 for _, dY := range []int{1, -1} {
-                //                     for _, dZ := range []int{1, -1} {
-                //                         check := Coord{
-                //                             x: wantFindX * dX,
-                //                             y: wantFindY * dY,
-                //                             z: wantFindZ * dZ,
-                //                         }
-
-                //                         targetPosCount[check.String()] += 1
-
-                //                         c := String2Coord("68,-1246,-43")
-                //                         if check.String() == c.String() {
-                //                             fmt.Println("found", check.String())
-                //                         }
-                //                     }
-                //                 }
-                //             }
-                //         }
-                //     }
-                // }
-            }
-        }
-
-        return true
-    })
-
-    highestCount := -1
-    highestPos := ""
-    for key, value := range targetPosCount {
-        // if strings.Count(key, "68,-1246,-43") > 0 { // key == "68,-1246,-43" {
-            // fmt.Println("YES SIR", key)
-        // }
-
-        if value >= highestCount {
-            highestCount = value
-            highestPos = key
-            // fmt.Println("highestPos", highestPos, highestCount)
-        }
-    }
-
-    if highestPos == "" {
-        return
-    }
-    fmt.Println("bACoordsUnique", bACoordsUnique)
-    fmt.Println("bBCoordsUnique", bBCoordsUnique)
-
-    sc2.pos = String2Coord(highestPos)
-    sc2.known = true
-
-
-    VARIANTS:
-    for _, dX := range []int{1, -1} {
-        for _, dY := range []int{1, -1} {
-            for _, dZ := range []int{1, -1} {
-                checkB := Coord{
-                    x: bBCoordsUnique[0].x * dX,
-                    y: bBCoordsUnique[0].y * dY,
-                    z: bBCoordsUnique[0].z * dZ,
-                }
-
-                checkB = checkB.Add(sc2.pos)
-
-                found := false
-                for _, checkA := range bACoordsUnique {
-                    if checkA.String() == checkB.String() {
-                        found = true
-                        break
-                    }
-                }
-
-                if !found {
-                    continue
-                }
-
-                fmt.Println("here we go")
-
-                for bi := range sc2.beacons {
-                    biNew := Coord{
-                        x: sc2.beacons[bi].x * dX,
-                        y: sc2.beacons[bi].y * dY,
-                        z: sc2.beacons[bi].z * dZ,
-                    }
-                    biNew = biNew.Add(sc2.pos)
-
-                    sc2.beacons[bi] = biNew
-                }
-
-                break VARIANTS
-            }
-        }
-    }
-
-    // fmt.Println("before ", sc2.beacons)
-    // for bi := range sc2.beacons {
-    //     sc2.beacons[bi] = sc2.beacons[bi].Add(sc2.pos)
-    //     // fmt.Println("sc1", sc2.beacons[bi])
-    // }
-
-    // sc2.SetRelatives()
-
-    fmt.Println("new pos", sc2.pos)
-    fmt.Println("new beacons", sc2.beacons)
-    // fmt.Println("bACoordsUnique", bACoordsUnique)
-
-    // 423,-701,434
-
-    bPrint := map[string]bool{}
-    bPrint["-618,-824,-621"] = true
-    bPrint["-537,-823,-458"] = true
-    bPrint["-447,-329,318"] = true
-    bPrint["404,-588,-901"] = true
-    bPrint["544,-627,-890"] = true
-    bPrint["528,-643,409"] = true
-    bPrint["-661,-816,-575"] = true
-    bPrint["390,-675,-793"] = true
-    bPrint["423,-701,434"] = true
-    bPrint["-345,-311,381"] = true
-    bPrint["459,-707,401"] = true
-    bPrint["-485,-357,347"] = true
-    for print := range bPrint {
-        found := false
-        for _, coord := range sc2.beacons {
-                // fmt.Println("compare", print, coord.String())
-            if coord.String() == "404,-588,-901" {
-                fmt.Println("wofofof")
-            }
-
-            if print == coord.String() {
-                found = true
-                break
-            }
-        }
-
-        if found {
-            continue
-        }
-
-        fmt.Println(print, "not found")
-    }
-
-    // bPrint["459,-707,401"] = true
-    // bPrint["-739,-1745,668"] = true
-    // bPrint["-485,-357,347"] = true
-    // bPrint["432,-2009,850"] = true
-    // bPrint["528,-643,409"] = true
-    // bPrint["423,-701,434"] = true
-    // bPrint["-345,-311,381"] = true
-    // bPrint["408,-1815,803"] = true
-    // bPrint["534,-1912,768"] = true
-    // bPrint["-687,-1600,576"] = true
-    // bPrint["-447,-329,318"] = true
-    // bPrint["-635,-1737,486"] = true
-
-    // bPrint["459,-707,401"] = true
-    // bPrint["-739,-1745,668"] = true
-    // bPrint["-485,-357,347"] = true
-    // bPrint["432,-2009,850"] = true
-    // bPrint["528,-643,409"] = true
-    // bPrint["423,-701,434"] = true
-    // bPrint["-345,-311,381"] = true
-    // bPrint["408,-1815,803"] = true
-    // bPrint["534,-1912,768"] = true
-    // bPrint["-687,-1600,576"] = true
-    // bPrint["-447,-329,318"] = true
-    // bPrint["-635,-1737,486"] = true
-    // for _, coord := range sc2.beacons {
-    //     // fmt.Println("check", coord.String())
-    //     if !bPrint[coord.String()] {
-    //         continue
-    //     }
-
-    //     fmt.Println("found", coord.String())
-    // }
-
-    sc2.SetRelatives()
-}
-
 func Run(Part2 bool) int {
-    if Part2 {
-        return 0
-    }
-
-    // test := []Coord{
-    //     Coord{ 4, 5, 6 },
-    //     Coord{ 1, 2, 3 },
-    //     Coord{ 7, 8, 9 },
-    // }
-
-    // fmt.Println(len(RotateList(test)))
-
-    // return 0
-    // a := String2Coord("-618,-824,-621")
-    // b := String2Coord("686,422,578")
-    // c := String2Coord("68,-1246,-43")
-
-    // s := Coord{}
-    // distance := s.Distance(a)
-
-    // bAdd := b.Add(distance)
-    // bSub := b.Sub(distance)
-    // for _, wantFindX := range []int{ bAdd.x, bSub.x } {
-    //     for _, wantFindY := range []int{ bAdd.y, bSub.y } {
-    //         for _, wantFindZ := range []int{ bAdd.z, bSub.z } {
-    //             for _, dX := range []int{1, -1} {
-    //                 for _, dY := range []int{1, -1} {
-    //                     for _, dZ := range []int{1, -1} {
-    //                         check := Coord{
-    //                             x: wantFindX * dX,
-    //                             y: wantFindY * dY,
-    //                             z: wantFindZ * dZ,
-    //                         }
-
-    //                         fmt.Println("check", wantFindX, check.String())
-
-    //                         if check.String() == c.String() {
-    //                             fmt.Println("found", check.String())
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-
-    // fmt.Println(a,b,c)
-    // fmt.Println("d => ", distance)
-
-    // return 0
-
-    content := helper.ReadFileString("input_test2.txt")
+    content := helper.ReadFileString("input.txt")
     contentScanners := strings.Split(content, "\n\n")
 
     scanners := []Scanner{}
@@ -713,40 +490,12 @@ func Run(Part2 bool) int {
         scanners = append(scanners, scanner)
     }
 
-
-    hotRelativesA, hotRelativesB, hotList := scanners[0].Overlap(scanners[1])
-    scanners[0].SetPos(&scanners[1], hotRelativesA, hotRelativesB, hotList)
-
-    hotRelativesA, hotRelativesB, hotList = scanners[1].Overlap(scanners[4])
-    scanners[1].SetPos(&scanners[4], hotRelativesA, hotRelativesB, hotList)
-
-    hotRelativesA, hotRelativesB, hotList = scanners[4].Overlap(scanners[3])
-    scanners[4].SetPos(&scanners[3], hotRelativesA, hotRelativesB, hotList)
-
-    hotRelativesA, hotRelativesB, hotList = scanners[3].Overlap(scanners[2])
-    scanners[3].SetPos(&scanners[2], hotRelativesA, hotRelativesB, hotList)
-
-
-    return len(scanners[2].beacons)
-
-    // fmt.Println("overlapcheck", scanners[0].Overlap(scanners[1]))
-    allBeacons := []Coord{}
-    for s1 := range scanners {
-        for _, coord := range scanners[s1].beacons {
-            allBeacons = AppendCoord(allBeacons, coord)
-        }
-    }
-
-
-
     owner := 0
     done := map[int]bool{}
     force := false
 
-    fmt.Println("scanner count", len(scanners))
     LOOP:
     for len(done) < len(scanners) {
-
         SCANNER:
         for s1 := range scanners {
             sc1 := &scanners[s1]
@@ -754,28 +503,21 @@ func Run(Part2 bool) int {
                 continue
             }
 
-            fmt.Println("run", sc1.name)
-
             for s2 := range scanners {
                 sc2 := &scanners[s2]
                 if sc1.name == sc2.name || done[s2] {
                     continue
                 }
 
-                fmt.Println("run", sc2.name)
-
-                // fmt.Println(sc1.name, "check overlaps with", sc2.name)
                 hotRelativesA, hotRelativesB, hotList := sc1.Overlap(*sc2)
                 if len(hotRelativesB) >= 12 || force {
-                    // sc2.beacons = hotList
-
-                    fmt.Println(sc1.name, "overlaps with", sc2.name)
+                    // fmt.Println(sc1.name, "overlaps with", sc2.name, " with beacon count", len(sc1.beacons))
                     sc1.SetPos(sc2, hotRelativesA, hotRelativesB, hotList)
                     owner = s2
                     done[s1] = true
                     done[s2] = true
 
-                    // break SCANNER
+                    // break LOOP
                     continue SCANNER
                 }
             }
@@ -789,6 +531,21 @@ func Run(Part2 bool) int {
         }
     }
 
-    fmt.Println("beacon count before", len(allBeacons))
+    if Part2 {
+        hotDistance := -1
+        for _, sA := range scanners {
+            for _, sB := range scanners {
+                if sA.name == sB.name {
+                    continue
+                }
+
+                distance := sA.pos.Manhattan(sB.pos)
+                hotDistance = helper.IntMax(hotDistance, distance)
+            }
+        }
+
+        return hotDistance
+    }
+
     return len(scanners[owner].beacons)
 }
