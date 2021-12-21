@@ -43,9 +43,9 @@ func MatrixGet(x int, y int) string {
 }
 
 func MatrixRange() (int, int, int, int) {
-    minY := math.MaxInt32 - 1
+    minY := math.MaxInt32
     maxY := -1
-    minX := math.MaxInt32 - 1
+    minX := math.MaxInt32
     maxX := -1
 
     for y := range matrix {

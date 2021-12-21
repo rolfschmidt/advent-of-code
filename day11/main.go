@@ -112,7 +112,7 @@ func Run(Part2 bool) int {
     result := 0
     max := 100
     if Part2 {
-       max = math.MaxInt32 - 1
+       max = math.MaxInt32
     }
 
     for i := 0; i < max; i++ {
