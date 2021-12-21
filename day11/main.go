@@ -2,6 +2,7 @@ package main
 
 import (
     "fmt"
+    "math"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
@@ -111,7 +112,7 @@ func Run(Part2 bool) int {
     result := 0
     max := 100
     if Part2 {
-       max = (1 << 31) - 1
+       max = math.MaxInt32 - 1
     }
 
     for i := 0; i < max; i++ {

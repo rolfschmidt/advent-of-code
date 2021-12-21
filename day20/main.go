@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "strings"
+    "math"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
@@ -42,9 +43,9 @@ func MatrixGet(x int, y int) string {
 }
 
 func MatrixRange() (int, int, int, int) {
-    minY := (1 << 31) - 1
+    minY := math.MaxInt32 - 1
     maxY := -1
-    minX := (1 << 31) - 1
+    minX := math.MaxInt32 - 1
     maxX := -1
 
     for y := range matrix {

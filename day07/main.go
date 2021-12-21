@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "sort"
+    "math"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
@@ -27,7 +28,7 @@ func Run(Part2 bool) int {
     middle := content[len(content)/2]
 
     if Part2 {
-        result := (1 << 31) - 1
+        result := math.MaxInt32 - 1
         for middle := 0; middle <= content[len(content) - 1]; middle++ {
             check := Fuel(middle, content, Part2)
             if check < result {
