@@ -342,24 +342,23 @@ func (cr CubeRange) Sub(cr2 CubeRange) []CubeRange {
 
     // minX := cr.InX(cr2.MinX(), cr.MinX())
     // maxX := cr.InX(cr2.MaxX(), cr.MaxX())
-    minY := cr.InY(cr.MinY(), cr2.MinY())
-    maxY := cr2.InY(cr.MinY(), cr2.MaxY())
+    minY := helper.IntMin(cr.MinY(), cr2.MinY())
+    maxY := helper.IntMin(cr.MaxY(), cr2.MinY() - 1)
     minZ := cr2.InZ(cr.MinZ(), cr2.MinZ())
     maxZ := cr2.InZ(cr.MaxZ(), cr2.MaxZ())
 
 
     var cube CubeRange
 
-
     // left
     cube = CubeRange{
         true,
         cr.MinX(),
         cr2.MinX() - 1,
-        minY,
-        maxY,
-        minZ,
-        maxZ,
+        cr.MinY(),
+        cr2.MinY() - 1,
+        cr.MinZ(),
+        cr2.MinZ() - 1,
     }
     if cube.Valid() {
         fmt.Println("left", cube)
