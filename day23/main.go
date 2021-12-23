@@ -1,15 +1,22 @@
 package main
 
 import (
+    // "os"
+    // "runtime/pprof"
+    // "net/http"
+    // _ "net/http/pprof"
     "fmt"
     "time"
     "math"
     "sort"
+    "strings"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
 var lowCount int = math.MaxInt
 var rooms []Room = []Room{}
+var roomEntranceList []int = []int{}
+var roomsByName map[string][]Room = map[string][]Room{}
 var cache map[string]int = map[string]int{}
 
 func main() {
@@ -56,7 +63,7 @@ func CopyMatrix(list [][]Object) [][]Object {
 type Instance struct {
     matrix [][]Object
     count int
-    history []string
+    objectCount int
 }
 
 func (ii Instance) Print() {
@@ -71,12 +78,13 @@ func (ii Instance) Print() {
 
 func (ii Instance) RoomEntrances() []Object {
     result := []Object{}
-    xRooms := map[int]bool{}
-    for _, room := range rooms {
-        xRooms[room.x] = true
+    if len(roomEntranceList) < 1 {
+        for _, room := range rooms {
+            roomEntranceList = append(roomEntranceList, room.x)
+        }
     }
 
-    for x := range xRooms {
+    for _, x := range roomEntranceList {
         result = append(result, ii.matrix[1][x])
     }
 
@@ -112,24 +120,24 @@ func (ii Instance) EntranceFree(x int, y int) bool {
     return false
 }
 
-func (ii Instance) Step(x int, y int) bool {
-    oo := ii.matrix[y][x]
-    if oo.Done(ii) {
-        fmt.Println("done", oo)
-        return false
-    }
+// func (ii Instance) Step(x int, y int) bool {
+//     oo := ii.matrix[y][x]
+//     if oo.Done(ii) {
+//         fmt.Println("done", oo)
+//         return false
+//     }
 
-    // fmt.Println("new step", oo.name, x, y)
+//     // fmt.Println("new step", oo.name, x, y)
 
-    ways := oo.Ways(ii)
-    if len(ways) < 1 {
-        return false
-    }
+//     ways := oo.Ways(ii)
+//     if len(ways) < 1 {
+//         return false
+//     }
 
-    ii = oo.Move(ii, ways[0].x, ways[0].y)
+//     ii = oo.Move(ii, ways[0].x, ways[0].y)
 
-    return true
-}
+//     return true
+// }
 
 func (ii Instance) IsCompleted() (bool, int) {
     count := 0
@@ -158,45 +166,49 @@ func (ii Instance) IsCompleted() (bool, int) {
 func (ii Instance) String() string {
     result := helper.Int2String(ii.count) + ""
     for y := range ii.matrix {
-        for x := range ii.matrix[y] {
-            result += ii.matrix[y][x].name
+        for _, xv := range ii.matrix[y] {
+            if xv.name == "#" || xv.name == " " {
+                continue
+            }
+            result += xv.name
         }
     }
+    // fmt.Println(result)
     return result
 }
 
 func (ii Instance) Run() int {
-    if ii.count > lowCount {
-        // fmt.Println("abort by", ii.count, lowCount)
+    // if ii.count > lowCount {
+    //     // fmt.Println("abort by", ii.count, lowCount)
+    //     return lowCount
+    // }
+
+    count := ii.count
+    if count > lowCount {
         return lowCount
     }
-
-    done, count := ii.IsCompleted()
-    if done {
+    if len(rooms) == ii.objectCount {
         if count != lowCount {
-            fmt.Println("done", done, count)
+            fmt.Println("done", count, len(rooms), ii.objectCount)
         }
         lowCount = helper.IntMin(count, lowCount)
 
         return count
     }
-    if count > lowCount {
-        return lowCount
-    }
 
     count = math.MaxInt
     for _, oo := range ii.Amphis() {
-        if oo.Done(ii) {
+        if oo.Done(&ii) {
             continue
         }
 
         for _, way := range oo.Ways(ii) {
             newInstance := Instance{
                 count: ii.count,
+                objectCount: ii.objectCount,
                 matrix: CopyMatrix(ii.matrix),
-                history: ii.history,
             }
-            newInstance = newInstance.matrix[oo.y][oo.x].Move(newInstance, way.x, way.y)
+            newInstance.matrix[oo.y][oo.x].Move(&newInstance, way.x, way.y)
             if 1 == 0 {
                 newInstance.Print()
                 time.Sleep(50000000)
@@ -233,22 +245,30 @@ type Room struct {
 
 
 func (oo *Object) Rooms() []Room {
+    if list, ok := roomsByName[oo.name]; ok {
+        return list
+    }
+
     result := []Room{}
     for _, room := range rooms {
         if room.name == oo.name {
             result = append(result, room)
         }
     }
+
+    sort.Slice(result, func(i int, j int) bool { return result[i].y > result[j].y })
+    roomsByName[oo.name] = result
+
     return result
 }
 
-func (oo *Object) Done(ii Instance) bool {
+func (oo *Object) Done(ii *Instance) bool {
     if oo.done {
         return true
     }
 
     oRooms := oo.Rooms()
-    sort.Slice(oRooms, func(i int, j int) bool { return oRooms[i].y > oRooms[j].y })
+    // sort.Slice(oRooms, func(i int, j int) bool { return oRooms[i].y > oRooms[j].y })
 
     for _, room := range oRooms {
         if oo.x == room.x && oo.y == room.y {
@@ -285,7 +305,7 @@ func (oo *Object) EntranceWays(ii Instance) []Object {
         oRooms = append(oRooms, ii.matrix[room.y][room.x])
     }
 
-    sort.Slice(oRooms, func(i int, j int) bool { return oRooms[i].y > oRooms[j].y })
+    // sort.Slice(oRooms, func(i int, j int) bool { return oRooms[i].y > oRooms[j].y })
 
     return oRooms
 }
@@ -359,7 +379,7 @@ func (oo *Object) Ways(ii Instance) []Object {
     return result
 }
 
-func (oo Object) Move(ii Instance, x int, y int) Instance {
+func (oo Object) Move(ii *Instance, x int, y int) {
     a := ii.matrix[y][x]
     a.x = ii.matrix[oo.y][oo.x].x
     a.y = ii.matrix[oo.y][oo.x].y
@@ -384,63 +404,124 @@ func (oo Object) Move(ii Instance, x int, y int) Instance {
         panic("wtf distance")
     }
 
+    if b.Done(ii) {
+        ii.objectCount += 1
+    }
+
     ii.matrix[y][x] = b
     ii.matrix[oo.y][oo.x] = a
-
-    ii.history = append(ii.history, "moved " + oo.name + " to x:" + helper.Int2String(x) + ",y:" + helper.Int2String(y) + " from x:" + helper.Int2String(a.x) + ",y:" + helper.Int2String(a.y))
-    // fmt.Println("moved", oo.name, x, y, a, b, ii.history)
-
-    return ii
 }
 
 func Run(Part2 bool) int {
+    // f, err := os.Create("profile.pprof")
+    // if err != nil {
+    //     fmt.Printf("Error: %s\n", err)
+    //     return 0
+    // }
+    // defer f.Close()
+    // pprof.StartCPUProfile(f)
+    // defer pprof.StopCPUProfile()
+
+    // go func() {
+    //   fmt.Println(http.ListenAndServe("localhost:6060", nil))
+    // }()
+
+    rooms = append(rooms, Room{
+        name: "A",
+        x: 3,
+        y: 2,
+    })
+    rooms = append(rooms, Room{
+        name: "A",
+        x: 3,
+        y: 3,
+    })
+    rooms = append(rooms, Room{
+        name: "B",
+        x: 5,
+        y: 2,
+    })
+    rooms = append(rooms, Room{
+        name: "B",
+        x: 5,
+        y: 3,
+    })
+    rooms = append(rooms, Room{
+        name: "C",
+        x: 7,
+        y: 2,
+    })
+    rooms = append(rooms, Room{
+        name: "C",
+        x: 7,
+        y: 3,
+    })
+    rooms = append(rooms, Room{
+        name: "D",
+        x: 9,
+        y: 2,
+    })
+    rooms = append(rooms, Room{
+        name: "D",
+        x: 9,
+        y: 3,
+    })
+
+    fileString := helper.ReadFileStringPlain("input.txt")
+    // if !Part2 {
+    //     return 0
+    // }
+
     if Part2 {
         return 0
+        appendString := "\n  #D#C#B#A#\n  #D#B#A#C#"
+        fileString = helper.Trim(fileString[0:41] + appendString + fileString[41:])
+
+        rooms = append(rooms, Room{
+            name: "A",
+            x: 3,
+            y: 4,
+        })
+        rooms = append(rooms, Room{
+            name: "A",
+            x: 3,
+            y: 5,
+        })
+        rooms = append(rooms, Room{
+            name: "B",
+            x: 5,
+            y: 4,
+        })
+        rooms = append(rooms, Room{
+            name: "B",
+            x: 5,
+            y: 5,
+        })
+        rooms = append(rooms, Room{
+            name: "C",
+            x: 7,
+            y: 4,
+        })
+        rooms = append(rooms, Room{
+            name: "C",
+            x: 7,
+            y: 5,
+        })
+        rooms = append(rooms, Room{
+            name: "D",
+            x: 9,
+            y: 4,
+        })
+        rooms = append(rooms, Room{
+            name: "D",
+            x: 9,
+            y: 5,
+        })
+        fmt.Println(fileString)
     }
 
-    rooms = append(rooms, Room{
-        name: "A",
-        x: 3,
-        y: 2,
-    })
-    rooms = append(rooms, Room{
-        name: "A",
-        x: 3,
-        y: 3,
-    })
-    rooms = append(rooms, Room{
-        name: "B",
-        x: 5,
-        y: 2,
-    })
-    rooms = append(rooms, Room{
-        name: "B",
-        x: 5,
-        y: 3,
-    })
-    rooms = append(rooms, Room{
-        name: "C",
-        x: 7,
-        y: 2,
-    })
-    rooms = append(rooms, Room{
-        name: "C",
-        x: 7,
-        y: 3,
-    })
-    rooms = append(rooms, Room{
-        name: "D",
-        x: 9,
-        y: 2,
-    })
-    rooms = append(rooms, Room{
-        name: "D",
-        x: 9,
-        y: 3,
-    })
-
     matrix := [][]Object{}
-    for y, line := range helper.ReadFilePlain("input.txt") {
+    for y, line := range strings.Split(fileString, "\n") {
         row := []Object{}
         for x, char := range line {
             row = append(row, Object{ name: string(char), x: x, y: y })
@@ -449,38 +530,11 @@ func Run(Part2 bool) int {
         matrix = append(matrix, row)
     }
 
-    // fmt.Println(RoomEntrances())
-
     instance := Instance{
         matrix: matrix,
     }
 
-    // instance.Step(7, 2)
-    // instance.Print()
-    // instance.Step(5, 2)
-    // instance.Print()
-
-    // done, count := instance.IsCompleted()
-
-    // fmt.Println("done", done)
-
-    // return count
     count := instance.Run()
-
-
-    // instance.Print()
-    // stepped := true
-    // for stepped {
-    //     stepped = false
-    //     for _, obj := range instance.Amphis() {
-    //         instance.Step(obj.x, obj.y)
-    //         break
-    //     }
-
-    //     instance.Print()
-    //     time.Sleep(1 * time.Second)
-    // }
-    // fmt.Println(matrix[2][3])
 
     return count
 }
