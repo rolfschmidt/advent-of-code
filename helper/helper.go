@@ -10,18 +10,27 @@ import (
     "unicode"
 )
 
-func ReadFile(path string) []string {
+func ReadFilePlain(path string) []string {
     file, err := os.Open(path)
-	if err != nil {
-		panic(err.Error() + `: ` + path)
-	}
+    if err != nil {
+        panic(err.Error() + `: ` + path)
+    }
     defer file.Close()
 
-	var result []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-    	result = append(result, Trim(string(scanner.Text())))
-	}
+    var result []string
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        result = append(result, string(scanner.Text()))
+    }
+
+    return result
+}
+
+func ReadFile(path string) []string {
+    result := ReadFilePlain(path)
+    for li := range result {
+        result[li] = Trim(result[li])
+    }
 
 	return result
 }
