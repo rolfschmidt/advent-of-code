@@ -166,6 +166,9 @@ func (ii Instance) IsCompleted() (bool, int) {
 func (ii Instance) String() string {
     result := helper.Int2String(ii.count) + ""
     for y := range ii.matrix {
+        if y != 1 {
+            continue
+        }
         for _, xv := range ii.matrix[y] {
             if xv.name == "#" || xv.name == " " {
                 continue
@@ -173,7 +176,7 @@ func (ii Instance) String() string {
             result += xv.name
         }
     }
-    // fmt.Println(result)
+    // fmt.Println(len(cache), result)
     return result
 }
 
@@ -202,7 +205,7 @@ func (ii Instance) Run() int {
             continue
         }
 
-        for _, way := range oo.Ways(ii) {
+        for _, way := range oo.Ways(&ii) {
             newInstance := Instance{
                 count: ii.count,
                 objectCount: ii.objectCount,
@@ -283,7 +286,7 @@ func (oo *Object) Done(ii *Instance) bool {
     return false
 }
 
-func (oo *Object) Entrance(ii Instance) Object {
+func (oo *Object) Entrance(ii *Instance) Object {
     for _, room := range oo.Rooms() {
         return ii.matrix[1][room.x]
     }
@@ -292,7 +295,7 @@ func (oo *Object) Entrance(ii Instance) Object {
     return Object{}
 }
 
-func (oo *Object) EntranceWays(ii Instance) []Object {
+func (oo *Object) EntranceWays(ii *Instance) []Object {
     oRooms := []Object{}
     for _, room := range oo.Rooms() {
         if ii.matrix[room.y][room.x].name != "." && ii.matrix[room.y][room.x].name != room.name {
@@ -310,7 +313,7 @@ func (oo *Object) EntranceWays(ii Instance) []Object {
     return oRooms
 }
 
-func (oo *Object) Ways(ii Instance) []Object {
+func (oo *Object) Ways(ii *Instance) []Object {
     if oo.y != 1 {
         free := true
         wy := -1
