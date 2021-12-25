@@ -48,20 +48,6 @@ func Print() {
     }
 }
 
-func CopyMatrix(matrix map[int]map[int]Cucumber) map[int]map[int]Cucumber {
-    result := map[int]map[int]Cucumber{}
-    for y := range matrix {
-        if _, ok := result[y]; !ok {
-            result[y] = map[int]Cucumber{}
-        }
-
-        for x := range matrix[y] {
-            result[y][x] = matrix[y][x]
-        }
-    }
-    return result
-}
-
 type Cucumber struct {
     name string
     x int
@@ -140,7 +126,7 @@ func Run(Part2 bool) int {
                 }
             }
 
-            matrix = CopyMatrix(newMatrix)
+            matrix = newMatrix
         }
 
         counter++
