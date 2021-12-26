@@ -55,6 +55,23 @@ func ReadFileString(path string) string {
     return Trim(ReadFileStringPlain(path))
 }
 
+func IntArrayString(ints []int) []string {
+    var result []string
+    for _, value := range ints {
+        result = append(result, Int2String(value))
+    }
+    return result
+}
+
+func IntArrayContains(list []int, v int) bool {
+    for _, lv := range list {
+        if lv == v {
+            return true
+        }
+    }
+    return false
+}
+
 func StringArrayInt(strings []string) []int {
     var result []int
     for _, value := range strings {
