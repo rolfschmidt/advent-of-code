@@ -3,7 +3,6 @@ package main
 import (
     "fmt"
     "os"
-    "bufio"
     "math"
     "strings"
     "strconv"
@@ -66,24 +65,9 @@ func IniSave(ini int, zList []int) {
 }
 
 func IniLoad(ini int) []int {
-    file, err := os.Open("cache_ini_" + helper.Int2String(ini) + ".txt")
-    if err != nil {
-        return []int{}
-    }
-    defer file.Close()
-
-    var result []int
-    scanner := bufio.NewScanner(file)
-
-    const maxCapacity = 512 * 1024 * 1024
-    buf := make([]byte, maxCapacity)
-    scanner.Buffer(buf, maxCapacity)
-
-    for scanner.Scan() {
-        for _, value := range strings.Split(string(scanner.Text()), ",") {
-            result = append(result, helper.String2Int(value))
-        }
-
+    result := []int{}
+    for _, value := range strings.Split(helper.ReadFileString("cache_ini_" + helper.Int2String(ini) + ".txt"), ",") {
+        result = append(result, helper.String2Int(value))
     }
 
     return result
