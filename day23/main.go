@@ -18,6 +18,12 @@ var rooms []Room = []Room{}
 var roomEntranceList []int = []int{}
 var roomsByName map[string][]Room = map[string][]Room{}
 var cache map[string]int = map[string]int{}
+var cost map[string]int = map[string]int{
+    "A": 1,
+    "B": 10,
+    "C": 100,
+    "D": 1000,
+}
 
 func main() {
     fmt.Println("Part 1", Part1())
@@ -64,6 +70,7 @@ type Instance struct {
     matrix [][]Object
     count int
     objectCount int
+    // history []string
 }
 
 func (ii Instance) Print() {
@@ -74,6 +81,18 @@ func (ii Instance) Print() {
         fmt.Println()
     }
     fmt.Println()
+}
+
+func (ii Instance) PrintString() string {
+    result := ""
+    for y := range ii.matrix {
+        for x := range ii.matrix[y] {
+            result += ii.matrix[y][x].name
+        }
+        result += "\n"
+    }
+    result += "\n"
+    return result
 }
 
 func (ii Instance) RoomEntrances() []Object {
@@ -139,30 +158,6 @@ func (ii Instance) EntranceFree(x int, y int) bool {
 //     return true
 // }
 
-func (ii Instance) IsCompleted() (bool, int) {
-    count := 0
-    done := true
-    for _, room := range rooms {
-        if ii.matrix[room.y][room.x].name == room.name {
-            if ii.matrix[room.y][room.x].name == "A" {
-                count += ii.matrix[room.y][room.x].moved * 1
-            } else if ii.matrix[room.y][room.x].name == "B" {
-                count += ii.matrix[room.y][room.x].moved * 10
-            } else if ii.matrix[room.y][room.x].name == "C" {
-                count += ii.matrix[room.y][room.x].moved * 100
-            } else if ii.matrix[room.y][room.x].name == "D" {
-                count += ii.matrix[room.y][room.x].moved * 1000
-            } else {
-                panic("wtf completed")
-            }
-        } else {
-            done = false
-        }
-    }
-
-    return done, count
-}
-
 func (ii Instance) String() string {
     result := helper.Int2String(ii.count) + ""
     for y := range ii.matrix {
@@ -187,6 +182,8 @@ func (ii Instance) Run() int {
     if count > lowCount {
         return lowCount
     }
+
+    // fmt.Println("done?", ii.objectCount, ii.count)
     if len(rooms) == ii.objectCount {
         if count != lowCount {
             fmt.Println("done", count, len(rooms), ii.objectCount)
@@ -196,22 +193,69 @@ func (ii Instance) Run() int {
         return count
     }
 
+    if lowCount != math.MaxInt {
+        potentialCost := ii.count
+        for _, oo := range ii.Amphis() {
+            if oo.Done(&ii) {
+                continue
+            }
+
+            if oo.y == 1 {
+                potentialCost += oo.Price(&ii, oo)
+            } else {
+                potentialCost += oo.Price(&ii, ii.matrix[1][oo.x])
+            }
+        }
+
+        if potentialCost > lowCount {
+            return lowCount
+        }
+    }
+
     count = math.MaxInt
+    amphiWays := map[Object][]Object{}
     for _, oo := range ii.Amphis() {
         if oo.Done(&ii) {
             continue
         }
 
         for _, way := range oo.Ways(ii) {
+            amphiWays[oo] = append(amphiWays[oo], way)
+        }
+    }
+
+    for oo := range amphiWays {
+        sort.Slice(amphiWays[oo], func(i int, j int) bool {
+            return oo.Price(&ii, amphiWays[oo][i]) < oo.Price(&ii, amphiWays[oo][j])
+        })
+    }
+
+    sortedAmphis := []Object{}
+    for oo := range amphiWays {
+        sortedAmphis = append(sortedAmphis, oo)
+    }
+
+    sort.Slice(sortedAmphis, func(i int, j int) bool {
+        a := sortedAmphis[i]
+        b := sortedAmphis[j]
+
+        return a.Price(&ii, amphiWays[a][0]) < b.Price(&ii, amphiWays[b][0])
+    })
+
+    for oo, ways := range amphiWays {
+        for _, way := range ways {
+            amphiWays[oo] = append(amphiWays[oo], way)
+
             newInstance := Instance{
                 count: ii.count,
                 objectCount: ii.objectCount,
                 matrix: CopyMatrix(ii.matrix),
+                // history: ii.history[0:],
             }
             newInstance.matrix[oo.y][oo.x].Move(&newInstance, way.x, way.y)
             if 1 == 0 {
                 newInstance.Print()
-                time.Sleep(50000000)
+                time.Sleep(200000000)
             }
             // time.Sleep(100000000)
 
@@ -222,7 +266,6 @@ func (ii Instance) Run() int {
                 cache[newInstance.String()] = count
             }
         }
-
     }
 
     return count
@@ -232,8 +275,6 @@ type Object struct {
     name string
     x int
     y int
-    onTrack bool
-    moved int
     done bool
 }
 
@@ -334,21 +375,27 @@ func (oo *Object) Ways(ii Instance) []Object {
         }
     }
 
-    if oo.onTrack {
-        // fmt.Println("consider", oo.name, "to move in final entrance")
-        entrance := oo.Entrance(ii)
-        for sx := helper.IntMin(oo.x, entrance.x); sx <= helper.IntMax(oo.x, entrance.x); sx++ {
-            if sx == oo.x {
-                continue
-            }
-            if !ii.EntranceFree(sx, 1) {
-                // fmt.Println("blocked", oo.name, sx, 1)
-                return []Object{}
-            }
+    finalWay := true
+    entrance := oo.Entrance(ii)
+    for sx := helper.IntMin(oo.x, entrance.x); sx <= helper.IntMax(oo.x, entrance.x); sx++ {
+        if sx == oo.x {
+            continue
         }
+        if !ii.EntranceFree(sx, 1) {
+            finalWay = false
+            break
+        }
+    }
 
-        // fmt.Println("entrance way free", oo.name, oo.EntranceWays(ii))
-        return oo.EntranceWays(ii)
+    if finalWay {
+        entranceWays := oo.EntranceWays(ii)
+        if len(entranceWays) > 0 {
+            return entranceWays
+        }
+    }
+
+    if oo.y == 1 {
+        return []Object{}
     }
 
     result := []Object{}
@@ -388,29 +435,34 @@ func (oo Object) Move(ii *Instance, x int, y int) {
     b := ii.matrix[oo.y][oo.x]
     b.x = ii.matrix[y][x].x
     b.y = ii.matrix[y][x].y
-    b.onTrack = true
 
     distance := Distance(x, y, oo.x, oo.y)
-    b.moved += distance
-
-    if b.name == "A" {
-        ii.count += distance * 1
-    } else if b.name == "B" {
-        ii.count += distance * 10
-    } else if b.name == "C" {
-        ii.count += distance * 100
-    } else if b.name == "D" {
-        ii.count += distance * 1000
-    } else {
-        panic("wtf distance")
+    if oo.y != 1 && y != 1 {
+        distance = Distance(oo.x, oo.y, oo.x, 1) + Distance(oo.x, 1, x, y)
     }
 
-    if b.Done(ii) {
-        ii.objectCount += 1
-    }
+    ii.count += distance * cost[b.name]
+
+    b.Done(ii)
 
     ii.matrix[y][x] = b
     ii.matrix[oo.y][oo.x] = a
+
+    // ii.history = append(ii.history, ii.PrintString())
+}
+
+func (oo Object) Price(ii *Instance, target Object) int {
+    if target.y > 1 {
+        return 0
+    }
+
+    distance := Distance(oo.x, oo.y, target.x, target.y)
+
+    eWays := oo.Rooms()
+    eWay := eWays[len(eWays) - 1]
+    distance += Distance(target.x, target.y, eWay.x, eWay.y)
+
+    return distance * cost[oo.name]
 }
 
 func Run(Part2 bool) int {
@@ -468,7 +520,7 @@ func Run(Part2 bool) int {
         y: 3,
     })
 
-    fileString := helper.ReadFileStringPlain("input_test3.txt")
+    fileString := helper.ReadFileStringPlain("input.txt")
     // if !Part2 {
     //     return 0
     // }
@@ -535,6 +587,16 @@ func Run(Part2 bool) int {
         matrix: matrix,
     }
 
+    // fmt.Println(matrix[1][10])
+
+    // fmt.Println(matrix[2][7])
+    // fmt.Println()
+    // way := matrix[2][7].Ways(instance)[0]
+    // instance.matrix[2][7].Move(&instance, way.x, way.y)
+    // instance.Print()
+    // fmt.Print(instance.count)
+
+    // return 0
     count := instance.Run()
 
     return count
