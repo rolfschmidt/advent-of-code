@@ -273,6 +273,7 @@ func (oo *Object) Done(ii *Instance) bool {
     for _, room := range oRooms {
         if oo.x == room.x && oo.y == room.y {
             oo.done = true
+            ii.objectCount++
             return true
         }
         if ii.matrix[room.y][room.x].name != room.name {
@@ -467,7 +468,7 @@ func Run(Part2 bool) int {
         y: 3,
     })
 
-    fileString := helper.ReadFileStringPlain("input.txt")
+    fileString := helper.ReadFileStringPlain("input_test3.txt")
     // if !Part2 {
     //     return 0
     // }
