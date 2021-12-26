@@ -2,7 +2,6 @@ package main
 
 import (
     "fmt"
-    "os"
     "math"
     "strings"
     "strconv"
@@ -57,11 +56,7 @@ func RunCommand(iniList [][]string, z int, input int) map[string]int {
 }
 
 func IniSave(ini int, zList []int) {
-    f, _ := os.Create("cache_ini_" + helper.Int2String(ini) + ".txt")
-    defer f.Close()
-
-    writeStr := helper.Join(helper.IntArrayString(zList), ",")
-    f.WriteString(writeStr)
+    helper.WriteFileString("cache_ini_" + helper.Int2String(ini) + ".txt", helper.Join(helper.IntArrayString(zList), ","))
 }
 
 func IniLoad(ini int) []int {

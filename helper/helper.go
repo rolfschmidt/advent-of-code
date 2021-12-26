@@ -10,6 +10,13 @@ import (
     "unicode"
 )
 
+func WriteFileString(path string, value string) {
+    f, _ := os.Create(path)
+    defer f.Close()
+
+    f.WriteString(value)
+}
+
 func ReadFileStringPlain(path string) string {
     file, err := os.Open(path)
     if err != nil {
