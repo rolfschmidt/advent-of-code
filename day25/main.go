@@ -2,7 +2,6 @@ package main
 
 import (
     "fmt"
-    "strings"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
@@ -86,7 +85,7 @@ func (cu Cucumber) Move(allowedName string) bool {
 
 func Run(Part2 bool) int {
     for y, line := range helper.ReadFile("input.txt") {
-        for x, value := range strings.Split(line, "") {
+        for x, value := range helper.Split(line, "") {
             if value == "." {
                 continue
             }

@@ -3,7 +3,6 @@ package main
 import (
     "fmt"
     "math"
-    "strings"
     "strconv"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
@@ -61,7 +60,7 @@ func IniSave(ini int, zList []int) {
 
 func IniLoad(ini int) []int {
     result := []int{}
-    for _, value := range strings.Split(helper.ReadFileString("cache_ini_" + helper.Int2String(ini) + ".txt"), ",") {
+    for _, value := range helper.Split(helper.ReadFileString("cache_ini_" + helper.Int2String(ini) + ".txt"), ",") {
         result = append(result, helper.String2Int(value))
     }
 
@@ -74,7 +73,7 @@ func Run(Part2 bool) int {
 
     row := [][]string{}
     for _, line := range lines {
-        command := strings.Split(line, " ")
+        command := helper.Split(line, " ")
         if command[0] == "inp" && len(row) > 0 {
             instructions = append(instructions, row)
             row = [][]string{}

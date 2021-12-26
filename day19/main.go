@@ -2,7 +2,6 @@ package main
 
 import (
     "fmt"
-    "strings"
     "math"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
@@ -334,16 +333,16 @@ func (sc *Scanner) SetPos(sc2 *Scanner, hotRelativesA []Coord, hotRelativesB []C
 
 func setupScanner() {
     content := helper.ReadFileString("input.txt")
-    contentScanners := strings.Split(content, "\n\n")
+    contentScanners := helper.Split(content, "\n\n")
 
     for _, scanner := range contentScanners {
-        beacons := strings.Split(scanner, "\n")
-        name := helper.Trim(strings.Replace(beacons[0], "---", "", -1))
+        beacons := helper.Split(scanner, "\n")
+        name := helper.Trim(helper.Replace(beacons[0], "---", ""))
         beacons = beacons[1:]
 
         scanner := Scanner{ name: name }
         for _, beaconstr := range beacons {
-            beacons := helper.StringArrayInt(strings.Split(beaconstr, ","))
+            beacons := helper.StringArrayInt(helper.Split(beaconstr, ","))
             scanner.beacons = append(scanner.beacons, Coord{ x: beacons[0], y: beacons[1], z: beacons[2], })
         }
 

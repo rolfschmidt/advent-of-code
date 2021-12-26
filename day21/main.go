@@ -2,7 +2,6 @@ package main
 
 import (
     "fmt"
-    "strings"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
@@ -121,7 +120,7 @@ func (gg *Game) Part1() int {
 func Run(Part2 bool) int {
     players := []Player{}
     for _, line := range helper.ReadFile("input.txt") {
-        lineSplit := strings.Split(line, ": ")
+        lineSplit := helper.Split(line, ": ")
         players = append(players, Player{ pos: helper.String2Int(lineSplit[1]) })
     }
 

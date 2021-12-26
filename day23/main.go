@@ -1,15 +1,9 @@
 package main
 
 import (
-    // "os"
-    // "runtime/pprof"
-    // "net/http"
-    // _ "net/http/pprof"
     "fmt"
-    "time"
     "math"
     "sort"
-    "strings"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
@@ -224,10 +218,6 @@ func (ii Instance) Run() int {
                 history: ii.history[0:],
             }
             newInstance.matrix[oo.y][oo.x].Move(&newInstance, way.x, way.y)
-            if 1 == 0 {
-                newInstance.Print()
-                time.Sleep(1000000)
-            }
 
             if cv, ok := cache[newInstance.String()]; ok {
                 count = helper.IntMin(count, cv)
@@ -530,7 +520,7 @@ func Run(Part2 bool) int {
     }
 
     matrix := [][]Object{}
-    for y, line := range strings.Split(fileString, "\n") {
+    for y, line := range helper.Split(fileString, "\n") {
         row := []Object{}
         for x, char := range line {
             row = append(row, Object{ name: string(char), x: x, y: y })

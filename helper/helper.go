@@ -184,6 +184,10 @@ func Trim(value string) string {
     return strings.TrimSpace(value)
 }
 
+func Replace(value string, from string, to string) string {
+    return strings.ReplaceAll(value, from, to)
+}
+
 func IsUpper(s string) bool {
     for _, r := range s {
         if !unicode.IsUpper(r) && unicode.IsLetter(r) {

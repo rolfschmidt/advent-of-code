@@ -73,10 +73,10 @@ func Run(Part2 bool) int {
     var cubeRanges []CubeRange = []CubeRange{}
     for _, line := range helper.ReadFile("input.txt") {
         cubeRange := CubeRange{}
-        for _, part := range strings.Split(line, ",") {
-            values := strings.Split(part, "=")
+        for _, part := range helper.Split(line, ",") {
+            values := helper.Split(part, "=")
             varName := string(values[0][len(values[0]) - 1])
-            rangeValue := helper.StringArrayInt(strings.Split(values[1], ".."))
+            rangeValue := helper.StringArrayInt(helper.Split(values[1], ".."))
 
             if varName == "x" {
                 cubeRange.x1 = helper.IntMin(rangeValue[0], rangeValue[1])

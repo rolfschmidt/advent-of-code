@@ -2,7 +2,6 @@ package main
 
 import (
     "fmt"
-    "strings"
     "math"
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
@@ -120,7 +119,7 @@ func MatrixLit() int {
 }
 
 func Run(Part2 bool) int {
-    content := strings.Replace(strings.Replace(helper.ReadFileString("input.txt"), ".", "0", -1), "#", "1", -1)
+    content := helper.Replace(helper.Replace(helper.ReadFileString("input.txt"), ".", "0"), "#", "1")
     parts := helper.Split(content, "\n\n")
 
     lights = parts[0]
