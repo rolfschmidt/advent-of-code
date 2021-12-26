@@ -13,11 +13,11 @@ import (
     "github.com/rolfschmidt/advent-of-code-2021/helper"
 )
 
-var lowCount int = math.MaxInt
-var rooms []Room = []Room{}
-var roomEntranceList []int = []int{}
-var roomsByName map[string][]Room = map[string][]Room{}
-var cache map[string]int = map[string]int{}
+var lowCount int
+var rooms []Room
+var roomEntranceList []int
+var roomsByName map[string][]Room
+var cache map[string]int
 var cost map[string]int = map[string]int{
     "A": 1,
     "B": 10,
@@ -70,7 +70,7 @@ type Instance struct {
     matrix [][]Object
     count int
     objectCount int
-    // history []string
+    history []string
 }
 
 func (ii Instance) Print() {
@@ -139,25 +139,6 @@ func (ii Instance) EntranceFree(x int, y int) bool {
     return false
 }
 
-// func (ii Instance) Step(x int, y int) bool {
-//     oo := ii.matrix[y][x]
-//     if oo.Done(ii) {
-//         fmt.Println("done", oo)
-//         return false
-//     }
-
-//     // fmt.Println("new step", oo.name, x, y)
-
-//     ways := oo.Ways(ii)
-//     if len(ways) < 1 {
-//         return false
-//     }
-
-//     ii = oo.Move(ii, ways[0].x, ways[0].y)
-
-//     return true
-// }
-
 func (ii Instance) String() string {
     result := helper.Int2String(ii.count) + ""
     for y := range ii.matrix {
@@ -168,26 +149,16 @@ func (ii Instance) String() string {
             result += xv.name
         }
     }
-    // fmt.Println(result)
     return result
 }
 
 func (ii Instance) Run() int {
-    // if ii.count > lowCount {
-    //     // fmt.Println("abort by", ii.count, lowCount)
-    //     return lowCount
-    // }
-
     count := ii.count
     if count > lowCount {
         return lowCount
     }
 
-    // fmt.Println("done?", ii.objectCount, ii.count)
     if len(rooms) == ii.objectCount {
-        if count != lowCount {
-            fmt.Println("done", count, len(rooms), ii.objectCount)
-        }
         lowCount = helper.IntMin(count, lowCount)
 
         return count
@@ -250,14 +221,13 @@ func (ii Instance) Run() int {
                 count: ii.count,
                 objectCount: ii.objectCount,
                 matrix: CopyMatrix(ii.matrix),
-                // history: ii.history[0:],
+                history: ii.history[0:],
             }
             newInstance.matrix[oo.y][oo.x].Move(&newInstance, way.x, way.y)
             if 1 == 0 {
                 newInstance.Print()
-                time.Sleep(200000000)
+                time.Sleep(1000000)
             }
-            // time.Sleep(100000000)
 
             if cv, ok := cache[newInstance.String()]; ok {
                 count = helper.IntMin(count, cv)
@@ -284,7 +254,6 @@ type Room struct {
     y int
 }
 
-
 func (oo *Object) Rooms() []Room {
     if list, ok := roomsByName[oo.name]; ok {
         return list
@@ -309,15 +278,13 @@ func (oo *Object) Done(ii *Instance) bool {
     }
 
     oRooms := oo.Rooms()
-    // sort.Slice(oRooms, func(i int, j int) bool { return oRooms[i].y > oRooms[j].y })
-
     for _, room := range oRooms {
         if oo.x == room.x && oo.y == room.y {
             oo.done = true
             ii.objectCount++
             return true
         }
-        if ii.matrix[room.y][room.x].name != room.name {
+        if ii.matrix[room.y][room.x].name != "." && ii.matrix[room.y][room.x].name != room.name {
             return false
         }
     }
@@ -347,8 +314,6 @@ func (oo *Object) EntranceWays(ii Instance) []Object {
         oRooms = append(oRooms, ii.matrix[room.y][room.x])
     }
 
-    // sort.Slice(oRooms, func(i int, j int) bool { return oRooms[i].y > oRooms[j].y })
-
     return oRooms
 }
 
@@ -358,7 +323,6 @@ func (oo *Object) Ways(ii Instance) []Object {
         wy := -1
         for free {
             free = ii.EntranceFree(oo.x, oo.y + wy)
-            // fmt.Println("loop 0 free ", free, oo.x, oo.y + wy)
             if !free {
                 free = false
                 break
@@ -370,7 +334,6 @@ func (oo *Object) Ways(ii Instance) []Object {
         }
 
         if !free {
-            // fmt.Println("block way out", oo)
             return []Object{}
         }
     }
@@ -428,6 +391,11 @@ func (oo *Object) Ways(ii Instance) []Object {
 }
 
 func (oo Object) Move(ii *Instance, x int, y int) {
+    if oo.x == x && oo.y > 1 && y > 1 {
+        fmt.Println("weird", oo, x, y)
+        ii.Print()
+    }
+
     a := ii.matrix[y][x]
     a.x = ii.matrix[oo.y][oo.x].x
     a.y = ii.matrix[oo.y][oo.x].y
@@ -448,7 +416,7 @@ func (oo Object) Move(ii *Instance, x int, y int) {
     ii.matrix[y][x] = b
     ii.matrix[oo.y][oo.x] = a
 
-    // ii.history = append(ii.history, ii.PrintString())
+    ii.history = append(ii.history, ii.PrintString())
 }
 
 func (oo Object) Price(ii *Instance, target Object) int {
@@ -466,18 +434,11 @@ func (oo Object) Price(ii *Instance, target Object) int {
 }
 
 func Run(Part2 bool) int {
-    // f, err := os.Create("profile.pprof")
-    // if err != nil {
-    //     fmt.Printf("Error: %s\n", err)
-    //     return 0
-    // }
-    // defer f.Close()
-    // pprof.StartCPUProfile(f)
-    // defer pprof.StopCPUProfile()
-
-    // go func() {
-    //   fmt.Println(http.ListenAndServe("localhost:6060", nil))
-    // }()
+    lowCount = math.MaxInt
+    rooms = []Room{}
+    roomEntranceList = []int{}
+    roomsByName = map[string][]Room{}
+    cache = map[string]int{}
 
     rooms = append(rooms, Room{
         name: "A",
@@ -521,12 +482,8 @@ func Run(Part2 bool) int {
     })
 
     fileString := helper.ReadFileStringPlain("input.txt")
-    // if !Part2 {
-    //     return 0
-    // }
 
     if Part2 {
-        return 0
         appendString := "\n  #D#C#B#A#\n  #D#B#A#C#"
         fileString = helper.Trim(fileString[0:41] + appendString + fileString[41:])
 
@@ -570,7 +527,6 @@ func Run(Part2 bool) int {
             x: 9,
             y: 5,
         })
-        fmt.Println(fileString)
     }
 
     matrix := [][]Object{}
@@ -587,16 +543,6 @@ func Run(Part2 bool) int {
         matrix: matrix,
     }
 
-    // fmt.Println(matrix[1][10])
-
-    // fmt.Println(matrix[2][7])
-    // fmt.Println()
-    // way := matrix[2][7].Ways(instance)[0]
-    // instance.matrix[2][7].Move(&instance, way.x, way.y)
-    // instance.Print()
-    // fmt.Print(instance.count)
-
-    // return 0
     count := instance.Run()
 
     return count
