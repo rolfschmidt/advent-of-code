@@ -78,7 +78,6 @@ func Run(Part2 bool) int {
             varName := string(values[0][len(values[0]) - 1])
             rangeValue := helper.StringArrayInt(strings.Split(values[1], ".."))
 
-            // fmt.Println(rangeValue,
             if varName == "x" {
                 cubeRange.x1 = helper.IntMin(rangeValue[0], rangeValue[1])
                 cubeRange.x2 = helper.IntMax(rangeValue[0], rangeValue[1])
@@ -89,7 +88,6 @@ func Run(Part2 bool) int {
                 cubeRange.z1 = helper.IntMin(rangeValue[0], rangeValue[1])
                 cubeRange.z2 = helper.IntMax(rangeValue[0], rangeValue[1])
             }
-
         }
 
         if !Part2 && (!IntBetween(cubeRange.x1, -50, 50) || !IntBetween(cubeRange.x2, -50, 50) || !IntBetween(cubeRange.y1, -50, 50) || !IntBetween(cubeRange.y2, -50, 50) || !IntBetween(cubeRange.z1, -50, 50) || !IntBetween(cubeRange.z2, -50, 50)) {
