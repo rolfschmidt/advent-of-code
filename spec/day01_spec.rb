@@ -1,6 +1,6 @@
-class Day01
+class Day01 < Helper
   def self.part1
-    pp Helper.read_file('day01.txt')
+    pp read_file
     3
   end
 
