@@ -1,5 +1,3 @@
-require 'helper'
-
 class Day01
   def self.part1
     pp Helper.read_file('day01.txt')
