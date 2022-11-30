@@ -1,6 +1,7 @@
 class Day01 < Helper
   def self.part1
     pp read_file
+    binding.pry
     3
   end
 
