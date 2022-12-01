@@ -1,5 +1,5 @@
 class Helper
-  def self.read_file
-    File.read("spec/#{self.to_s.downcase}.txt").split
+  def self.file_string
+    File.read("spec/#{self.to_s.downcase}.txt")
   end
 end
