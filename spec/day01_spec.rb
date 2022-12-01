@@ -1,20 +1,10 @@
 class Day01 < Helper
   def self.part1
-    elves = []
-    file_string.split("\n\n").each do |elve|
-      elves << elve.split("\n").map(&:to_i).sum
-    end
-
-    elves.max
+    file_string.split("\n\n").map{|e| e.split("\n").map(&:to_i).sum }.max
   end
 
   def self.part2
-    elves = []
-    file_string.split("\n\n").each do |elve|
-      elves << elve.split("\n").map(&:to_i).sum
-    end
-
-    elves.sort.reverse[0,3].sum
+    file_string.split("\n\n").map{|e| e.split("\n").map(&:to_i).sum }.sort.reverse[0,3].sum
   end
 end
 
