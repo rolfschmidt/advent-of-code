@@ -19,7 +19,7 @@ class Day04 < Helper
     file.split("\n").each do |line|
       p1, p2 = line.split(",").map{|e| e.split("-").map(&:to_i) }.map{|a, b| (a..b).to_a }
 
-      if (p1 & p2).count > 0
+      if (p1 & p2).count.positive?
         count += 1
       end
     end
