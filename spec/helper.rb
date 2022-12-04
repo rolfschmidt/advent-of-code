@@ -9,6 +9,10 @@ class Helper
     File.read("spec/#{self.to_s.downcase}.txt")
   end
 
+  def self.file_test_string
+    File.read("spec/#{self.to_s.downcase}_test.txt")
+  end
+
   def self.all_chars
     ("a".."z").to_a + ("A".."Z").to_a
   end
