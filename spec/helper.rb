@@ -5,11 +5,11 @@ class String
 end
 
 class Helper
-  def self.file_string
+  def self.file
     File.read("spec/#{self.to_s.downcase}.txt")
   end
 
-  def self.file_test_string
+  def self.file_test
     File.read("spec/#{self.to_s.downcase}_test.txt")
   end
 

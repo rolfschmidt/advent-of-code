@@ -14,7 +14,7 @@ class Day02 < Helper
       'Z' => 'sci',
     }
 
-    games = file_string.split("\n").map{|g|
+    games = file.split("\n").map{|g|
       v = g.split(" ")
       [map[v[0]], map[v[1]]]
     }
@@ -71,7 +71,7 @@ class Day02 < Helper
       'Z' => 'win',
     }
 
-    games = file_string.split("\n").map{|g|
+    games = file.split("\n").map{|g|
       v = g.split(" ")
       [map[v[0]], map[v[1]]]
     }

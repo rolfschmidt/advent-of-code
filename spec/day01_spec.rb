@@ -1,10 +1,10 @@
 class Day01 < Helper
   def self.part1
-    file_string.split("\n\n").map{|e| e.split("\n").map(&:to_i).sum }.max
+    file.split("\n\n").map{|e| e.split("\n").map(&:to_i).sum }.max
   end
 
   def self.part2
-    file_string.split("\n\n").map{|e| e.split("\n").map(&:to_i).sum }.sort.reverse[0,3].sum
+    file.split("\n\n").map{|e| e.split("\n").map(&:to_i).sum }.sort.reverse[0,3].sum
   end
 end
 

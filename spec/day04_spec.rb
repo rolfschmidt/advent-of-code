@@ -1,7 +1,7 @@
 class Day04 < Helper
   def self.part1
     count = 0
-    file_string.split("\n").each do |line|
+    file.split("\n").each do |line|
       p1, p2 = line.split(",").map{|e| e.split("-").map(&:to_i) }
 
       if p1[0] <= p2[0] && p1[1] >= p2[1]
@@ -16,7 +16,7 @@ class Day04 < Helper
 
   def self.part2
     count = 0
-    file_string.split("\n").each do |line|
+    file.split("\n").each do |line|
       p1, p2 = line.split(",").map{|e| e.split("-").map(&:to_i) }
 
       r1 = (p1[0]..p1[1]).to_a
