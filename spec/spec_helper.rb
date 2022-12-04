@@ -15,6 +15,7 @@
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'rails'
+require 'active_support/all'
 require 'helper'
 require 'pry'
 require 'byebug'

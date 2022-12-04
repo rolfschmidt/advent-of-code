@@ -2,11 +2,9 @@ class Day04 < Helper
   def self.part1
     count = 0
     file.split("\n").each do |line|
-      p1, p2 = line.split(",").map{|e| e.split("-").map(&:to_i) }
+      p1, p2 = line.split(",").map{|e| e.split("-").map(&:to_i) }.map{|a, b| (a..b) }
 
-      if p1[0] <= p2[0] && p1[1] >= p2[1]
-        count += 1
-      elsif p2[0] <= p1[0] && p2[1] >= p1[1]
+      if p1.include?(p2) || p2.include?(p1)
         count += 1
       end
     end
@@ -17,9 +15,9 @@ class Day04 < Helper
   def self.part2
     count = 0
     file.split("\n").each do |line|
-      p1, p2 = line.split(",").map{|e| e.split("-").map(&:to_i) }.map{|a, b| (a..b).to_a }
+      p1, p2 = line.split(",").map{|e| e.split("-").map(&:to_i) }.map{|a, b| (a..b) }
 
-      if (p1 & p2).count.positive?
+      if p1.overlaps?(p2)
         count += 1
       end
     end
