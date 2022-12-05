@@ -1,6 +1,6 @@
 class Day05 < Helper
   def self.part1(part2 = false)
-    stack = {}
+    stack = []
     file.split("\n\n")[0].split("\n").each do |line|
       line.chars.each_with_index do |c, i|
         next if i % 4 == 0
@@ -28,7 +28,7 @@ class Day05 < Helper
       end
     end
 
-    stack.keys.sort.map {|i| stack[i].last }.join
+    stack.compact.map(&:last).join
   end
 
   def self.part2
