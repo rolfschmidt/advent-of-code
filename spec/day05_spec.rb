@@ -15,16 +15,9 @@ class Day05 < Helper
       count, from, to = line.scan(/\d+/).map(&:to_i)
 
       if !part2
-        count.times do
-          stack[to] << stack[from].pop
-        end
+        stack[to] += stack[from].pop(count).reverse
       else
-        pick = []
-        count.times do
-          pick.unshift(stack[from].pop)
-        end
-
-        stack[to] += pick
+        stack[to] += stack[from].pop(count)
       end
     end
 
