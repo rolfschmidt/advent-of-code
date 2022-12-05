@@ -2,8 +2,6 @@ class Day05 < Helper
   def self.part1(part2 = false)
     stack = {}
     file.split("\n\n")[0].split("\n").each do |line|
-      chs = line.chars.unshift("").unshift("").unshift("")
-
       line.chars.each_with_index do |c, i|
         next if i % 4 == 0
         next if all_chars.exclude?(c)
