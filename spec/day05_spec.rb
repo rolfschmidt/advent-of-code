@@ -8,13 +8,8 @@ class Day05 < Helper
         next if i % 4 == 0
         next if all_chars.exclude?(c)
 
-        ti = 1
-        if i > 1
-          ti = i / 4 + 1
-        end
-
-        stack[ti] ||= []
-        stack[ti].unshift(c)
+        stack[i / 4 + 1] ||= []
+        stack[i / 4 + 1].unshift(c)
       end
     end
 
