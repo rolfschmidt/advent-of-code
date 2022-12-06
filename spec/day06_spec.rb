@@ -1,8 +1,8 @@
 class Day06 < Helper
   def self.part1(range = 4)
-    chs = file.chars
-    chs.each_with_index do |chars, i|
-      next if chs[i - range + 1..i].uniq.count != range
+    chars = file.chars
+    chars.each_with_index do |_, i|
+      next if chars[i - range + 1..i].uniq.count != range
       return i + 1
     end
   end
