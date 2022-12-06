@@ -1,14 +1,14 @@
 class Day06 < Helper
-  def self.part1(range = 3)
+  def self.part1(range = 4)
     chs = file.chars
     chs.each_with_index do |chars, i|
-      next if chs[i - range..i].uniq.count != range + 1
+      next if chs[i - range + 1..i].uniq.count != range
       return i + 1
     end
   end
 
   def self.part2
-    part1(13)
+    part1(14)
   end
 end
 
