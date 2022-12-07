@@ -24,32 +24,14 @@ class Day07 < Helper
           result[count_dir.clone] += size.to_i
           count_dir.pop
         end
-      else
-        raise
       end
     end
 
-    deletable = []
-    used      = 70000000 - result[["/"]]
-    need      = 30000000 - used
+    used = 70000000 - result[["/"]]
 
-    count = 0
-    result.keys.each do |dir|
-      total = result[dir]
+    return result.values.select{|v| 30000000 <= used + v }.min if part2
 
-      if 30000000 <= used + total
-        deletable << [dir.join, total]
-      end
-
-      next if dir.count == 1
-      next if total > 100000
-
-      count += total
-    end
-
-    return deletable.map{|x| x[1] }.min if part2
-
-    count
+    result.values.select{|v| v <= 100000 }.sum
   end
 
   def self.part2
