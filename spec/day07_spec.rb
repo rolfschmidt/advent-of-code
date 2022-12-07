@@ -1,5 +1,4 @@
 class Day07 < Helper
-
   def self.part1(part2 = false)
     cmds = file.split("$ ").reject(&:empty?).map(&:chomp)
 
