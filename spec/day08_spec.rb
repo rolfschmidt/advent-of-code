@@ -24,44 +24,40 @@ class Day08 < Helper
         count_right  = 0
 
         (0..yi - 1).to_a.reverse.each do |ci|
+          count_top += 1
           if matrix[ci][xi] >= xv
-            count_top += 1
             top        = false
             break
           end
 
-          top        = true
-          count_top += 1
+          top = true
         end
         (yi + 1..maxy).to_a.each do |ci|
+          count_bottom += 1
           if matrix[ci][xi] >= xv
-            count_bottom += 1
-            bottom        = false
+            bottom = false
             break
           end
 
           bottom        = true
-          count_bottom += 1
         end
         (0..xi - 1).to_a.reverse.each do |ci|
+          count_left += 1
           if matrix[yi][ci] >= xv
-            left        = false
-            count_left += 1
+            left = false
             break
           end
 
-          left        = true
-          count_left += 1
+          left = true
         end
         (xi + 1..maxx).to_a.each do |ci|
+          count_right += 1
           if matrix[yi][ci] >= xv
-            right        = false
-            count_right += 1
+            right = false
             break
           end
 
-          right        = true
-          count_right += 1
+          right = true
         end
 
         if top || bottom || left || right
