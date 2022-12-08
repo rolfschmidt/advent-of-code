@@ -26,7 +26,7 @@ class Day08 < Helper
         (0..yi - 1).to_a.reverse.each do |ci|
           count_top += 1
           if matrix[ci][xi] >= xv
-            top        = false
+            top = false
             break
           end
 
@@ -39,7 +39,7 @@ class Day08 < Helper
             break
           end
 
-          bottom        = true
+          bottom = true
         end
         (0..xi - 1).to_a.reverse.each do |ci|
           count_left += 1
