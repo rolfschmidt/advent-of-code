@@ -1,6 +1,4 @@
 
-require 'matrix'
-
 class Day09 < Helper
   def self.part1(chain_count = 2)
     chains  = chain_count.times.map { Vector[0, 0] }

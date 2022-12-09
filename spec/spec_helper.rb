@@ -14,6 +14,7 @@
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'matrix'
 require 'rails'
 require 'active_support/all'
 require 'helper'
