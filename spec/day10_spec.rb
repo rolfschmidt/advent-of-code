@@ -4,8 +4,7 @@ class Day10 < Helper
     data    = file.split("\n").map{|v| v.split(" ") }
     run_cmd = []
 
-    i = 1
-    while i < cycle do
+    (cycle - 1).times do
       if run_cmd.present?
         result += run_cmd[1].to_i
         run_cmd = nil
@@ -16,8 +15,6 @@ class Day10 < Helper
           run_cmd = add_cmd
         end
       end
-
-      i += 1
     end
 
     result
