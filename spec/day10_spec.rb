@@ -1,19 +1,16 @@
 class Day10 < Helper
-  def self.calc(cycle = 5, part2 = false)
+  def self.calc(cycle, part2 = false)
     result  = 1
-    data    = file.split("\n")
+    data    = file.split("\n").map{|v| v.split(" ") }
     run_cmd = []
 
     i = 1
     while i < cycle do
       if run_cmd.present?
-        cmd, count = run_cmd
-
-        result += count
+        result += run_cmd[1].to_i
         run_cmd = nil
       elsif data.present?
-        add_cmd = data.shift.split(" ")
-        add_cmd[1] = add_cmd[1].to_i
+        add_cmd = data.shift
 
         if add_cmd[0] != 'noop'
           run_cmd = add_cmd
@@ -29,7 +26,7 @@ class Day10 < Helper
   end
 
   def self.part1
-    return calc(20) + calc(60) + calc(100) + calc(140) + calc(180) + calc(220)
+    calc(20) + calc(60) + calc(100) + calc(140) + calc(180) + calc(220)
   end
 
   def self.part2
