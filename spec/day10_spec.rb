@@ -44,7 +44,7 @@ class Day10 < Helper
       matrix[crt] = "#"
     end
 
-    matrix.each_slice(40).to_a.map{|yv| yv.join }.join("\n")
+    matrix.each_slice(40).map{|yv| yv.join }.join("\n")
   end
 end
 
