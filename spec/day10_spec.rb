@@ -34,9 +34,7 @@ class Day10 < Helper
 
     240.times do |crt|
       pos  = calc(crt + 1, true)
-      crtm = crt % 40
-
-      next if [pos - 1, pos, pos + 1].exclude?(crtm)
+      next if [pos - 1, pos, pos + 1].exclude?(crt % 40)
 
       matrix[crt] = "#"
     end
