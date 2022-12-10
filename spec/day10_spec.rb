@@ -44,16 +44,7 @@ class Day10 < Helper
       matrix[crt] = "#"
     end
 
-    result = ''
-    matrix.each_slice(40) do |yv|
-      yv.each do |xv|
-        result += xv
-      end
-
-      result += "\n"
-    end
-
-    result
+    matrix.each_slice(40).to_a.map{|yv| yv.join }.join("\n")
   end
 end
 
@@ -71,6 +62,6 @@ RSpec.describe "Day10" do
 #....#..#.#..#.#..#.#..#.#....#..#.#....
 ####..##..###..#..#..##..#.....##..####.
 RESS
-    )
+.chomp)
   end
 end
