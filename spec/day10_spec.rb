@@ -1,5 +1,5 @@
 class Day10 < Helper
-  def self.calc(cycle, part2 = false)
+  def self.calc(cycle)
     result  = 1
     data    = file.split("\n").map{|v| v.split(" ") }
     run_cmd = []
@@ -20,20 +20,18 @@ class Day10 < Helper
       i += 1
     end
 
-    return result if part2
-
-    result * cycle
+    result
   end
 
   def self.part1
-    calc(20) + calc(60) + calc(100) + calc(140) + calc(180) + calc(220)
+    [20, 60, 100, 140, 180, 220].map{|v| calc(v) * v }.sum
   end
 
   def self.part2
     matrix = ['.'] * 240
 
     240.times do |crt|
-      pos = calc(crt + 1, true)
+      pos = calc(crt + 1)
       next if [pos - 1, pos, pos + 1].exclude?(crt % 40)
 
       matrix[crt] = "#"
