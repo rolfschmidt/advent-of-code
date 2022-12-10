@@ -1,10 +1,10 @@
 class Day10 < Helper
-  def self.calc(cycle)
+  def self.calc(cycles)
     result  = 1
     data    = file.split("\n").map{|v| v.split(" ") }
     run_cmd = []
 
-    (cycle - 1).times do
+    (cycles - 1).times do
       if run_cmd.present?
         result += run_cmd[1].to_i
         run_cmd = nil
