@@ -15,7 +15,7 @@ Monkey = Struct.new(:id, :items, :operation, :diff, :true_monkey, :false_monkey,
       if part2
         item %= divisor
       else
-        item = (item /  3).to_i
+        item = (item / 3).to_i
       end
 
       if item % diff == 0
