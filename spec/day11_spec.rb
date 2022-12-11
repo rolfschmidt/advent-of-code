@@ -56,7 +56,7 @@ class Day11 < Helper
       end
     end
 
-    monkeys.map(&:inspections).sort.last(2).inject(:*)
+    monkeys.map(&:inspections).max(2).inject(:*)
   end
 
   def self.part2
