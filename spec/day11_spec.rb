@@ -50,8 +50,8 @@ class Day11 < Helper
 
     (part2 ? 10000 : 20).times do
       monkeys.each do |monkey|
-        monkey.throw(divisor).each do |to_monkey_id, items|
-          monkeys[to_monkey_id].items += items
+        monkey.throw(divisor).each do |to_monkey, items|
+          monkeys[to_monkey].items += items
         end
       end
     end
