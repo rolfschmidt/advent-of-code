@@ -15,15 +15,15 @@ Square = Struct.new(:x, :y, :name) do
         [0, -1],
         [0, 1],
       ].each_with_object([]) do |d, result|
-        new_pos = [x + d[0], y + d[1]]
-        next if new_pos[0] < 0
-        next if new_pos[1] < 0
+        pos = [x + d[0], y + d[1]]
+        next if pos[0] < 0
+        next if pos[1] < 0
 
-        new_pos = matrix.dig(new_pos[1], new_pos[0])
-        next if new_pos.blank?
-        next if new_pos.height > height + 1
+        pos = matrix.dig(pos[1], pos[0])
+        next if pos.blank?
+        next if pos.height > height + 1
 
-        result << new_pos
+        result << pos
       end
     end
   end
