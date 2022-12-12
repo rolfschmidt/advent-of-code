@@ -39,8 +39,8 @@ Square = Struct.new(:x, :y, :name) do
 
       return count if node.name == 'E'
 
-      node.neighbours(matrix).each do |sub_node|
-        queue.push([sub_node, count + 1])
+      node.neighbours(matrix).each do |n|
+        queue.push([n, count + 1])
       end
     end
   end
@@ -53,7 +53,7 @@ class Day12 < Helper
       matrix << r.map.with_index {|c, x| Square.new(x, y, c) }
     end
 
-    return matrix.flatten.select{|s| s.name == 'a' }.map{|n| Square.count_from(matrix, n) }.compact.min if part2
+    return matrix.flatten.select{|n| n.name == 'a' }.map{|n| Square.count_from(matrix, n) }.compact.min if part2
 
     Square.count_from(matrix, matrix.flatten.detect{|n| n.name == 'S'})
   end
