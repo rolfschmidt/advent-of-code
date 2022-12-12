@@ -58,7 +58,7 @@ class Day12 < Helper
 
     return matrix.flatten.select{|s| s.name == 'a' }.map{|n| Square.count_from(matrix, n) }.compact.min if part2
 
-    Square.count_from(matrix, matrix.flatten.find{|n| n.name == 'S'})
+    Square.count_from(matrix, matrix.flatten.detect{|n| n.name == 'S'})
   end
 
   def self.part2
