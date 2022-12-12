@@ -8,27 +8,24 @@ Square = Struct.new(:x, :y, :name) do
   end
 
   def neighbours(matrix)
-    return @neighbours if !@neighbours.nil?
+    @neighbours ||= begin
+      [
+        [-1, 0],
+        [1, 0],
+        [0, -1],
+        [0, 1],
+      ].each_with_object([]) do |d, result|
+        new_pos = [x + d[0], y + d[1]]
+        next if new_pos[0] < 0
+        next if new_pos[1] < 0
 
-    @neighbours = []
-    [
-      [-1, 0],
-      [1, 0],
-      [0, -1],
-      [0, 1],
-    ].each do |d|
-      new_pos = [x + d[0], y + d[1]]
-      next if new_pos[0] < 0
-      next if new_pos[1] < 0
+        new_pos = matrix.dig(new_pos[1], new_pos[0])
+        next if new_pos.blank?
+        next if new_pos.height > height + 1
 
-      new_pos = matrix.dig(new_pos[1], new_pos[0])
-      next if new_pos.blank?
-      next if new_pos.height > height + 1
-
-      @neighbours << new_pos
+        result << new_pos
+      end
     end
-
-    @neighbours
   end
 
   def self.count_from(matrix, start)
