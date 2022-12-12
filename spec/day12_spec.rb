@@ -10,14 +10,12 @@ Square = Struct.new(:x, :y, :name) do
   def neighbours(matrix)
     @neighbours ||= begin
       [
-        [-1, 0],
-        [1, 0],
-        [0, -1],
-        [0, 1],
-      ].each_with_object([]) do |d, result|
-        pos = [x + d[0], y + d[1]]
-        next if pos[0] < 0
-        next if pos[1] < 0
+        [x + -1, y],
+        [x + 1, y],
+        [x, y + -1],
+        [x, y + 1],
+      ].each_with_object([]) do |pos, result|
+        next if pos.any?(&:negative?)
 
         pos = matrix.dig(pos[1], pos[0])
         next if pos.blank?
