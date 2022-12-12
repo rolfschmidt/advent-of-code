@@ -48,9 +48,8 @@ end
 
 class Day12 < Helper
   def self.part1(part2 = false)
-    matrix = []
-    file.split("\n").map{|v| v.split("") }.each_with_index do |r, y|
-      matrix << r.map.with_index {|c, x| Square.new(x, y, c) }
+    matrix = file.split("\n").map(&:chars).map.with_index do |r, y|
+      r.map.with_index {|c, x| Square.new(x, y, c) }
     end
 
     return matrix.flatten.select{|n| n.name == 'a' }.map{|n| Square.count_from(matrix, n) }.compact.min if part2
