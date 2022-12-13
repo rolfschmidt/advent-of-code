@@ -1,23 +1,21 @@
 class Day13 < Helper
   def self.compare(a, b)
     if a.is_a?(Integer) && b.is_a?(Integer)
-      return 1 if a < b
-      return -1 if a > b
-      return 0
+      return a <=> b
     elsif a.is_a?(Array) && b.is_a?(Array)
-      while a.present? && b.present?
-        res = compare(a.shift, b.shift)
+      aa = a.deep_dup
+      bb = b.deep_dup
+      while aa.present? && bb.present?
+        res = compare(aa.shift, bb.shift)
         return res if res != 0
       end
 
-      return 1 if a.blank? && b.present?
-      return -1 if b.blank? && a.present?
+      return -1 if aa.blank? && bb.present?
+      return 1 if bb.blank? && aa.present?
       return 0
-    elsif !a.is_a?(Array) || !b.is_a?(Array)
-      return compare(Array(a), Array(b))
     end
 
-    return 0
+    return compare(Array(a), Array(b))
   end
 
   def self.part1(part2 = false)
@@ -27,17 +25,15 @@ class Day13 < Helper
       a, b = line.split("\n").map{|v| JSON.parse(v) }
       all += [a, b]
 
-      next if compare(a.deep_dup, b.deep_dup) != 1
+      next if compare(a, b) != -1
       result << i + 1
     end
 
     if part2
-      t1   = [[2]]
-      t2   = [[6]]
-      all += [t1, t2]
-      all  = all.sort {|a,b| compare(a.deep_dup, b.deep_dup) }.reverse
+      d    = [[[2]], [[6]]]
+      all  = (all + d).sort {|a,b| compare(a, b) }
 
-      return (all.index(t1) + 1) * (all.index(t2) + 1)
+      return (all.index(d[0]) + 1) * (all.index(d[1]) + 1)
     end
 
     return result.sum
