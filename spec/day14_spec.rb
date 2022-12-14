@@ -32,7 +32,6 @@ class Day14 < Helper
     file.split("\n").each do |line|
       line.split(" -> ").each do |part|
         rock = Rock.new(*part.split(",").map(&:to_i))
-        matrix[rock.to_s] = rock
 
         from ||= rock
         ([from.y, rock.y].min..[from.y, rock.y].max).each do |y|
