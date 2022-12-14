@@ -57,7 +57,7 @@ class Day14 < Helper
       from = nil
     end
 
-    maxy = matrix.values.grep(Rock).map{|v| v.y }.max
+    maxy = matrix.values.grep(Rock).map(&:y).max
 
     i = 0
     while true do
