@@ -34,17 +34,14 @@ class Day14 < Helper
         rock = Rock.new(*part.split(",").map(&:to_i))
         matrix[rock.to_s] = rock
 
-        if from.nil?
-          from = rock
-        else
-          ([from.y, rock.y].min..[from.y, rock.y].max).each do |y|
-            ([from.x, rock.x].min..[from.x, rock.x].max).each do |x|
-              rock_line = Rock.new(x, y)
-              matrix[rock_line.to_s] = rock_line
-            end
+        from ||= rock
+        ([from.y, rock.y].min..[from.y, rock.y].max).each do |y|
+          ([from.x, rock.x].min..[from.x, rock.x].max).each do |x|
+            rock_line = Rock.new(x, y)
+            matrix[rock_line.to_s] = rock_line
           end
-          from = rock
         end
+        from = rock
       end
       from = nil
     end
