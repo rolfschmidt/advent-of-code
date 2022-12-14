@@ -1,8 +1,4 @@
 Sand = Struct.new(:x, :y) do
-  def to_s
-    "#{x}_#{y}"
-  end
-
   def fall(matrix, maxy, part2 = false)
     [
       [0, 1],
@@ -27,11 +23,7 @@ Sand = Struct.new(:x, :y) do
   end
 end
 
-Rock = Struct.new(:x, :y) do
-  def to_s
-    "#{x}_#{y}"
-  end
-end
+Rock = Struct.new(:x, :y)
 
 class Day14 < Helper
   def self.part1(part2 = false)

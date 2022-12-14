@@ -24,6 +24,12 @@ class Helper
   end
 end
 
+class Struct
+  def to_s
+    values.join("_")
+  end
+end
+
 RSpec.configure do |config|
   config.default_formatter = "doc"
 end
