@@ -57,10 +57,7 @@ class Day14 < Helper
       from = nil
     end
 
-    maxx = matrix.values.grep(Rock).map{|v| v.x }.max
     maxy = matrix.values.grep(Rock).map{|v| v.y }.max
-    minx = matrix.values.grep(Rock).map{|v| v.x }.min
-    miny = matrix.values.grep(Rock).map{|v| v.y }.min
 
     i = 0
     while true do
