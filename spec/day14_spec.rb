@@ -3,14 +3,7 @@ Sand = Struct.new(:x, :y) do
     "#{x}_#{y}"
   end
 
-  def get(dx, dy)
-    posx = x + dx
-    posy = y + dy
-    matrix["#{posx}_#{posy}"]
-  end
-
-  def fall(matrix, max_fall, part2 = false)
-    # pp self
+  def fall(matrix, maxy, part2 = false)
     [
       [0, 1],
       [-1, 1],
@@ -21,12 +14,12 @@ Sand = Struct.new(:x, :y) do
       pos  = matrix["#{posx}_#{posy}"]
       next if !pos.nil?
 
-      return (part2 ? self : nil) if y > max_fall
+      return (part2 ? self : nil) if y > maxy
 
       self.x = posx
       self.y = posy
 
-      return fall(matrix, max_fall, part2)
+      return fall(matrix, maxy, part2)
     end
 
     return if x == 500 && y == 0
@@ -80,20 +73,14 @@ class Day14 < Helper
       from = nil
     end
 
-    max_fall = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.y }.max
-
     i = 0
     while true do
       sand = Sand.new(500, 0)
-      sand = sand.fall(matrix, max_fall, part2)
+      sand = sand.fall(matrix, maxy(matrix), part2)
       break if sand.nil?
 
       matrix[sand.to_s] = sand
       i += 1
-
-      # if matrix.count % 500 == 0
-      #   puts matrix.count
-      # end
     end
 
     if false
