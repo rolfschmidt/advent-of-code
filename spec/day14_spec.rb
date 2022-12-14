@@ -28,8 +28,8 @@ Rock = Struct.new(:x, :y)
 class Day14 < Helper
   def self.part1(part2 = false)
     matrix = {}
-    from = nil
     file.split("\n").each do |line|
+      from = nil
       line.split(" -> ").each do |part|
         rock = Rock.new(*part.split(",").map(&:to_i))
 
@@ -42,7 +42,6 @@ class Day14 < Helper
         end
         from = rock
       end
-      from = nil
     end
 
     maxy = matrix.values.grep(Rock).map(&:y).max
