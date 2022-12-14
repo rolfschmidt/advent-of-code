@@ -57,38 +57,18 @@ class Day14 < Helper
       from = nil
     end
 
-    maxx = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.x }.max
-    maxy = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.y }.max
-    minx = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.x }.min
-    miny = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.y }.min
+    maxx = matrix.values.grep(Rock).map{|v| v.x }.max
+    maxy = matrix.values.grep(Rock).map{|v| v.y }.max
+    minx = matrix.values.grep(Rock).map{|v| v.x }.min
+    miny = matrix.values.grep(Rock).map{|v| v.y }.min
 
     i = 0
     while true do
-      sand = Sand.new(500, 0)
-      sand = sand.fall(matrix, maxy, part2)
+      sand = Sand.new(500, 0).fall(matrix, maxy, part2)
       break if sand.nil?
 
       matrix[sand.to_s] = sand
       i += 1
-    end
-
-    if false
-      (miny - 10..maxy + 10).each do |y|
-        (minx - 10..maxx + 10).each do |x|
-          o = matrix["#{x}_#{y}"]
-
-          if o.present?
-            if o.is_a?(Rock)
-              print "#"
-            else
-              print "o"
-            end
-          else
-            print "."
-          end
-        end
-        print "\n"
-      end
     end
 
     i
