@@ -34,22 +34,6 @@ Rock = Struct.new(:x, :y) do
 end
 
 class Day14 < Helper
-  def self.maxx(matrix)
-    matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.x }.max
-  end
-
-  def self.maxy(matrix)
-    matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.y }.max
-  end
-
-  def self.minx(matrix)
-    matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.x }.min
-  end
-
-  def self.miny(matrix)
-    matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.y }.min
-  end
-
   def self.part1(part2 = false)
     matrix = {}
     from = nil
@@ -73,10 +57,15 @@ class Day14 < Helper
       from = nil
     end
 
+    maxx = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.x }.max
+    maxy = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.y }.max
+    minx = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.x }.min
+    miny = matrix.values.select{|o| o.is_a?(Rock) }.map{|v| v.y }.min
+
     i = 0
     while true do
       sand = Sand.new(500, 0)
-      sand = sand.fall(matrix, maxy(matrix), part2)
+      sand = sand.fall(matrix, maxy, part2)
       break if sand.nil?
 
       matrix[sand.to_s] = sand
@@ -84,8 +73,8 @@ class Day14 < Helper
     end
 
     if false
-      (miny(matrix) - 10..maxy(matrix) + 10).each do |y|
-        (minx(matrix) - 10..maxx(matrix) + 10).each do |x|
+      (miny - 10..maxy + 10).each do |y|
+        (minx - 10..maxx + 10).each do |x|
           o = matrix["#{x}_#{y}"]
 
           if o.present?
