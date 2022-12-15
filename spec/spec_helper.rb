@@ -26,7 +26,8 @@ end
 
 class Struct
   def to_s
-    values.join("_")
+    return "#{x}_#{y}" if self.try(:x).present?
+    super
   end
 end
 
