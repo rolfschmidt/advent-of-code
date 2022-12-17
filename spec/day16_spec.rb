@@ -33,7 +33,7 @@ class Day16 < Helper
   end
 
   def self.search(time, valve, opened)
-    cache_key = "#{time}_#{valve}_#{opened}"
+    cache_key = [time, valve, opened.sort]
 
     @cache ||= {}
     return @cache[cache_key] if @cache[cache_key]
@@ -46,7 +46,7 @@ class Day16 < Helper
       remaining_time = time - sub_dist - 1
       next if remaining_time <= 0
 
-      sub_maxval = search(remaining_time, sub_name, "#{opened},#{sub_name}") + @valvesh[sub_name][1] * remaining_time
+      sub_maxval = search(remaining_time, sub_name, opened + [sub_name]) + @valvesh[sub_name][1] * remaining_time
 
       maxval = [maxval, sub_maxval].max
     end
@@ -56,7 +56,7 @@ class Day16 < Helper
     return maxval
   end
 
-  def self.part1
+  def self.parse
     @valves  = []
     @valvesh = {}
 
@@ -70,12 +70,32 @@ class Day16 < Helper
       @valves << valve
       @valvesh[name] = valve
     end
+  end
 
-    search(30, "AA", "")
+  def self.part1
+    parse
+
+    search(30, "AA", [])
   end
 
   def self.part2
-    100
+    parse
+
+    # always add AA so size is equal
+    rated_valves = @valves.select{|v| v[1] > 0 || v[0] == 'AA' }.map{|v| v[0] }
+
+    best = 0
+    rated_valves.combination(rated_valves.count / 2).each do |g1|
+      rated_valves.combination(rated_valves.count / 2).each do |g2|
+        next if (g1 & g2).present?
+
+        a    = search(26, "AA", g1.sort)
+        b    = search(26, "AA", g2.sort)
+        best = [best, a + b].max
+      end
+    end
+
+    best
   end
 end
 
@@ -85,6 +105,6 @@ RSpec.describe "Day16" do
   end
 
   it "does part 2" do
-    expect(Day16.part2).to eq(100)
+    expect(Day16.part2).to eq(2207)
   end
 end
