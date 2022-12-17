@@ -31,6 +31,11 @@ class Struct
   end
 end
 
+
+def ddup(obj)
+  Marshal.load(Marshal.dump(obj))
+end
+
 RSpec.configure do |config|
   config.default_formatter = "doc"
 end
