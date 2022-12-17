@@ -1,6 +1,9 @@
-require 'matrix'
 require 'rails'
 require 'active_support/all'
+
+require 'matrix'
+require 'dijkstra_trace'
+
 require 'pry'
 require 'byebug'
 
@@ -39,3 +42,4 @@ end
 RSpec.configure do |config|
   config.default_formatter = "doc"
 end
+

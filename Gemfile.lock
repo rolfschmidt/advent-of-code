@@ -66,6 +66,7 @@ GEM
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     diff-lcs (1.5.0)
+    dijkstra_trace (0.1.1)
     erubi (1.11.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -152,6 +153,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  dijkstra_trace
   pry-rails
   rails
   rspec
