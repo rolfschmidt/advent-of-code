@@ -1,45 +1,46 @@
-Rock = Struct.new(:x, :y, :shape, :moving) do
+Rock = Struct.new(:x, :y, :shape) do
   attr_accessor :pos
+  attr_accessor :diff_height
 
   def initialize(*)
     super
 
     if shape == :hline
       @pos = [
-        [x, y],
-        [x - 1, y],
-        [x + 1, y],
         [x + 2, y],
+        [x + 3, y],
+        [x + 4, y],
+        [x + 5, y],
       ]
     elsif shape == :plus
       @pos = [
-        [x, y],
-        [x, y - 1],
-        [x, y - 2],
-        [x - 1, y - 1],
-        [x + 1, y - 1],
+        [x + 3, y],
+        [x + 3, y - 1],
+        [x + 3, y - 2],
+        [x + 2, y - 1],
+        [x + 4, y - 1],
       ]
     elsif shape == :lleft
       @pos = [
-        [x, y],
-        [x - 1, y],
-        [x + 1, y],
-        [x + 1, y - 1],
-        [x + 1, y - 2],
+        [x + 2, y],
+        [x + 3, y],
+        [x + 4, y],
+        [x + 4, y - 1],
+        [x + 4, y - 2],
       ]
     elsif shape == :vline
       @pos = [
-        [x - 1, y],
-        [x - 1, y - 1],
-        [x - 1, y - 2],
-        [x - 1, y - 3],
+        [x + 2, y],
+        [x + 2, y - 1],
+        [x + 2, y - 2],
+        [x + 2, y - 3],
       ]
     elsif shape == :box
       @pos = [
-        [x, y],
-        [x, y - 1],
-        [x - 1, y],
-        [x - 1, y - 1],
+        [x + 2, y],
+        [x + 2, y - 1],
+        [x + 3, y],
+        [x + 3, y - 1],
       ]
     else
       raise
@@ -66,8 +67,8 @@ end
 Chamber = Struct.new(:move_data, :part2) do
   attr_accessor :saved
   attr_accessor :highest
+  attr_accessor :cheat_highest
   attr_accessor :block_history
-  attr_accessor :block_history_count
   attr_accessor :moves
   attr_accessor :move_index
   attr_accessor :shapes
@@ -83,8 +84,8 @@ Chamber = Struct.new(:move_data, :part2) do
     @highest             = 1
     @saved               = {}
     @block_history       = []
-    @block_history_count = []
     @move_index          = 0
+    @cheat_highest       = 0
   end
 
   def miny
@@ -103,7 +104,7 @@ Chamber = Struct.new(:move_data, :part2) do
     7
   end
 
-  def highest_block(block, stop_count)
+  def highest_block(block)
     block.pos.each do |x, y|
       @highest = [@highest, y].min
     end
@@ -122,7 +123,20 @@ Chamber = Struct.new(:move_data, :part2) do
     end
 
     shape = shapes[shape_pos]
-    Rock.new(3, miny, shape, true)
+    Rock.new(0, miny, shape)
+  end
+
+  def peek_shapes(val)
+    current = shape_pos
+    result  = []
+    val.times do
+      current += 1
+      if current > shapes.count - 1
+        current = 0
+      end
+      result << shapes[current]
+    end
+    result
   end
 
   def move(block, ds)
@@ -148,34 +162,25 @@ Chamber = Struct.new(:move_data, :part2) do
     return b2.pos.any?{|x, y| saved["#{x}_#{y}"] }
   end
 
-  def find_range(move_index, shape)
-    block_size = moves.count * 10
-
-    puts "check size #{block_size}"
-    block_history.each_cons(block_size).with_index do |r1, r1i|
-      block_history.each_cons(block_size).with_index do |r2, r2i|
-        next if r1i == r2i
-        next if r2.first[0] != move_index
-        next if r2.first[1] != shape
-        next if r1 != r2
-
-        if r1 == r2
-           puts "found range #{r1.join(",")}"
-           puts "r2 #{r2.join(",")}"
-           return r1
-        end
+  def peek_index(val)
+    current = move_index
+    result  = []
+    val.times do
+      current += 1
+      if current == moves.count
+        current = 0
       end
+      result << current
     end
-
-    nil
+    result
   end
 
   def run
-    @blocks << new_shape
-
     stop_count = 0
     while true do
-      old_block = @blocks.pop
+      show
+
+      old_block = @blocks.pop || new_shape
       new_block = move(old_block, [0, 1])
       if !new_block
         stop_count += 1
@@ -183,54 +188,99 @@ Chamber = Struct.new(:move_data, :part2) do
         @blocks << old_block
 
         old_highest = highest
-        highest_block(old_block, stop_count)
+        highest_block(old_block)
         save_block(old_block)
 
-        @block_history << [move_index, old_block.shape, highest - (old_highest || 0)]
-        @block_history << [move_index, old_block.shape]
-        @block_history_count << highest
+        old_block.diff_height = (highest - (old_highest || 0)).to_i
+
+        # @block_history << [move_index, old_block.shape, highest - (old_highest || 0)]
+        @block_history << [(highest - (old_highest || 0)).to_i, old_block.shape]
 
         break if stop_count == 2022 && !part2
+        # break if stop_count == 6 && !part2
+        break if stop_count == 1000000000000 && part2
+        # break if stop_count == 2022 && part2
+
+        if stop_count % 1000 == 0
+          puts stop_count
+        end
+
+        if stop_count >= 2022 && part2 && !@cheated
+          @cheated = true
+          if stop_count % 1000 == 0
+            puts stop_count
+          end
+
+          (1..1000).each do |ri|
+            circle_range   = ri
+            circle_items   = block_history.last(circle_range)
+            circle_history = circle_items * 2
+            if block_history.last(circle_range * 2) == circle_history
+              circle_sum = circle_items.map{|c| c[0] }.sum
+              rest_count = 1000000000000 - stop_count
+              rounds     = (rest_count / circle_items.count).to_i
+
+              if rounds > 0
+                stop_count -= 1
+                stop_count += rounds * circle_items.count
+                @cheat_highest += rounds * circle_sum
+                puts "CHEAT #{cheat_highest} on #{ri}"
+                puts "New round #{stop_count}"
+                puts "REST #{rest_count % circle_items.count}"
+
+                blocks.each_with_index do |_, bi|
+                  blocks[bi].pos.each_with_index do |bp, bpi|
+                    @blocks[bi].pos[bpi][1] += @cheat_highest
+                  end
+                  highest_block(blocks[bi])
+                  save_block(blocks[bi])
+                end
+
+                @shapes     = circle_items.map{|c| c[1] }
+                @shape_pos  = 0
+                @move_index = circle_items.first[0]
+              end
+            end
+          end
+        end
 
         @blocks << new_shape
+        show
       else
+        # puts "fall"
         @blocks << new_block
       end
+
+      # @move_index += 1
+      # if move_index == moves.count
+      #   @move_index = 0
+      # end
 
       #
       # GAS
       #
 
-      old_block    = @blocks.pop
-      @move_index += 1
-
-      if move_index == moves.count
-        @move_index = 0
-      end
-
-      if stop_count >= 2022 && part2
-        puts stop_count
-
-        range = find_range(move_index, old_block.shape)
-        if range
-          puts "found range #{range}"
-          binding.pry
-        end
-      end
-
+      old_block = @blocks.pop
       next_move = moves[move_index]
+      # puts "#{next_move.inspect} of index #{move_index}"
       new_block = move(old_block, next_move)
       if !new_block
         @blocks << old_block
-        next
+      else
+        @blocks << new_block
       end
 
-      @blocks << new_block
+      @move_index += 1
+      if move_index == moves.count
+        @move_index = 0
+      end
     end
 
+    stop_count
   end
 
   def show
+    return
     (miny..1).to_a.each do |y|
       (-1..7).to_a.each do |x|
         if x == -1 && y == 1
@@ -268,7 +318,7 @@ end
 class Day17 < Helper
   def self.part1(part2 = false)
     moves = []
-    file.split("").each do |v|
+    file_test.split("").each do |v|
       if v == '>'
         moves << [1, 0]
       else
@@ -277,8 +327,17 @@ class Day17 < Helper
     end
 
     chamber = Chamber.new(moves, part2)
-    chamber.run
+    stop_count = chamber.run
+    # chamber.show
 
+    puts "STOP: #{stop_count}"
+    pp chamber.highest.abs + chamber.cheat_highest.abs + 1 if part2
+
+    pp chamber.highest.abs + 1
+
+    raise if 1514285714288 != chamber.highest.abs + 1 && moves.count == 40
+
+    exit
     return chamber.highest.abs + 1
   end
 
@@ -288,11 +347,11 @@ class Day17 < Helper
 end
 
 RSpec.describe "Day17" do
-  it "does part 1" do
-    expect(Day17.part1).to eq(3181)
-  end
-
-  # it "does part 2" do
-  #   expect(Day17.part2).to eq(100)
+  # it "does part 1" do
+  #   expect(Day17.part1).to eq(3181)
   # end
+
+  it "does part 2" do
+    expect(Day17.part2).to eq(100)
+  end
 end
