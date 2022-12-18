@@ -91,7 +91,7 @@ Chamber = Struct.new(:move_data, :part2) do
   end
 
   def miny
-    (blocks.map(&:miny).min || 0) - 4
+    (blocks.last(10).map(&:miny).min || 0) - 4
   end
 
   def maxy
@@ -114,19 +114,22 @@ Chamber = Struct.new(:move_data, :part2) do
 
   def save_block(block)
     block.pos.each do |x, y|
-      @saved["#{x}_#{y}"] = true
+      @saved[[x,y]] = true
     end
   end
 
   def cleanup
-    if @saved.keys.count > 5000
-      blocks.last(1000).each do |block|
+    clean_when = 3000
+    clean_to   = 1000
+    if @saved.keys.count > clean_when
+      @saved = {}
+      blocks.last(clean_to).each do |block|
         save_block(block)
       end
     end
 
-    if blocks.count > 5000
-      blocks = blocks.last(1000)
+    if blocks.count > clean_when
+      @blocks = blocks.last(clean_to)
     end
   end
 
@@ -160,20 +163,34 @@ Chamber = Struct.new(:move_data, :part2) do
       return if pos[0] + ds[0] == maxx
       return if pos[0] + ds[0] < minx
 
-      tmp_block = ddup(new_block)
-      tmp_block.pos[i][0] += ds[0]
-      tmp_block.pos[i][1] += ds[1]
-      return if collides_any?(tmp_block)
+      new_block.pos[i][0] += ds[0]
+      new_block.pos[i][1] += ds[1]
+    end
+
+    return if collides_any?(new_block)
+
+    new_block
+  end
+
+
+  def move2(block, ds)
+    new_block = ddup(block)
+    block.pos.each_with_index do |pos, i|
+      return if pos[1] + ds[1] == maxy
+      return if pos[0] + ds[0] == maxx
+      return if pos[0] + ds[0] < minx
 
       new_block.pos[i][0] += ds[0]
       new_block.pos[i][1] += ds[1]
     end
 
+    return if collides_any?(new_block)
+
     new_block
   end
 
   def collides_any?(b2)
-    return b2.pos.any?{|x, y| saved["#{x}_#{y}"] }
+    return b2.pos.any?{|x, y| saved[[x,y]] }
   end
 
   def peek_index(val)
@@ -212,7 +229,7 @@ Chamber = Struct.new(:move_data, :part2) do
         old_highest = highest
         highest_block(old_block)
         save_block(old_block)
-        # cleanup
+        cleanup
 
         old_block.diff_height = (highest - (old_highest || 0)).to_i
 
@@ -231,7 +248,7 @@ Chamber = Struct.new(:move_data, :part2) do
             puts stop_count
           end
 
-          (1..1000).each do |ri|
+          (1..500).each do |ri|
             circle_range, circle_items = find_range(ri)
             if circle_items.present?
               circle_sum = circle_items.map{|c| c[0] }.sum
@@ -338,14 +355,20 @@ class Day17 < Helper
       end
     end
 
+    # require 'ruby-prof'
+    # RubyProf.start
+
     chamber = Chamber.new(moves, part2)
     stop_count = chamber.run
     # chamber.show
 
     puts "STOP: #{stop_count}"
-    pp chamber.highest.abs + chamber.cheat_highest.abs + 1 if part2
 
     pp chamber.highest.abs + 1
+
+    # result = RubyProf.stop
+    # printer = RubyProf::FlatPrinter.new(result)
+    # printer.print(STDOUT)
 
     raise if 1514285714288 != chamber.highest.abs + 1 && moves.count == 40
 
