@@ -62,13 +62,16 @@ Rock = Struct.new(:x, :y, :shape) do
   def maxy
     pos.map {|v| v[1] }.max
   end
+
+  def diff
+    @diff ||= [diff_height, shape]
+  end
 end
 
 Chamber = Struct.new(:move_data, :part2) do
   attr_accessor :saved
   attr_accessor :highest
   attr_accessor :cheat_highest
-  attr_accessor :block_history
   attr_accessor :moves
   attr_accessor :move_index
   attr_accessor :shapes
@@ -83,7 +86,6 @@ Chamber = Struct.new(:move_data, :part2) do
     @shape_pos           = -1
     @highest             = 1
     @saved               = {}
-    @block_history       = []
     @move_index          = 0
     @cheat_highest       = 0
   end
@@ -113,6 +115,18 @@ Chamber = Struct.new(:move_data, :part2) do
   def save_block(block)
     block.pos.each do |x, y|
       @saved["#{x}_#{y}"] = true
+    end
+  end
+
+  def cleanup
+    if @saved.keys.count > 5000
+      blocks.last(1000).each do |block|
+        save_block(block)
+      end
+    end
+
+    if blocks.count > 5000
+      blocks = blocks.last(1000)
     end
   end
 
@@ -175,6 +189,14 @@ Chamber = Struct.new(:move_data, :part2) do
     result
   end
 
+  def find_range(circle_range)
+    circle_items   = blocks.last(circle_range).map(&:diff)
+    circle_history = circle_items * 2
+    if blocks.last(circle_range * 2).map(&:diff) == circle_history
+      return [circle_range, circle_items]
+    end
+  end
+
   def run
     stop_count = 0
     while true do
@@ -190,11 +212,9 @@ Chamber = Struct.new(:move_data, :part2) do
         old_highest = highest
         highest_block(old_block)
         save_block(old_block)
+        # cleanup
 
         old_block.diff_height = (highest - (old_highest || 0)).to_i
-
-        # @block_history << [move_index, old_block.shape, highest - (old_highest || 0)]
-        @block_history << [(highest - (old_highest || 0)).to_i, old_block.shape]
 
         break if stop_count == 2022 && !part2
         # break if stop_count == 6 && !part2
@@ -212,10 +232,8 @@ Chamber = Struct.new(:move_data, :part2) do
           end
 
           (1..1000).each do |ri|
-            circle_range   = ri
-            circle_items   = block_history.last(circle_range)
-            circle_history = circle_items * 2
-            if block_history.last(circle_range * 2) == circle_history
+            circle_range, circle_items = find_range(ri)
+            if circle_items.present?
               circle_sum = circle_items.map{|c| c[0] }.sum
               rest_count = 1000000000000 - stop_count
               rounds     = (rest_count / circle_items.count).to_i
@@ -236,9 +254,9 @@ Chamber = Struct.new(:move_data, :part2) do
                   save_block(blocks[bi])
                 end
 
-                @shapes     = circle_items.map{|c| c[1] }
-                @shape_pos  = 0
+                @shape_pos  = shapes.index(circle_items.first[1])
                 @move_index = circle_items.first[0]
+                break
               end
             end
           end
@@ -247,14 +265,8 @@ Chamber = Struct.new(:move_data, :part2) do
         @blocks << new_shape
         show
       else
-        # puts "fall"
         @blocks << new_block
       end
-
-      # @move_index += 1
-      # if move_index == moves.count
-      #   @move_index = 0
-      # end
 
       #
       # GAS
