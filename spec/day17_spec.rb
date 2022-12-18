@@ -119,17 +119,15 @@ Chamber = Struct.new(:move_data, :part2) do
   end
 
   def cleanup
-    clean_when = 3000
-    clean_to   = 1000
-    if @saved.keys.count > clean_when
-      @saved = {}
-      blocks.last(clean_to).each do |block|
-        save_block(block)
-      end
-    end
-
+    clean_when = moves.count * 100
+    clean_to   = moves.count * 10
     if blocks.count > clean_when
       @blocks = blocks.last(clean_to)
+
+      @saved = {}
+      blocks.each do |block|
+        save_block(block)
+      end
     end
   end
 
@@ -248,7 +246,7 @@ Chamber = Struct.new(:move_data, :part2) do
             puts stop_count
           end
 
-          (1..500).each do |ri|
+          (1..moves.count).each do |ri|
             circle_range, circle_items = find_range(ri)
             if circle_items.present?
               circle_sum = circle_items.map{|c| c[0] }.sum
