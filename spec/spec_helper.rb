@@ -3,6 +3,7 @@ require 'active_support/all'
 
 require 'matrix'
 require 'dijkstra_trace'
+require 'parallel'
 
 require 'pry'
 require 'byebug'
