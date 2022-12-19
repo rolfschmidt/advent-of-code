@@ -119,20 +119,20 @@ class Day19 < Helper
 
     bp.total_ore = [
       bp.total_ore,
-      bp.input_ore * (bp.round),
-      bp.input_clay * (bp.round),
-      bp.input_obsidian_1 * (bp.round),
-      bp.input_geode_1 * (bp.round),
+      bp.input_ore * bp.round,
+      bp.input_clay * bp.round,
+      bp.input_obsidian_1 * bp.round,
+      bp.input_geode_1 * bp.round,
     ].min
 
     bp.total_clay = [
       bp.total_clay,
-      bp.input_obsidian_2 * (bp.round),
+      bp.input_obsidian_2 * bp.round,
     ].min
 
     bp.total_obsidian = [
       bp.total_obsidian,
-      bp.input_geode_2 * (bp.round),
+      bp.input_geode_2 * bp.round,
     ].min
 
     cache_key = bp.cache_key(bp.round)
