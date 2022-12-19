@@ -35,7 +35,7 @@ Blueprint = Struct.new(:id, :input_ore, :input_clay, :input_obsidian_1, :input_o
 
   def initialize(*)
     super
-    @round          = self.input_round
+    @round          = input_round
     @total_ore      = 0
     @total_clay     = 0
     @total_obsidian = 0
@@ -64,8 +64,8 @@ Blueprint = Struct.new(:id, :input_ore, :input_clay, :input_obsidian_1, :input_o
     @total_geode     += produce[3]
   end
 
-  def robot_prices
-    @robot_prices ||= [
+  def robot_shop
+    @robot_shop ||= [
       # ore, clay, obsidian, geode
       Robot.new(
         input_ore, 0, 0, 0,
@@ -117,13 +117,31 @@ class Day19 < Helper
       return new_best
     end
 
+    bp.total_ore = [
+      bp.total_ore,
+      bp.input_ore * (bp.round),
+      bp.input_clay * (bp.round),
+      bp.input_obsidian_1 * (bp.round),
+      bp.input_geode_1 * (bp.round),
+    ].min
+
+    bp.total_clay = [
+      bp.total_clay,
+      bp.input_obsidian_2 * (bp.round),
+    ].min
+
+    bp.total_obsidian = [
+      bp.total_obsidian,
+      bp.input_geode_2 * (bp.round),
+    ].min
+
     cache_key = bp.cache_key(bp.round)
     return @cache[cache_key] if @cache[cache_key]
 
     produce = bp.produce
 
     max_vals = 0
-    bp.robot_prices.each do |robot|
+    bp.robot_shop.each do |robot|
       next if robot.round_ore == 1 && bp.round_ore > bp.input_ore && bp.round_ore > bp.input_clay && bp.round_ore > bp.input_obsidian_1 && bp.round_ore > bp.input_geode_1
       next if robot.round_clay == 1 && bp.round_clay > bp.input_obsidian_2
       next if robot.round_obsidian == 1 && bp.round_obsidian > bp.input_geode_2
@@ -187,6 +205,6 @@ RSpec.describe "Day19" do
   end
 
   it "does part 2" do
-    expect(Day19.part2).to eq(100)
+    expect(Day19.part2).to eq(12628)
   end
 end
