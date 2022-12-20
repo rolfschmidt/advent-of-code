@@ -1,0 +1,1 @@
+for d in ./day*/ ; do (echo "\n$d" && cd $d && go run main.go); done
