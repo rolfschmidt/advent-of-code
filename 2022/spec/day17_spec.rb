@@ -10,7 +10,7 @@ class Day17 < Helper
   end
 
   def self.move(map, rock, pos)
-    new_rock = ddup(rock)
+    new_rock = rock.clone
     new_rock.each_with_index do |_, i|
       new_rock[i] += pos
 
@@ -49,7 +49,7 @@ class Day17 < Helper
       end
       cache[cache_key] = [rr, height]
 
-      rock = ddup(rocks[rr % rocks.size]).map{|pp| pp += Vector[2, height + 3] }
+      rock = rocks[rr % rocks.size].clone.map{|pp| pp += Vector[2, height + 3] }
 
       while true do
         rock = move(map, rock, jets[jet])
