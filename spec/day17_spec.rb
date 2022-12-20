@@ -119,6 +119,7 @@ Chamber = Struct.new(:move_data, :part2) do
   end
 
   def cleanup
+    return
     clean_when = moves.count * 100
     clean_to   = moves.count * 10
     if blocks.count > clean_when
@@ -205,11 +206,55 @@ Chamber = Struct.new(:move_data, :part2) do
   end
 
   def find_range(circle_range)
-    circle_items   = blocks.last(circle_range).map(&:diff)
-    circle_history = circle_items * 2
-    if blocks.last(circle_range * 2).map(&:diff) == circle_history
-      return [circle_range, circle_items]
+  #   snapshots = []
+  #   (highest + circle_range..-circle_range).each_cons(circle_range).each do |ry|
+  #     snapshot = {}
+
+  #     blocks.each do |block|
+  #       block.pos.each do |pos|
+  #         x, y = pos
+  #         throw :done if y < ry.first
+  #         throw :done if y > ry.last
+
+  #         snapshot[[x, ry.last - y]] = true
+  #       end
+  #     end
+
+  #     snapshots << snapshot
+  #   end
+
+  #   snapshots.each_with_index do |sfirst, i|
+  #     if snapshots.select{|s| s == sfirst }.count >= circle_range
+  #       height = sfirst.keys.map{|p| p[1] }.sum
+  #       return [height, circle_range, sfirst]
+  #     end
+  #   end
+  #   binding.pry
+  #   return
+  # rescue => e
+  #   binding.pry
+
+    block_shapes   = blocks.map{|b| [b.shape, b.pos.map{|p| p[0] }] }
+    blocks_diff    = blocks.map(&:diff)
+    blocks_heights = blocks.map(&:diff_height)
+
+    repetition    = 5
+    (0..blocks.count - 1 - circle_range * repetition).each do |i|
+      diff_shapes  = block_shapes[i..i + (circle_range * repetition) - 1]
+      diff_heights = blocks_heights[i..i + (circle_range * repetition) - 1]
+      diff_both    = blocks_diff[i..i + (circle_range * repetition) - 1]
+      raise "#{diff_shapes.count}/#{block_shapes.count} - #{circle_range * repetition} -- #{i}..#{i + (circle_range * repetition) - 1}" if diff_shapes.count != circle_range * repetition
+
+      citems = diff_both.first(circle_range)
+      cfirst = diff_shapes.first(circle_range)
+      hfirst = diff_heights.first(circle_range)
+      # cnext  = peek_index(circle_range).zip(peek_shapes(circle_range))
+
+      if diff_shapes == cfirst * repetition && diff_heights.sum == hfirst.sum * repetition
+        return [circle_range, citems, i]
+      end
     end
+    puts "done"
   end
 
   def run
@@ -240,15 +285,49 @@ Chamber = Struct.new(:move_data, :part2) do
           puts stop_count
         end
 
-        if stop_count >= 2022 && part2 && !@cheated
+        if stop_count >= 300000 && part2 && !@cheated
           @cheated = true
           if stop_count % 1000 == 0
             puts stop_count
           end
 
-          (1..moves.count).each do |ri|
-            circle_range, circle_items = find_range(ri)
+          # (30..blocks.count / 2).each do |ri|
+          #   height, circle_range, snapshot = find_range(ri)
+          #   if circle_range.present?
+          #     binding.pry
+          #     rest_count = 1000000000000 - stop_count
+          #     rounds     = (rest_count / height).to_i
+
+          #     if rounds > 0
+          #       stop_count -= 1
+          #       stop_count += rounds * height
+          #       @cheat_highest += rounds * height
+          #       puts "CHEAT #{cheat_highest} on #{ri}"
+          #       puts "New round #{stop_count}"
+          #       puts "REST #{rest_count}"
+          #       puts "circle_range #{circle_range}"
+          #       puts "height #{height}"
+
+          #       # blocks.each_with_index do |_, bi|
+          #       #   blocks[bi].pos.each_with_index do |bp, bpi|
+          #       #     @blocks[bi].pos[bpi][1] += @cheat_highest
+          #       #   end
+          #       #   highest_block(blocks[bi])
+          #       #   save_block(blocks[bi])
+          #       # end
+
+          #       # @shape_pos  = shapes.index(circle_items.first[1])
+          #       # @move_index = circle_items.first[0]
+          #       break
+          #     end
+          #   end
+
+
+          (1..5000).each do |ri|
+            circle_range, circle_items, circle_index = find_range(ri)
             if circle_items.present?
+              binding.pry
+
               circle_sum = circle_items.map{|c| c[0] }.sum
               rest_count = 1000000000000 - stop_count
               rounds     = (rest_count / circle_items.count).to_i
@@ -261,16 +340,16 @@ Chamber = Struct.new(:move_data, :part2) do
                 puts "New round #{stop_count}"
                 puts "REST #{rest_count % circle_items.count}"
 
-                blocks.each_with_index do |_, bi|
-                  blocks[bi].pos.each_with_index do |bp, bpi|
-                    @blocks[bi].pos[bpi][1] += @cheat_highest
-                  end
-                  highest_block(blocks[bi])
-                  save_block(blocks[bi])
-                end
+                # blocks.each_with_index do |_, bi|
+                #   blocks[bi].pos.each_with_index do |bp, bpi|
+                #     @blocks[bi].pos[bpi][1] += @cheat_highest
+                #   end
+                #   highest_block(blocks[bi])
+                #   save_block(blocks[bi])
+                # end
 
-                @shape_pos  = shapes.index(circle_items.first[1])
-                @move_index = circle_items.first[0]
+                # @shape_pos  = shapes.index(circle_items.first[1])
+                # @move_index = circle_items.first[0]
                 break
               end
             end
@@ -345,7 +424,7 @@ end
 class Day17 < Helper
   def self.part1(part2 = false)
     moves = []
-    file_test.split("").each do |v|
+    file.split("").each do |v|
       if v == '>'
         moves << [1, 0]
       else
@@ -362,16 +441,16 @@ class Day17 < Helper
 
     puts "STOP: #{stop_count}"
 
-    pp chamber.highest.abs + 1
+    pp chamber.highest.abs + chamber.cheat_highest.abs
+    result = chamber.highest.abs + chamber.cheat_highest.abs
 
     # result = RubyProf.stop
     # printer = RubyProf::FlatPrinter.new(result)
     # printer.print(STDOUT)
 
-    raise if 1514285714288 != chamber.highest.abs + 1 && moves.count == 40
+    raise if 1514285714288 != result && moves.count == 40
 
-    exit
-    return chamber.highest.abs + 1
+    result
   end
 
   def self.part2
@@ -385,6 +464,6 @@ RSpec.describe "Day17" do
   # end
 
   it "does part 2" do
-    expect(Day17.part2).to eq(100)
-  end
+    expect(Day17.part2).to eq(1570434782634)
+  end # 2199999998746
 end
