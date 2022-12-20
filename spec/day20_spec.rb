@@ -1,46 +1,29 @@
 class Day20 < Helper
-  def self.find_node(links, data)
-    links.reverse_each_node.detect{|n| n.data == data }
-  end
-
   def self.part1(part2 = false)
-    nums_init = file.split("\n").map(&:to_i)
-    if part2
-      nums_init = nums_init.map{|v| v * 811589153 }
+    data = file.split("\n").map.with_index do |v, i|
+      v = v.to_i
+      if part2
+        v *= 811589153
+      end
+
+      [v, i]
     end
 
-    nums = nums_init.map.with_index {|v, i| { v: v, i: i } }
-    (part2 ? 10 : 1).times do |rr|
-      nums_init.each_with_index do |num_init, i|
-        if num_init != 0
-          nums.each_with_index do |num, j|
-            next if num[:i] != i
-
-            ti = j
-            tr = num[:v].positive? ? 1 : -1
-            (num[:v].abs).times do
-              ti += tr
-              if ti == nums.count
-                ti = 1
-              elsif ti < 0
-                ti = nums.count - 2
-              end
-            end
-
-            nums.insert(ti, nums.delete_at(j))
-
-            break
-          end
-        end
+    (part2 ? 10 : 1).times do
+      data.size.times do |n|
+        i = data.find_index {|v, i| i == n}
+        v = data.delete_at(i)
+        data.insert((i + v[0]) % data.size, v)
       end
     end
 
-    result = nums.map{|v| v[:v] }
-    zero   = result.index(0)
+    zero = data.find_index {|v, i| v == 0 }
 
-    [1000, 2000, 3000].map do |n|
-      result[(n + zero) % result.count]
-    end.sum
+    [
+      data[(zero + 1000) % data.size][0],
+      data[(zero + 2000) % data.size][0],
+      data[(zero + 3000) % data.size][0]
+    ].sum
   end
 
   def self.part2
@@ -53,7 +36,7 @@ RSpec.describe "Day20" do
     expect(Day20.part1).to eq(11123)
   end
 
-  # it "does part 2" do
-  #   expect(Day20.part2).to eq(100)
-  # end
+  it "does part 2" do
+    expect(Day20.part2).to eq(4248669215955)
+  end
 end
