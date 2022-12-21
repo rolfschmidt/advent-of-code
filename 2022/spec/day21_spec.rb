@@ -53,46 +53,27 @@ class Day21 < Helper
     cache, operations = parse
 
     cache.delete("humn")
-    cache["zero"] = 0
 
+    cache            = calculate(cache, operations)
     root_index       = operations.find_index{|oo| oo[0] == 'root' }
-    _, rva, rop, rvb = operations.delete(operations[root_index])
-    operations << [rvb, rva, "+", "zero"]
-    operations << [rva, rvb, "+", "zero"]
+    _, rva, rop, rvb = operations[root_index]
 
-    while cache["humn"].blank? do
-      cache = calculate(cache, operations)
-
-      operations.each do |target, va, op, vb|
-        if cache[target] && cache[vb]
-          if op == "+"
-            cache[va] = cache[target] - cache[vb]
-          elsif op == "-"
-            cache[va] = cache[target] + cache[vb]
-          elsif op == "*"
-            cache[va] = cache[target] / cache[vb]
-          elsif op == "/"
-            cache[va] = cache[target] * cache[vb]
-          end
-          operations.delete([target, va, op, vb])
-        end
-
-        if cache[target] && cache[va]
-          if op == "+"
-            cache[vb] = cache[target] - cache[va]
-          elsif op == "-"
-            cache[vb] = cache[va] - cache[target]
-          elsif op == "*"
-            cache[vb] = cache[target] / cache[va]
-          elsif op == "/"
-            cache[vb] = cache[va] / cache[target]
-          end
-          operations.delete([target, va, op, vb])
-        end
-      end
+    watch = rva
+    have  = rvb
+    if !cache[rvb]
+      watch = rvb
+      have  = rva
     end
 
-    cache["humn"]
+    humn = (1..1e13).bsearch do |cv|
+      search_cache = cache.clone
+      search_cache["humn"] = cv.to_i
+      search_cache = calculate(search_cache, operations.clone)
+
+      search_cache[watch] <= search_cache[have]
+    end
+
+    humn
   end
 end
 
