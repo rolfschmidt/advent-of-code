@@ -65,15 +65,13 @@ class Day21 < Helper
       have  = rva
     end
 
-    humn = (1..1e13).bsearch do |cv|
+    (1..1e13).bsearch do |cv|
       search_cache = cache.clone
       search_cache["humn"] = cv.to_i
       search_cache = calculate(search_cache, operations.clone)
 
       search_cache[watch] <= search_cache[have]
     end
-
-    humn
   end
 end
 
