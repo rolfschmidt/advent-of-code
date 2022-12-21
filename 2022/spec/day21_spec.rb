@@ -55,39 +55,39 @@ class Day21 < Helper
     cache.delete("humn")
     cache["zero"] = 0
 
-    root_index = operations.find_index{|oo| oo[0] == 'root' }
-    root       = operations.delete(operations[root_index])
-    operations << [root[3], root[1], "+", "zero"]
-    operations << [root[1], root[3], "+", "zero"]
+    root_index       = operations.find_index{|oo| oo[0] == 'root' }
+    _, rva, rop, rvb = operations.delete(operations[root_index])
+    operations << [rvb, rva, "+", "zero"]
+    operations << [rva, rvb, "+", "zero"]
 
     while cache["humn"].blank? do
       cache = calculate(cache, operations)
 
-      operations.each do |data|
-        if cache[data[0]] && cache[data[3]]
-          if data[2] == "+"
-            cache[data[1]] = cache[data[0]] - cache[data[3]]
-          elsif data[2] == "-"
-            cache[data[1]] = cache[data[0]] + cache[data[3]]
-          elsif data[2] == "*"
-            cache[data[1]] = cache[data[0]] / cache[data[3]]
-          elsif data[2] == "/"
-            cache[data[1]] = cache[data[0]] * cache[data[3]]
+      operations.each do |target, va, op, vb|
+        if cache[target] && cache[vb]
+          if op == "+"
+            cache[va] = cache[target] - cache[vb]
+          elsif op == "-"
+            cache[va] = cache[target] + cache[vb]
+          elsif op == "*"
+            cache[va] = cache[target] / cache[vb]
+          elsif op == "/"
+            cache[va] = cache[target] * cache[vb]
           end
-          operations.delete(data)
+          operations.delete([target, va, op, vb])
         end
 
-        if cache[data[0]] && cache[data[1]]
-          if data[2] == "+"
-            cache[data[3]] = cache[data[0]] - cache[data[1]]
-          elsif data[2] == "-"
-            cache[data[3]] = cache[data[1]] - cache[data[0]]
-          elsif data[2] == "*"
-            cache[data[3]] = cache[data[0]] / cache[data[1]]
-          elsif data[2] == "/"
-            cache[data[3]] = cache[data[1]] / cache[data[0]]
+        if cache[target] && cache[va]
+          if op == "+"
+            cache[vb] = cache[target] - cache[va]
+          elsif op == "-"
+            cache[vb] = cache[va] - cache[target]
+          elsif op == "*"
+            cache[vb] = cache[target] / cache[va]
+          elsif op == "/"
+            cache[vb] = cache[va] / cache[target]
           end
-          operations.delete(data)
+          operations.delete([target, va, op, vb])
         end
       end
     end
