@@ -66,9 +66,7 @@ class Day21 < Helper
     end
 
     (1..1e13).bsearch do |cv|
-      search_cache = cache.clone
-      search_cache["humn"] = cv.to_i
-      search_cache = calculate(search_cache, operations.clone)
+      search_cache = calculate(cache.clone.merge("humn" => cv.to_i), operations.clone)
 
       search_cache[watch] <= search_cache[have]
     end
