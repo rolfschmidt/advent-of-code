@@ -1,7 +1,7 @@
 class Day23 < Helper
   def self.part1(part2 = false)
     grid = {}
-    file_test.split("\n").map{|v| v.split("") }.each_with_index do |yv, y|
+    file.split("\n").map{|v| v.split("") }.each_with_index do |yv, y|
       yv.each_with_index do |xv, x|
         next if xv != "#"
 
@@ -9,18 +9,17 @@ class Day23 < Helper
       end
     end
 
-    old_grid    = ddup(grid)
-    roles_index = 0
-    rules       = [:north, :south, :west, :east]
-    moved       = false
-    round       = 0
+    old_grid = grid.clone
+    rules    = [:north, :south, :west, :east]
+    moved    = false
+    round    = 0
 
-    (part2 ? 1e12 : 10).to_i.times do
+    (part2 ? 1e5 : 10).to_i.times do
       round += 1
       moves = {}
 
       if round % 100 == 0
-        puts round
+        puts "#{round} / 1079"
       end
 
       old_grid.each do |pos, _|
@@ -59,9 +58,8 @@ class Day23 < Helper
         grid[to] = true
       end
 
-      # roles_index = (rules_index + 1) % rules.size
       rules << rules.shift
-      old_grid = ddup(grid)
+      old_grid = grid.clone
 
       break if moves.blank? && part2
     end
@@ -96,7 +94,7 @@ RSpec.describe "Day23" do
     expect(Day23.part1).to eq(4241)
   end
 
-  # it "does part 2" do
-  #   expect(Day23.part2).to eq(100)
-  # end
+  it "does part 2" do
+    expect(Day23.part2).to eq(1079)
+  end
 end
