@@ -63,10 +63,14 @@ fn d7_parse_shiny_bags(bag_data string) []D7Bag {
 
 fn day07a() int {
 	bag_data := read_day_string('day07.txt')
-	return d7_parse_shiny_bags(bag_data).make_shiny('shiny gold').filter(it.shiny).len
+	mut x := d7_parse_shiny_bags(bag_data)
+	y := x.make_shiny('shiny gold')
+	return y.filter(it.shiny).len
 }
 
 fn day07b() int {
 	bag_data := read_day_string('day07.txt')
-	return d7_parse_shiny_bags(bag_data).count_shiny('shiny gold')
+	mut x := d7_parse_shiny_bags(bag_data)
+	y := x.count_shiny('shiny gold')
+	return y
 }
