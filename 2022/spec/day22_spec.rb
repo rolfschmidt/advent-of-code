@@ -103,6 +103,8 @@ y     |        |               |          |              |
 
 =end
 
+  # fuck this part, gave up
+  # props to https://github.com/hyper-neutrino/advent-of-code/blob/main/2022/day22p2.py
   def self.part2
     parts = file.split("\n\n")
 
