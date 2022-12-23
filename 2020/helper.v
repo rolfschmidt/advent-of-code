@@ -71,11 +71,9 @@ fn au64_min(arr []u64) u64 {
 // returns max value of array u64
 fn au64_max(arr []u64) u64 {
 	mut high := u64(0)
-	mut found := false
 	for value in arr {
 		if value > high {
 			high = value
-			found = true
 		}
 	}
 	return high
@@ -131,11 +129,9 @@ fn aint_min(arr []int) int {
 // returns max value of array int
 fn aint_max(arr []int) int {
 	mut high := int(0)
-	mut found := false
 	for value in arr {
 		if value > high {
 			high = value
-			found = true
 		}
 	}
 	return high
