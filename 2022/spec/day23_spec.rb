@@ -9,9 +9,8 @@ class Day23 < Helper
       end
     end
 
-    rules = [:north, :south, :west, :east]
-    moved = false
     round = 0
+    rules = [:north, :south, :west, :east]
 
     (part2 ? 1e5 : 10).to_i.times do
       round += 1
