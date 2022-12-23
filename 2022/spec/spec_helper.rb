@@ -4,6 +4,7 @@ require 'active_support/all'
 require 'matrix'
 require 'dijkstra_trace'
 require 'parallel'
+require 'ruby-prof'
 
 require 'pry'
 require 'byebug'
@@ -35,6 +36,13 @@ class Struct
   end
 end
 
+def prof
+  RubyProf.start
+  yield
+  result = RubyProf.stop
+  printer = RubyProf::FlatPrinter.new(result)
+  printer.print(STDOUT)
+end
 
 def ddup(obj)
   Marshal.load(Marshal.dump(obj))
