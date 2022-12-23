@@ -9,10 +9,9 @@ class Day23 < Helper
       end
     end
 
-    old_grid = grid.clone
-    rules    = [:north, :south, :west, :east]
-    moved    = false
-    round    = 0
+    rules = [:north, :south, :west, :east]
+    moved = false
+    round = 0
 
     (part2 ? 1e5 : 10).to_i.times do
       round += 1
@@ -22,11 +21,11 @@ class Day23 < Helper
         puts "#{round} / 1079"
       end
 
-      old_grid.each do |pos, _|
-        north = old_grid[pos + Vector[-1, -1]] || old_grid[pos + Vector[0, -1]] || old_grid[pos + Vector[1, -1]]
-        south = old_grid[pos + Vector[-1, 1]] || old_grid[pos + Vector[0, 1]] || old_grid[pos + Vector[1, 1]]
-        west  = old_grid[pos + Vector[-1, -1]] || old_grid[pos + Vector[-1, 0]] || old_grid[pos + Vector[-1, 1]]
-        east  = old_grid[pos + Vector[1, -1]] || old_grid[pos + Vector[1, 0]] || old_grid[pos + Vector[1, 1]]
+      grid.each do |pos, _|
+        north = grid[pos + Vector[-1, -1]] || grid[pos + Vector[0, -1]] || grid[pos + Vector[1, -1]]
+        south = grid[pos + Vector[-1, 1]] || grid[pos + Vector[0, 1]] || grid[pos + Vector[1, 1]]
+        west  = grid[pos + Vector[-1, -1]] || grid[pos + Vector[-1, 0]] || grid[pos + Vector[-1, 1]]
+        east  = grid[pos + Vector[1, -1]] || grid[pos + Vector[1, 0]] || grid[pos + Vector[1, 1]]
 
         next if !north && !south && !west && !east
 
@@ -59,7 +58,6 @@ class Day23 < Helper
       end
 
       rules << rules.shift
-      old_grid = grid.clone
 
       break if moves.blank? && part2
     end
