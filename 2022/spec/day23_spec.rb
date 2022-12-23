@@ -67,7 +67,6 @@ class Day23 < Helper
     miny = grid.map{|v, _| v[1] }.min
     maxy = grid.map{|v, _| v[1] }.max
 
-    free = {}
     counter = 0
     (miny..maxy).each do |y|
       (minx..maxx).each do |x|
