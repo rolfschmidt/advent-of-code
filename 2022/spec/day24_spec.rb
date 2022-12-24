@@ -73,8 +73,6 @@ class Day24 < Helper
         next if next_pos[0] > maxx
         next if next_pos[0] < minx
         next if @walls[next_pos]
-        # next if storms.any?{|st| st[0] == next_pos }
-        # next if is_stormed?(next_pos, storms, time)
         next if storms[next_pos]
 
         queue << [next_pos, time + 1, storm_index]
