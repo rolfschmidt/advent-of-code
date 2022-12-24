@@ -18,19 +18,10 @@ class Day24 < Helper
   def self.storm_move(storm)
     pos, dir, name = storm
 
-    new_pos = pos + dir
-    if new_pos[0] > maxx
-      new_pos[0] = minx
-    end
-    if new_pos[0] < minx
-      new_pos[0] = maxx
-    end
-    if new_pos[1] > maxy
-      new_pos[1] = miny
-    end
-    if new_pos[1] < miny
-      new_pos[1] = maxy
-    end
+    new_pos = Vector[
+      minx + (pos[0] - minx + dir[0]) % maxx,
+      miny + (pos[1] - miny + dir[1]) % maxy
+    ]
 
     [new_pos, dir, name]
   end
