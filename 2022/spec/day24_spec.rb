@@ -39,7 +39,7 @@ class Day24 < Helper
     queue   = [[start, 0, storm_index]]
 
     @move_snow ||= {}
-    cache_key    = ddup(queue)
+    cache_key    = queue.clone
     return @move_snow[cache_key] if @move_snow[cache_key]
 
     seen    = {}
@@ -114,11 +114,11 @@ class Day24 < Helper
       end
     end
 
-    @storms_time = [ddup(storms)]
+    @storms_time = [storms.clone]
     while true do
       storms = storms.map{|st| storm_move(st) }
       break if @storms_time.include?(storms)
-      @storms_time << ddup(storms)
+      @storms_time << storms.clone
     end
     @storms_time = @storms_time.map{|sts| sts.map{|v| [v[0], true] }.to_h }
 
