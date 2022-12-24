@@ -67,7 +67,6 @@ class Day24 < Helper
         Vector[0, 0],
       ].each do |dir|
         next_pos = pos + dir
-        next if pos != start && next_pos == start
         next if next_pos[1] < miny - 1
         next if next_pos[1] > maxy + 1
         next if next_pos[0] > maxx
