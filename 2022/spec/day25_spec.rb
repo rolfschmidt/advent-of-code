@@ -9,12 +9,7 @@ class Day25 < Helper
     }
 
     number.chars.reverse.map.with_index do |n, i|
-      i = ([5] * i).inject(:*)
-      if !i
-        i = 1
-      end
-
-      i * map[n]
+      (5 ** i) * map[n]
     end.sum
   end
 
