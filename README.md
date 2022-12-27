@@ -2,18 +2,11 @@
 
 This repo contains various solutions for different years of Advent of Code.
 
-### 2019
+|  Year  |  Progress   |  Language(s)  |
+|:------:|:-----------:|:-------------:|
+|  2022  |    25/25    | Ruby          |
+|  2021  |    25/25    | Go            |
+|  2020  |    25/25    | V             |
+|  2019  |     8/25    | Perl + (1 day in Perl, PHP, JS, Rust and Ruby) |
 
-Solutions written in Perl. It also contains day 4 in different languages like PHP, JS, Rust, Ruby. This year is incomplete.
 
-### 2020
-
-Solutions written in V.
-
-### 2021
-
-Solutions written in Go.
-
-### 2022
-
-Solutions written in Ruby.
