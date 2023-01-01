@@ -32,6 +32,8 @@ Blueprint = Struct.new(:id, :input_ore, :input_clay, :input_obsidian_1, :input_o
   attr_accessor :round_clay
   attr_accessor :round_obsidian
   attr_accessor :round_geode
+  attr_accessor :robot_shop
+  attr_accessor :robot_shop_restricted
 
   def initialize(*)
     super
@@ -47,10 +49,11 @@ Blueprint = Struct.new(:id, :input_ore, :input_clay, :input_obsidian_1, :input_o
   end
 
   def update_income(data)
-    @round_ore      += data[0]
-    @round_clay     += data[1]
-    @round_obsidian += data[2]
-    @round_geode    += data[3]
+    @round_ore            += data[0]
+    @round_clay           += data[1]
+    @round_obsidian       += data[2]
+    @round_geode          += data[3]
+    @robot_shop_restricted = nil
   end
 
   def produce
@@ -65,6 +68,8 @@ Blueprint = Struct.new(:id, :input_ore, :input_clay, :input_obsidian_1, :input_o
   end
 
   def robot_shop
+    return robot_shop_restricted if robot_shop_restricted.present?
+
     @robot_shop ||= [
       # ore, clay, obsidian, geode
       Robot.new(
@@ -84,6 +89,10 @@ Blueprint = Struct.new(:id, :input_ore, :input_clay, :input_obsidian_1, :input_o
         0, 0, 0, 1,
       ),
     ]
+
+    return [@robot_shop[-1]] if @robot_shop[-1].affordable?(self)
+
+    @robot_shop
   end
 
   def cache_key(round)
@@ -111,7 +120,7 @@ class Day19 < Helper
       new_best = bp.total_geode
       if @best < new_best
         @best = new_best
-        puts "BP #{bp.id} | new best #{@best}"
+        # puts "BP #{bp.id} | new best #{@best}"
       end
 
       return new_best
@@ -140,12 +149,21 @@ class Day19 < Helper
 
     produce = bp.produce
 
+    ore_maxxed      = bp.round_ore >= bp.input_ore && bp.round_ore >= bp.input_clay && bp.round_ore >= bp.input_obsidian_1 && bp.round_ore >= bp.input_geode_1
+    clay_maxxed     = bp.round_clay >= bp.input_obsidian_2
+    obsidian_maxxed = bp.round_obsidian >= bp.input_geode_2
+
     max_vals = 0
+    buyable  = []
     bp.robot_shop.each do |robot|
-      next if robot.round_ore == 1 && bp.round_ore > bp.input_ore && bp.round_ore > bp.input_clay && bp.round_ore > bp.input_obsidian_1 && bp.round_ore > bp.input_geode_1
-      next if robot.round_clay == 1 && bp.round_clay > bp.input_obsidian_2
-      next if robot.round_obsidian == 1 && bp.round_obsidian > bp.input_geode_2
+      next if robot.round_ore == 1 && ore_maxxed
+      next if robot.round_clay == 1 && clay_maxxed
+      next if robot.round_obsidian == 1 && obsidian_maxxed
       next if !robot.affordable?(bp)
+
+      if robot.round_geode != 1
+        buyable << robot
+      end
 
       new_bp = bp.clone
       new_bp.update(robot.price)
@@ -154,15 +172,23 @@ class Day19 < Helper
       new_bp.round -= 1
 
       check_bp = dfs(new_bp)
+      next if !check_bp
+
       max_vals = [max_vals, check_bp].max
     end
 
-    new_bp = bp.clone
-    new_bp.update(produce)
-    new_bp.round -= 1
+    if buyable.blank? || !(ore_maxxed && clay_maxxed && obsidian_maxxed)
+      new_bp = bp.clone
+      new_bp.update(produce)
+      new_bp.round -= 1
+      new_bp.robot_shop_restricted ||= new_bp.robot_shop
+      new_bp.robot_shop_restricted -= buyable
 
-    check_bp = dfs(new_bp)
-    max_vals = [max_vals, check_bp].max
+      check_bp = dfs(new_bp)
+      if check_bp
+        max_vals = [max_vals, check_bp].max
+      end
+    end
 
     @cache[cache_key] = max_vals
 
