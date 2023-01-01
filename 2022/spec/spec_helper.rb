@@ -1,7 +1,6 @@
 require 'rails'
 require 'active_support/all'
 
-require 'matrix'
 require 'dijkstra_trace'
 require 'parallel'
 require 'ruby-prof'
@@ -33,6 +32,48 @@ class Struct
   def to_s
     return "#{x}_#{y}" if self.try(:x).present?
     super
+  end
+end
+
+# +3x speed <=> matrix/Vector
+Vector = Struct.new(:x, :y) do
+  def self.[](x, y)
+    self.new(x, y)
+  end
+
+  def +(v)
+    self.class.new(self.x + v.x, self.y + v.y)
+  end
+
+  def -(v)
+    self.class.new(self.x - v.x, self.y - v.y)
+  end
+
+  def *(v)
+    self.class.new(self.x * v.x, self.y * v.y)
+  end
+
+  def /(v)
+    self.class.new(self.x / v.x, self.y / v.y)
+  end
+
+  def magnitude
+    Math.sqrt(self.x.abs2 + self.y.abs2)
+  end
+  alias_method :r, :magnitude
+  alias_method :norm, :magnitude
+
+  def to_a
+    [x, y]
+  end
+
+  def ==(other)
+    [x, y] == [other.x, other.y]
+  end
+  alias_method :==, :eql?
+
+  def hash
+    [x, y].hash
   end
 end
 
