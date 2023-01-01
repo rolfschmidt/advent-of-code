@@ -86,13 +86,9 @@ class Day16 < Helper
 
     best = 0
     rated_valves.combination(rated_valves.count / 2).each do |g1|
-      rated_valves.combination(rated_valves.count / 2).each do |g2|
-        next if (g1 & g2).present?
-
-        a    = search(26, "AA", g1.sort)
-        b    = search(26, "AA", g2.sort)
-        best = [best, a + b].max
-      end
+      a    = search(26, "AA", g1)
+      b    = search(26, "AA", rated_valves - g1)
+      best = [best, a + b].max
     end
 
     best
