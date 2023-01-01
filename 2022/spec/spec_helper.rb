@@ -68,7 +68,7 @@ Vector = Struct.new(:x, :y) do
   end
 
   def ==(other)
-    [x, y] == [other.x, other.y]
+    x == other.x && y == other.y
   end
   alias_method :==, :eql?
 
