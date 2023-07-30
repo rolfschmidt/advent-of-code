@@ -1,4 +1,4 @@
-class Day11 < Helper
+class Day11 < Helper # https://www.redblobgames.com/grids/hexagons/
   def self.part1(part2 = false)
     x = 0
     y = 0
