@@ -82,7 +82,7 @@ class Day23 < Helper
     return prog.mul_count
   end
 
-  def self.part2
+  def self.part2 # https://www.youtube.com/watch?v=AqXTZo6o34s
     a = 1
     b = 0
     c = 0
