@@ -3,64 +3,59 @@
 Try to solve the [advent of code 2019](https://adventofcode.com/2019).
 
 ```
-$ ./4.sh
-
 time 4.js
 Part 1: 1748
 Part 2: 1180
 
-real    0m5.523s
-user    0m5.316s
-sys     0m0.328s
-
---
+real    0m0,801s
+user    0m0,809s
+sys     0m0,025s
 
 time 4.php
 Part 1: 1748
 Part 2: 1180
 
-real    0m4.828s
-user    0m4.788s
-sys     0m0.028s
-
---
+real    0m0,503s
+user    0m0,501s
+sys     0m0,001s
 
 time 4.pl
-Part 1: 1748
-Part 2: 1180
+part1: 1748
+part2: 1180
 
-real    0m11.613s
-user    0m11.592s
-sys     0m0.008s
-
---
+real    0m1,331s
+user    0m1,325s
+sys     0m0,001s
 
 time 4.py
 part 1: 1748
 part 2: 1180
 
-real    0m10.504s
-user    0m10.464s
-sys     0m0.016s
-
---
+real    0m1,005s
+user    0m0,999s
+sys     0m0,005s
 
 time 4.rb
 part 1: 1748
 part 2: 1180
 
-real    0m31.626s
-user    0m31.536s
-sys     0m0.004s
-
---
+real    0m1,530s
+user    0m1,201s
+sys     0m0,328s
 
 time 4.rs
 Part 1: 1748
 Part 2: 1180
 
-real    0m2.213s
-user    0m2.204s
-sys     0m0.008s
+real    0m0,300s
+user    0m0,298s
+sys     0m0,001s
 
+time 4.cpp
+part 1: 1748
+part 2: 1180
+
+real    0m1,429s
+user    0m1,425s
+sys     0m0,000s
 ```

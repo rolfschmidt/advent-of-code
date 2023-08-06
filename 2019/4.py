@@ -60,9 +60,9 @@ def calcpass(input, mode = 'classic'):
 
 count = calcpass('146810-612564', 'classic')
 
-print "part 1: " + str(count)
+print("part 1: " + str(count))
 
 count = calcpass('146810-612564', 'elf')
 
-print "part 2: " + str(count)
+print("part 2: " + str(count))
 

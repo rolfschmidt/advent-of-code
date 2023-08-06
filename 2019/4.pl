@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 
-use Test::More;
-
 my @Data;
 my $Index = 0;
 while (<DATA>) {
@@ -82,12 +80,10 @@ sub CalcPass {
 }
 
 my $Count = CalcPass($Data[0]);
-is($Count, 1748, "Part 1 - Puzzle (Result: $Count)");
+print "part1: $Count\n";
 
 $Count = CalcPass($Data[0], 'Elf');
-is($Count, 1180, "Part 2 - Puzzle (Result: $Count)");
-
-done_testing();
+print "part2: $Count\n";
 
 1;
 
