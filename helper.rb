@@ -2,6 +2,14 @@ class String
   def halve
     [self[0, self.size/2], self[self.size/2..-1]]
   end
+
+  def is_upper?
+    self == self.upcase
+  end
+
+  def is_lower?
+    self == self.downcase
+  end
 end
 
 class Helper
