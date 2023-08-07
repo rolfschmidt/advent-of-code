@@ -58,6 +58,11 @@ Vector = Struct.new(:x, :y) do
   def magnitude
     Math.sqrt(self.x.abs2 + self.y.abs2)
   end
+
+  def manhattan(pos)
+    (self.x - pos.x).abs + (self.y - pos.y).abs
+  end
+
   alias_method :r, :magnitude
   alias_method :norm, :magnitude
 
