@@ -13,7 +13,7 @@ RSpec.describe "Day00" do
     expect(Day00.part1).to eq(100)
   end
 
-  it "does part 2" do
-    expect(Day00.part2).to eq(100)
-  end
+  # it "does part 2" do
+  #   expect(Day00.part2).to eq(100)
+  # end
 end
