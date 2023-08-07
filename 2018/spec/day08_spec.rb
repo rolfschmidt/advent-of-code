@@ -56,7 +56,7 @@ end
 
 RSpec.describe "Day08" do
   it "does part 1" do
-    expect(Day08.part1).to eq(100)
+    expect(Day08.part1).to eq(46781)
   end
 
   it "does part 2" do
