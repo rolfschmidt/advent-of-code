@@ -1,14 +1,10 @@
 class Day01 < Helper
   def self.part1
-    count = 0
-    file.split("\n").map(&:chars).each do |line|
-      first = line.select{|c| c =~ /\d/ }.first
-      line.reverse!
-      last = line.select{|c| c =~ /\d/ }.first
+    file.split("\n").sum do |line|
+      matches = line.scan(/\d/)
 
-      count += "#{first}#{last}".to_i
+      "#{matches.first}#{matches.last}".to_i
     end
-    count
   end
 
   def self.part2
