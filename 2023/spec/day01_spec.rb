@@ -29,18 +29,14 @@ class Day01 < Helper
       '9'     => 9,
     }
 
-    count = 0
-    file.split("\n").each do |line|
+    file.split("\n").sum do |line|
       pos = posh.keys.map{|n| [n, line.index(n), line.rindex(n)] }.select{|p| !p[1].nil? }
 
       first = pos.min_by{|p| p[1] }
       last  = pos.max_by{|p| p[2] }
 
-      num = "#{posh[first[0]]}#{posh[last[0]]}".to_i
-
-      count += num
+      "#{posh[first[0]]}#{posh[last[0]]}".to_i
     end
-    count
   end
 end
 
