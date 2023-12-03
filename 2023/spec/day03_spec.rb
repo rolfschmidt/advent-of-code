@@ -12,7 +12,7 @@ class Day03 < Helper
 
     matrix.each_with_index do |y, yi|
       matrix[yi].each_with_index do |x, xi|
-        next if x !~ /\d+/
+        next if !x.is_number?
         next if checked[[yi, xi]]
 
         neighbour = nil
@@ -28,7 +28,7 @@ class Day03 < Helper
             next if ny < 0 || ny > matrix.length - 1
 
             val = matrix[ny][nx]
-            next if val =~ /\d+/ || val == '.'
+            next if val.is_number? || val == '.'
 
             match = true
             neighbour = [ny, nx]
@@ -45,7 +45,7 @@ class Day03 < Helper
           break if checked[[yi, cx]]
 
           val = matrix[yi][cx]
-          break if val !~ /\d+/
+          break if !val.is_number?
 
           num = "#{val}#{num}"
           mx << cx
@@ -58,7 +58,7 @@ class Day03 < Helper
           break if checked[[yi, cx]]
 
           val = matrix[yi][cx]
-          break if val !~ /\d+/
+          break if !val.is_number?
 
           num = "#{num}#{val}"
           mx << cx

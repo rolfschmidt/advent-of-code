@@ -10,6 +10,10 @@ class String
   def is_lower?
     self == self.downcase
   end
+
+  def is_number?
+    self.match?(/\d+/)
+  end
 end
 
 class Helper
