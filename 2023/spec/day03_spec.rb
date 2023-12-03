@@ -5,19 +5,16 @@ class Day03 < Helper
       matrix << line
     end
 
-    checked = {}
+    count      = 0
+    checked    = {}
     neighbours = {}
-
-    count = 0
-
     matrix.each_with_index do |y, yi|
       matrix[yi].each_with_index do |x, xi|
         next if !x.is_number?
         next if checked[[yi, xi]]
 
+        match     = false
         neighbour = nil
-
-        match = false
         [-1, 0, 1].each do |dx|
           [-1, 0, 1].each do |dy|
             next if dx == 0 && dy == 0
@@ -62,7 +59,6 @@ class Day03 < Helper
           num = "#{num}#{val}"
           mx << cx
         end
-
 
         if match
           count += num.to_i
