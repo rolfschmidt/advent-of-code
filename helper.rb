@@ -16,6 +16,19 @@ class String
   end
 end
 
+class Array
+  def bounded?(x: nil, y: nil)
+    result = true
+    if x && (x < 0 || x > self[0].length - 1)
+      result = false
+    end
+    if y && (y < 0 || y > self.length - 1)
+      result = false
+    end
+    result
+  end
+end
+
 class Helper
   def self.file
     File.read("spec/#{self.to_s.downcase}.txt")
@@ -27,17 +40,6 @@ class Helper
 
   def self.all_chars
     ("a".."z").to_a + ("A".."Z").to_a
-  end
-
-  def self.bounded?(matrix, x: nil, y: nil)
-    result = true
-    if x && (x < 0 || x > matrix[0].length - 1)
-      result = false
-    end
-    if y && (y < 0 || y > matrix.length - 1)
-      result = false
-    end
-    result
   end
 end
 
