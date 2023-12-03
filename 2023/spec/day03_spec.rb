@@ -78,7 +78,7 @@ class Day03 < Helper
       end
     end
 
-    return neighbours.values.select{|v| v.count == 2 }.map{|v| v[0] * v[1] }.inject(:+) if part2
+    return neighbours.values.select{|v| v.count == 2 }.map{|v| v[0] * v[1] }.sum if part2
 
     count
   end
