@@ -30,9 +30,7 @@ class Day04 < Helper
 
   def self.count_cards(idx)
     @cache ||= {}
-    return @cache[idx] if @cache[idx]
-
-    @cache[idx] = 1 + cards[idx].sum {|ci| count_cards(ci) }
+    @cache[idx] ||= 1 + cards[idx].sum {|ci| count_cards(ci) }
   end
 
   def self.part2
