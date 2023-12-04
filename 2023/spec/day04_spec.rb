@@ -35,8 +35,6 @@ class Day04 < Helper
   end
 
   def self.count_cards(idx)
-    return 0 if !cards[idx]
-
     @cache ||= {}
     return @cache[idx] if @cache[idx]
 
