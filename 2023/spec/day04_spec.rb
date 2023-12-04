@@ -1,6 +1,6 @@
 class Day04 < Helper
-  def self.part1
-    file.split("\n").sum do |line|
+  def self.cards
+    @cards ||= file.split("\n").map.with_index do |line, li|
       card, game = line.split(/:/)
       a1, a2 = game.split(/\|/)
 
@@ -9,14 +9,27 @@ class Day04 < Helper
 
       points = 0
       match = a2.count{|v| a1.include?(v) }
-      match.times do
+
+      result = []
+      match.times do |r|
+        result << li + r + 1
+      end
+
+      result
+    end
+  end
+
+
+  def self.part1
+    cards.sum do |card|
+      points = 0
+      card.count.times do
         if points > 0
           points *= 2
         else
           points = 1
         end
       end
-
       points
     end
   end
@@ -38,25 +51,6 @@ class Day04 < Helper
   end
 
   def self.part2
-    cards = []
-    file.split("\n").each_with_index do |line, li|
-      card, game = line.split(/:/)
-      a1, a2 = game.split(/\|/)
-
-      a1 = a1.scan(/\d+/).map(&:to_i)
-      a2 = a2.scan(/\d+/).map(&:to_i)
-
-      points = 0
-      match = a2.count{|v| a1.include?(v) }
-
-      result = []
-      match.times do |r|
-        result << li + r + 1
-      end
-
-      cards << result
-    end
-
     cards.map.with_index {|c, ci| count_cards(cards, ci) }.sum
   end
 end
