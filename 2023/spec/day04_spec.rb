@@ -34,7 +34,7 @@ class Day04 < Helper
     end
   end
 
-  def self.count_cards(cards, idx)
+  def self.count_cards(idx)
     return 0 if !cards[idx]
 
     @cache ||= {}
@@ -42,7 +42,7 @@ class Day04 < Helper
 
     count = 1
     cards[idx].each do |ci|
-      count += count_cards(cards, ci)
+      count += count_cards(ci)
     end
 
     @cache[idx] = count
@@ -51,7 +51,7 @@ class Day04 < Helper
   end
 
   def self.part2
-    cards.map.with_index {|c, ci| count_cards(cards, ci) }.sum
+    cards.map.with_index {|c, ci| count_cards(ci) }.sum
   end
 end
 
