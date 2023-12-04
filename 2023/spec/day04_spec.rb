@@ -8,13 +8,11 @@ class Day04 < Helper
       a2 = a2.scan(/\d+/).map(&:to_i)
 
       match = a2.count{|v| a1.include?(v) }
-
       match.times.each_with_object([]) do |r, result|
         result << li + r + 1
       end
     end
   end
-
 
   def self.part1
     cards.sum do |card|
