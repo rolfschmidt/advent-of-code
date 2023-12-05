@@ -14,7 +14,7 @@ class Day05 < Helper
     end
 
     areas.each do |area|
-      new_seed = []
+      new_seeds = []
       while seeds.present?
         seed = seeds.shift
 
@@ -23,15 +23,15 @@ class Day05 < Helper
           next if match.blank?
 
           seeds += seed - match
-          new_seed << (match.min - location[0].min + location[1].min .. match.max - location[0].min + location[1].min)
+          new_seeds << (match.min - location[0].min + location[1].min .. match.max - location[0].min + location[1].min)
         end
 
         next if found
 
-        new_seed << seed
+        new_seeds << seed
       end
 
-      seeds = new_seed
+      seeds = new_seeds
     end
 
     return seeds.map(&:min).min
