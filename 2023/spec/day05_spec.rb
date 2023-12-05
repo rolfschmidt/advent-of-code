@@ -1,43 +1,45 @@
 class Day05 < Helper
   def self.part1(part2 = false)
     blocks = file.split("\n\n")
-    seeds = blocks.shift.scan(/\d+/).map(&:to_i).map{|n|  (n..n) }
-    areas = blocks.map{|b| b.scan(/\d+/).map(&:to_i).each_slice(3).to_a }
 
+    seeds = blocks.shift.scan(/\d+/).map(&:to_i).map{|n|  (n..n) }
     if part2
-      seeds = seeds.each_slice(2).map{|c| (c[0].first..c[0].first+c[1].first - 1) }.flatten
+      seeds = seeds.each_slice(2).map{|c| (c[0].first..c[0].first + c[1].first - 1) }.flatten
     end
 
-    lowest_location = 999999999999
-    seeds.each do |seed_range|
-      seed_range.each do |seed|
-        areas.each do |area|
-          lowest = 999999999999
-          area.each do |location|
-            dest_start, source_start, length = location
-
-            if seed >= source_start && seed < source_start + length
-              lowest = [lowest, seed - source_start + dest_start].min
-              break
-            end
-          end
-
-          if lowest == 999999999999
-            lowest = seed
-          end
-
-          seed = lowest
-        end
-
-        lowest_location = [lowest_location, seed].min
+    areas = blocks.map do |block|
+      block.scan(/\d+/).map(&:to_i).each_slice(3).map do |area|
+        [ (area[1]..area[1] + area[2] - 1), (area[0]..area[0] + area[2] - 1) ]
       end
     end
 
-    lowest_location
+    areas.each do |area|
+      new_seed = []
+      while seeds.present?
+        seed = seeds.shift
+
+        found = area.any? do |location|
+          match = seed & location[0]
+          next if match.blank?
+
+          seeds += seed - match
+          new_seed << (match.min - location[0].min + location[1].min .. match.max - location[0].min + location[1].min)
+        end
+
+        next if found
+
+        new_seed << seed
+      end
+
+      next if new_seed.blank?
+
+      seeds = new_seed
+    end
+
+    return seeds.map(&:min).min
   end
 
   def self.part2
-    return 20283860 # takes 186 min
     part1(true)
   end
 end
@@ -47,7 +49,7 @@ RSpec.describe "Day05" do
     expect(Day05.part1).to eq(313045984)
   end
 
-  it "does part 2" do # 313045984 1872593670
+  it "does part 2" do
     expect(Day05.part2).to eq(20283860)
   end
 end

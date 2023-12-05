@@ -29,6 +29,15 @@ class Array
   end
 end
 
+class Range
+  def intersection(other)
+    return nil if (self.max < other.begin or other.max < self.begin)
+    [self.begin, other.begin].max..[self.max, other.max].min
+  end
+
+  alias_method :&, :intersection
+end
+
 class Helper
   def self.file
     File.read("spec/#{self.to_s.downcase}.txt")
