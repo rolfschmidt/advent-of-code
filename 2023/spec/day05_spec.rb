@@ -8,10 +8,7 @@ class Day05 < Helper
       seeds = seeds.each_slice(2).map{|c| (c[0].first..c[0].first+c[1].first - 1) }.flatten
     end
 
-    locations = []
     lowest_location = 999999999999
-
-    seen = {}
     seeds.each do |seed_range|
       seed_range.each do |seed|
         areas.each do |area|
