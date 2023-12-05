@@ -17,7 +17,7 @@ class String
 end
 
 class Array
-  def bounded?(x: nil, y: nil)
+  def inxy?(x: nil, y: nil)
     result = true
     if x && (x < 0 || x > self[0].length - 1)
       result = false

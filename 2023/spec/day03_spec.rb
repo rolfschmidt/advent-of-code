@@ -21,7 +21,7 @@ class Day03 < Helper
 
             nx = xi + dx
             ny = yi + dy
-            next if !matrix.bounded?(x: nx, y: ny)
+            next if !matrix.inxy?(x: nx, y: ny)
 
             val = matrix[ny][nx]
             next if val.is_number? || val == '.'
@@ -37,7 +37,7 @@ class Day03 < Helper
         cx  = xi
         loop do
           cx -= 1
-          break if !matrix.bounded?(x: cx)
+          break if !matrix.inxy?(x: cx)
           break if checked[[yi, cx]]
 
           val = matrix[yi][cx]
@@ -50,7 +50,7 @@ class Day03 < Helper
         cx  = xi
         loop do
           cx += 1
-          break if !matrix.bounded?(x: cx)
+          break if !matrix.inxy?(x: cx)
           break if checked[[yi, cx]]
 
           val = matrix[yi][cx]
