@@ -33,9 +33,6 @@ class Day05 < Helper
         end
 
         lowest_location = [lowest_location, seed].min
-        if @check != lowest_location
-          @check = lowest_location
-        end
       end
     end
 
