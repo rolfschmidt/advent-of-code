@@ -31,8 +31,6 @@ class Day05 < Helper
         new_seed << seed
       end
 
-      next if new_seed.blank?
-
       seeds = new_seed
     end
 
