@@ -1,22 +1,14 @@
 class Day06 < Helper
-  def self.calc(time, distance, boost)
+  def self.move(time, distance, boost)
     moved   = 0
-    step    = 0
-    boost.times do |boost|
-      step += 1
-      time -= 1
-      return moved if time == 0
-    end
-    while time > 0
-      moved += step
-      time -= 1
-      return moved if time == 0
-    end
+    step    = [time, boost].min
+    time   -= step
+    moved   = time * step
     return moved
   end
 
   def self.part1(part2 = false)
-    nums = file_test.split("\n").map do |line|
+    nums = file.split("\n").map do |line|
       if part2
         line.gsub(/\s+/, '').scan(/\d+/).map(&:to_i)
       else
@@ -28,7 +20,7 @@ class Day06 < Helper
     nums[0].zip(nums[1]).each do |time, distance|
       result = {}
       (1..time).each do |boost|
-        moved = calc(time, distance, boost)
+        moved = move(time, distance, boost)
         next if moved <= distance
 
         result[boost] = moved
@@ -46,11 +38,11 @@ class Day06 < Helper
 end
 
 RSpec.describe "Day06" do
-  # it "does part 1" do
-  #   expect(Day06.part1).to eq(100)
-  # end
+  it "does part 1" do
+    expect(Day06.part1).to eq(393120)
+  end
 
   it "does part 2" do
-    expect(Day06.part2).to eq(100)
+    expect(Day06.part2).to eq(36872656)
   end
 end
