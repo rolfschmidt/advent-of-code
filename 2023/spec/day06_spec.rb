@@ -1,10 +1,8 @@
 class Day06 < Helper
   def self.move(time, distance, boost)
-    moved   = 0
-    step    = [time, boost].min
-    time   -= step
-    moved   = time * step
-    return moved
+    step = [time, boost].min
+    time -= step
+    return time * step
   end
 
   def self.part1(part2 = false)
