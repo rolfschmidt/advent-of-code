@@ -14,7 +14,7 @@ class Day06 < Helper
       end
     end
 
-    nums[0].zip(nums[1]).map do |time, distance|
+    nums.inject(&:zip).map do |time, distance|
       (1..time).count { |boost| move(time, distance, boost) > distance }
     end.inject(:*)
   end
