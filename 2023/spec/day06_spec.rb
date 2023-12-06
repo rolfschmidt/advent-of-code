@@ -16,11 +16,9 @@ class Day06 < Helper
       end
     end
 
-    total = []
-    nums[0].zip(nums[1]).each do |time, distance|
-      total << (1..time).count { |boost| move(time, distance, boost) > distance }
-    end
-    total.inject(:*)
+    nums[0].zip(nums[1]).map do |time, distance|
+      (1..time).count { |boost| move(time, distance, boost) > distance }
+    end.inject(:*)
   end
 
   def self.part2
