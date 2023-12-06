@@ -18,17 +18,8 @@ class Day06 < Helper
 
     total = []
     nums[0].zip(nums[1]).each do |time, distance|
-      result = {}
-      (1..time).each do |boost|
-        moved = move(time, distance, boost)
-        next if moved <= distance
-
-        result[boost] = moved
-      end
-
-      total << result.values.count
+      total << (1..time).count { |boost| move(time, distance, boost) > distance }
     end
-
     total.inject(:*)
   end
 
