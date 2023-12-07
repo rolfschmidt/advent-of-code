@@ -29,23 +29,12 @@ class Day07 < Helper
       two_pairs = cards_replaced.select{|c| cards_replaced.select{|cs| c == cs }.count == 2 }.uniq
     end
 
-    bv = if types[5]
-        1000000000000000000000000
-      elsif types[4]
-        10000000000000000000000
-      elsif types[3] && types[2]
-        100000000000000000000
-      elsif types[3]
-        1000000000000000000
-      elsif types[2] && two_pairs.count > 1
-        10000000000000000
-      elsif types[2]
-        100000000000000
-      else
-        1000000000000
-      end
+    base_value      = 10 ** (10 + 2 ** types.keys.max)
+    base_two_pair   = types[2] && two_pairs.count > 1 ? 100 : 1
+    base_full_house = types[3] && types[2] ? 100 : 1
+    base_cards      = cards.map.with_index{|c, i| c * (10 ** (10 - i * 2)) }.sum
 
-    bv + (cards[0] * 10000000000) + (cards[1] * 100000000) + (cards[2] * 1000000) + (cards[3] *10000) + (cards[4] * 100)
+    (base_value * base_two_pair * base_full_house) + base_cards
   end
 
   def self.part1(part2 = false)
