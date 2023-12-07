@@ -1,7 +1,38 @@
 class Day07 < Helper
-  def self.cards_points(cards)
+  def self.cards_points(cards, part2)
+    cards_replaced = ddup(cards)
     types = cards.tally.invert
     two_pairs = cards.select{|c| cards.select{|cs| c == cs }.count == 2 }.uniq
+
+    if part2 && cards.include?(1)
+      types = cards.select{|c| c != 1 }.tally.invert
+      jokers = cards.count(1)
+
+      [4, 3, 2, nil].each do |type|
+        next if type && !types[type]
+
+        replace = if !type
+                    cards_replaced.find{|c| c != 1 } || 1
+                  else
+                    types[type]
+                  end
+
+        cards_replaced = cards_replaced.map do |c|
+          if c == 1 && jokers > 0
+            jokers -= 1
+            replace
+          else
+            c
+          end
+        end
+
+        break
+      end
+
+      types     = cards_replaced.tally.invert
+      two_pairs = cards_replaced.select{|c| cards_replaced.select{|cs| c == cs }.count == 2 }.uniq
+    end
+
     bv = if types[5]
         1000000000000000000000000
       elsif types[4]
@@ -21,27 +52,7 @@ class Day07 < Helper
     bv + (cards[0] * 10000000000) + (cards[1] * 100000000) + (cards[2] * 1000000) + (cards[3] *10000) + (cards[4] * 100)
   end
 
-  def self.parse_card(cards)
-    counts = cards.tally.invert
-    types = cards.tally.invert
-    if types[5]
-      [5, types[5]]
-    elsif types[4]
-      [4, types[4]]
-    elsif types[3] && types[2]
-      [3.2, types[3], types[2]]
-    elsif types[3]
-      [3, types[3]]
-    elsif types[2]
-      two_pairs = cards.select{|c| cards.select{|cs| c == cs }.count == 2 }.uniq
-      return [2, two_pairs.max, two_pairs.min] if two_pairs.count > 1
-      return [2, two_pairs.max]
-    else
-      [1, cards.max]
-    end
-  end
-
-  def self.part1
+  def self.part1(part2 = false)
     players = file.split("\n").map do |line|
       data = line.split(" ")
       {
@@ -51,7 +62,11 @@ class Day07 < Helper
           elsif c == 'T'
             10
           elsif c == 'J'
-            11
+            if part2
+              1
+            else
+              11
+            end
           elsif c == 'Q'
             12
           elsif c == 'K'
@@ -65,22 +80,18 @@ class Day07 < Helper
     end
 
     result = players.sort do |a, b|
-      cards_points(a[:cards]) <=> cards_points(b[:cards])
+      cards_points(a[:cards], part2) <=> cards_points(b[:cards], part2)
     end
 
-    count = 1
-    total = 0
-    result.each do |player|
-      total += count * player[:points]
+    count = 0
+    result.sum do |player|
       count += 1
-
+      count * player[:points]
     end
-
-    total
   end
 
   def self.part2
-    100
+    part1(true)
   end
 end
 
@@ -90,7 +101,7 @@ RSpec.describe "Day07" do
     expect(Day07.part1).to eq(250946742)
   end
 
-  # it "does part 2" do
-  #   expect(Day07.part2).to eq(100)
-  # end
+  it "does part 2" do
+    expect(Day07.part2).to eq(251824095)
+  end
 end
