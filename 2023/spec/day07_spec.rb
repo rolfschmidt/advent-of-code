@@ -59,7 +59,6 @@ class Day07 < Helper
   end
 end
 
-
 RSpec.describe "Day07" do
   it "does part 1" do # 251699200 251360343 250950623 251611021 251750938 251749358 250953867 250966720
     expect(Day07.part1).to eq(250946742)
