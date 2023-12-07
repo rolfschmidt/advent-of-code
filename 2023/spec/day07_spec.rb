@@ -8,21 +8,12 @@ class Day07 < Helper
       types  = cards.reject{|c| c == 1 }.tally.invert
       jokers = cards.count(1)
 
-      [4, 3, 2, nil].any? do |type|
-        next if type && !types[type]
+      replace = types[types.keys.max] || cards_replaced.find{|c| c != 1 } || 1
+      cards_replaced = cards_replaced.map do |c|
+        next c if c != 1 || jokers == 0
 
-        replace = if !type
-                    cards_replaced.find{|c| c != 1 } || 1
-                  else
-                    types[type]
-                  end
-
-        cards_replaced = cards_replaced.map do |c|
-          next c if c != 1 || jokers == 0
-
-          jokers -= 1
-          replace
-        end
+        jokers -= 1
+        replace
       end
 
       types     = cards_replaced.tally.invert
