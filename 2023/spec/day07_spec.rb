@@ -5,10 +5,10 @@ class Day07 < Helper
     two_pairs      = cards.select{|c| cards.select{|cs| c == cs }.count == 2 }.uniq
 
     if part2 && cards.include?(1)
-      types = cards.select{|c| c != 1 }.tally.invert
+      types  = cards.reject{|c| c == 1 }.tally.invert
       jokers = cards.count(1)
 
-      [4, 3, 2, nil].each do |type|
+      [4, 3, 2, nil].any? do |type|
         next if type && !types[type]
 
         replace = if !type
@@ -23,8 +23,6 @@ class Day07 < Helper
           jokers -= 1
           replace
         end
-
-        break
       end
 
       types     = cards_replaced.tally.invert
