@@ -18,7 +18,7 @@ class Day08 < Helper
   def self.search(start)
     search = start
     step   = 0
-    while search !~ /.*Z$/ do
+    while !search.ends_with?('Z') do
       @row         ||= {}
       @row[search] ||= input.find{|v| v[0] == search }
       di             = dirs[step % dirs.count]
@@ -31,7 +31,7 @@ class Day08 < Helper
   def self.part1(part2 = false)
     return search('AAA') if !part2
 
-    input.select{|v| v[0][-1] == 'A' }.map {|v| search(v[0]) }.inject(&:lcm)
+    input.select{|v| v[0].ends_with?('A') }.map {|v| search(v[0]) }.inject(&:lcm)
   end
 
   def self.part2
