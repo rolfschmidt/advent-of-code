@@ -9,9 +9,7 @@ class Day08 < Helper
   def self.input
     @input ||= begin
       dirs, input = file.split("\n\n")
-      input = input.split("\n").map do |line|
-        line.scan(/\w+/)
-      end
+      input = input.split("\n").map(&:words)
     end
   end
 

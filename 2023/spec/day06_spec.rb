@@ -8,9 +8,9 @@ class Day06 < Helper
   def self.part1(part2 = false)
     nums = file.split("\n").map do |line|
       if part2
-        line.gsub(/\s+/, '').scan(/\d+/).map(&:to_i)
+        line.gsub(/\s+/, '').numbers
       else
-        line.scan(/\d+/).map(&:to_i)
+        line.numbers
       end
     end
 

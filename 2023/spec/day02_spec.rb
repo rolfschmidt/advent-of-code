@@ -37,7 +37,7 @@ class Day02 < Helper
       if part2
         usage_min.values.inject(:*)
       elsif possible
-        game.scan(/\d+/).first.to_i
+        game.numbers.first
       else
         0
       end

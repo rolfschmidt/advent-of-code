@@ -2,13 +2,13 @@ class Day05 < Helper
   def self.part1(part2 = false)
     blocks = file.split("\n\n")
 
-    seeds = blocks.shift.scan(/\d+/).map(&:to_i).map{|n|  (n..n) }
+    seeds = blocks.shift.numbers.map{|n|  (n..n) }
     if part2
       seeds = seeds.each_slice(2).map{|c| (c[0].first..c[0].first + c[1].first - 1) }.flatten
     end
 
     areas = blocks.map do |block|
-      block.scan(/\d+/).map(&:to_i).each_slice(3).map do |area|
+      block.numbers.each_slice(3).map do |area|
         [ (area[1]..area[1] + area[2] - 1), (area[0]..area[0] + area[2] - 1) ]
       end
     end

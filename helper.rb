@@ -14,6 +14,14 @@ class String
   def is_number?
     self.match?(/\d+/)
   end
+
+  def numbers
+    scan(/\d+/).map(&:to_i)
+  end
+
+  def words
+    scan(/\w+/)
+  end
 end
 
 class Array
