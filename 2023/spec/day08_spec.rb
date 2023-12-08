@@ -2,7 +2,7 @@ class Day08 < Helper
   def self.dirs
     @dirs ||= begin
       dirs, input = file.split("\n\n")
-      dirs = dirs.split("").map {|d| d == 'L' ? 1 : 2 }
+      dirs = dirs.chars.map {|d| d == 'L' ? 1 : 2 }
     end
   end
 
