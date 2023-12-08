@@ -2,7 +2,7 @@ class Day08 < Helper
   def self.dirs
     @dirs ||= begin
       dirs, input = file.split("\n\n")
-      dirs = dirs.chars.map {|d| d == 'L' ? 1 : 2 }
+      dirs = dirs.chars.map {|d| d == 'L' ? 1 : 2 }.cycle
     end
   end
 
@@ -19,8 +19,7 @@ class Day08 < Helper
     while !search.ends_with?('Z') do
       @row         ||= {}
       @row[search] ||= input.find{|v| v[0] == search }
-      di             = dirs[step % dirs.count]
-      search         = @row[search][di]
+      search         = @row[search][dirs.next]
       step          += 1
     end
     step
