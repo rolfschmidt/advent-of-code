@@ -19,11 +19,11 @@ class Day08 < Helper
     search = start
     step   = 0
     while search !~ /.*Z$/ do
-      @row ||= {}
+      @row         ||= {}
       @row[search] ||= input.find{|v| v[0] == search }
-      di      = dirs[step % dirs.count]
-      search  = @row[search][di]
-      step   += 1
+      di             = dirs[step % dirs.count]
+      search         = @row[search][di]
+      step          += 1
     end
     step
   end
