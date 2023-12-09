@@ -1,6 +1,6 @@
-# advent-of-code-2023
+# advent-of-code-2015
 
-Advent of Code 2023 in Ruby
+Advent of Code 2015 in Ruby
 
 # Run
 
