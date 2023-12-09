@@ -2,41 +2,26 @@ class Day09 < Helper
   def self.part1(part2 = false)
     lines = file.split("\n").map(&:numbers)
 
-    total = []
-    lines.each do |sequence|
+    lines.map do |sequence|
       diff = [sequence]
-
       while diff.last.uniq != [0] && diff.last.present?
-        new_seq = []
-        diff.last.each_with_index do |n, i|
-          next if i > diff.last.size - 2
-
-          i2 = i + 1
-          n2 = diff.last[i2]
-
-          new_seq << n2 - n
-        end
-
-        diff << new_seq
+        diff << diff.last.each_cons(2).map{|a, b| b - a}
       end
 
       if part2
         diff = diff.map(&:reverse)
       end
 
-      diff[-1] << 0
-      (1..diff.count - 1).to_a.reverse.each do |ci|
-        if part2
-          diff[ci - 1] << (diff[ci - 1].last - diff[ci].last)
-        else
-          diff[ci - 1] << (diff[ci].last + diff[ci - 1].last)
-        end
+      diff.keys.reverse.each_cons(2) do |bi, ai|
+        diff[ai] << if part2
+                          diff[ai].last - diff[bi].last
+                        else
+                          diff[bi].last + diff[ai].last
+                        end
       end
 
-      total << diff[0].last
-    end
-
-    total.sum
+      diff[0].last
+    end.sum
   end
 
   def self.part2

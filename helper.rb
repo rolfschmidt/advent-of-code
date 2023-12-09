@@ -35,6 +35,14 @@ class Array
     end
     result
   end
+
+  def keys
+    each_keys.to_a
+  end
+
+  def each_keys
+    (0..self.count - 1)
+  end
 end
 
 class Range
