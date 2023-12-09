@@ -16,7 +16,7 @@ class String
   end
 
   def numbers
-    scan(/\d+/).map(&:to_i)
+    scan(/-?\d+/).map(&:to_i)
   end
 
   def words
