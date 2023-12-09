@@ -4,8 +4,8 @@ class Day09 < Helper
 
     lines.map do |sequence|
       diff = [sequence]
-      while diff.last.uniq != [0] && diff.last.present?
-        diff << diff.last.each_cons(2).map{|a, b| b - a}
+      while diff[-1].uniq != [0] && diff[-1].present?
+        diff << diff[-1].each_cons(2).map{|a, b| b - a}
       end
 
       if part2
@@ -14,13 +14,13 @@ class Day09 < Helper
 
       diff.keys.reverse.each_cons(2) do |bi, ai|
         diff[ai] << if part2
-                          diff[ai].last - diff[bi].last
+                          diff[ai][-1] - diff[bi][-1]
                         else
-                          diff[bi].last + diff[ai].last
+                          diff[bi][-1] + diff[ai][-1]
                         end
       end
 
-      diff[0].last
+      diff[0][-1]
     end.sum
   end
 
