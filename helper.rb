@@ -12,7 +12,7 @@ class String
   end
 
   def is_number?
-    self.match?(/\d+/)
+    self.match?(/-?\d+/)
   end
 
   def numbers
