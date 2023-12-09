@@ -1,7 +1,7 @@
 class Day05 < Helper
   def self.part1
     file.split("\n").select do |line|
-      ['a', 'e', 'i', 'o','u'].map{|c| line.count(c) }.sum > 2 && line.match(/(\w)\1/) && ['ab', 'cd', 'pq', 'xy'].none?{|v| line.include?(v) }
+      ['a', 'e', 'i', 'o', 'u'].map{|c| line.count(c) }.sum > 2 && line.match(/(\w)\1/) && ['ab', 'cd', 'pq', 'xy'].none?{|v| line.include?(v) }
     end.count
   end
 
