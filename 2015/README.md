@@ -4,4 +4,10 @@ Advent of Code 2015 in Ruby
 
 # Run
 
-`rspec`
+```
+git clone https://github.com/rolfschmidt/advent-of-code.git
+cd advent-of-code
+cd 2015
+bundle install
+rspec
+```
