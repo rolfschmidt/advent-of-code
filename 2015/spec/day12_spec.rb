@@ -1,8 +1,6 @@
 class Day12 < Helper
   def self.parse(json, part2 = false)
     return json if json.is_a?(Integer)
-    return json.to_i if json.is_a?(String) && json.is_number?
-    return if json.is_a?(String)
 
     result = []
     if json.is_a?(Array)
@@ -14,8 +12,6 @@ class Day12 < Helper
           result << parse(v, part2)
         end
       end
-    else
-      raise
     end
     result
   end
