@@ -6,7 +6,7 @@ class Day09 < Helper
     @map[to].each do |location|
       next if seen.include?(location[0])
 
-      travel(location[0], seen: seen.clone + [ location[0] ]).each do |dist|
+      travel(location[0], seen: seen + [ location[0] ]).each do |dist|
         result << location[1] + dist
       end
     end
