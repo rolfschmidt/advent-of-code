@@ -3,7 +3,7 @@ class Day10 < Helper
     @map ||= begin
      result = {}
      file.split("\n").map.with_index do |line, yi|
-         line.chars.each_with_index do |x, xi|
+       line.chars.each_with_index do |x, xi|
          result[Vector.new(xi, yi)] = x
        end
      end
@@ -13,14 +13,7 @@ class Day10 < Helper
 
   def self.start
     @start ||= begin
-      start = nil
-      map.each do |k, v|
-        next if v != 'S'
-
-        start = k
-        break
-      end
-      start
+      map.find {|k, v| v == 'S'}[0]
     end
   end
 
@@ -67,8 +60,6 @@ class Day10 < Helper
   def self.search(queue, search_map, search_dirs, seen = {})
     while queue.present?
       pos = queue.shift
-
-      check = []
       search_dirs[ search_map[pos] ].each do |dir|
         dir_pos = pos + dir
 
