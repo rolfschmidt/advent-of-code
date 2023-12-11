@@ -46,7 +46,7 @@ end
 
 class Day12 < Helper
   def self.part1(part2 = false)
-    matrix = file.split("\n").map(&:chars).map.with_index do |yv, y|
+    matrix = file.to_2d.map.with_index do |yv, y|
       yv.map.with_index {|xv, x| Square.new(x, y, xv) }
     end
 

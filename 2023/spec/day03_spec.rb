@@ -1,7 +1,7 @@
 class Day03 < Helper
   def self.part1(part2 = false)
     matrix = []
-    file.split("\n").map(&:chars).each do |line|
+    file.to_2d.each do |line|
       matrix << line
     end
 

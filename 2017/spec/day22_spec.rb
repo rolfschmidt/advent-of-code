@@ -20,19 +20,11 @@ class Day22 < Helper
   end
 
   def self.input
-    file.split("\n").map(&:chars)
+    file.to_2d
   end
 
-  def self.init_map 
-    map = {}
-    input.each_with_index do |yv, yi|
-      yv.each_with_index do |xv, xi|
-        next if xv != '#'
-
-        map[Vector.new(xi, yi)] = true
-      end
-    end
-    map
+  def self.init_map
+    input.select_vec('#').to_set
   end
 
   def self.part1

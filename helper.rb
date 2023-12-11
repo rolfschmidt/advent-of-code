@@ -1,4 +1,8 @@
 class String
+  def to_2d
+    self.split("\n").map(&:chars)
+  end
+
   def halve
     [self[0, self.size/2], self[self.size/2..-1]]
   end
@@ -36,6 +40,34 @@ class Array
     result
   end
 
+  def to_set
+    self.each_with_object({}) do |key, result|
+      result[key] = true
+    end
+  end
+
+  def to_map
+    result = {}
+    self.each_with_index do |y, yi|
+      y.each_with_index do |x, xi|
+        result[Vector.new(xi, yi)] = x
+      end
+    end
+    result
+  end
+
+  def select_vec(value)
+    result = []
+    self.each_with_index do |y, yi|
+      y.each_with_index do |x, xi|
+        next if x != value
+
+        result << Vector.new(xi, yi)
+      end
+    end
+    result
+  end
+
   def keys
     each_keys.to_a
   end
@@ -65,6 +97,22 @@ class Helper
 
   def self.all_chars
     ("a".."z").to_a + ("A".."Z").to_a
+  end
+
+  def self.top
+    @top ||= Vector.new(0, -1)
+  end
+
+  def self.right
+    @right ||= Vector.new(1, 0)
+  end
+
+  def self.bottom
+    @bottom ||= Vector.new(0, 1)
+  end
+
+  def self.left
+    @left ||= Vector.new(-1, 0)
   end
 end
 

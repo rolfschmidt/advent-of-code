@@ -75,7 +75,7 @@ class Day24 < Helper
   end
 
   def self.part1(part2 = false)
-    @grid = file.split("\n").map(&:chars)
+    @grid = file.to_2d
 
     @walls  = {}
     storms = []

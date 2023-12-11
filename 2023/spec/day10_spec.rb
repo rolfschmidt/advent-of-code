@@ -1,14 +1,6 @@
 class Day10 < Helper
   def self.map
-    @map ||= begin
-     result = {}
-     file.split("\n").map.with_index do |line, yi|
-       line.chars.each_with_index do |x, xi|
-         result[Vector.new(xi, yi)] = x
-       end
-     end
-     result
-    end
+    @map ||= file.to_2d.to_map
   end
 
   def self.start
@@ -39,22 +31,6 @@ class Day10 < Helper
       end
       dirs
     end
-  end
-
-  def self.top
-    @top ||= Vector.new(0, -1)
-  end
-
-  def self.right
-    @right ||= Vector.new(1, 0)
-  end
-
-  def self.bottom
-    @bottom ||= Vector.new(0, 1)
-  end
-
-  def self.left
-    @left ||= Vector.new(-1, 0)
   end
 
   def self.search(queue, search_map, search_dirs, seen = {})
