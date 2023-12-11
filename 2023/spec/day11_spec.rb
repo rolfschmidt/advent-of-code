@@ -32,7 +32,7 @@ class Day11 < Helper
       location
     end
 
-    locations = locations.combination(2).map do |a, b|
+    locations.combination(2).map do |a, b|
       a.manhattan(b)
     end.sum
   end
