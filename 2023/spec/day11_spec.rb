@@ -7,10 +7,9 @@ class Day11 < Helper
     map  = map.transpose
     xdot = map.keys.select {|i| map[i].exclude?('#') }
 
-    locations = locations.map do |location|
+    locations = locations.each do |location|
       location.x += xdot.count{|x| x < location.x } * (part2 ? 1000000 - 1 : 1)
       location.y += ydot.count{|y| y < location.y } * (part2 ? 1000000 - 1 : 1)
-      location
     end
 
     locations.combination(2).sum do |a, b|
