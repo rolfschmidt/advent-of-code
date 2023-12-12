@@ -3,7 +3,7 @@ class Day12 < Helper
     return numbers.blank? ? 1 : 0 if value.blank?
     return value.index('#') ? 0 : 1 if numbers.blank?
 
-    key = [value.clone, numbers.clone]
+    key = [value, numbers]
     @cache ||= {}
     return @cache[key] if @cache[key]
 
