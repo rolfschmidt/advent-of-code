@@ -8,11 +8,9 @@ class Day12 < Helper
     return @cache[key] if @cache[key]
 
     result = 0
-
     if ['.', '?'].include?(value[0])
       result += search(value[1..], numbers)
     end
-
     if ['#', '?'].include?(value[0]) && numbers[0] <= value.size && value[0..numbers[0] - 1].exclude?('.') && value[numbers[0]] != '#'
       result += search(value[numbers[0] + 1..], numbers[1..])
     end
