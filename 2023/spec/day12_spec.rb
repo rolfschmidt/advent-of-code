@@ -25,11 +25,8 @@ class Day12 < Helper
 
     Parallel.map(arrangements) do |arrangement, numbers|
       if part2
-        ac = arrangement.clone
-        nc = numbers.clone
-
-        4.times { arrangement += '?' + ac }
-        4.times { numbers += nc }
+        arrangement = arrangement + ('?' + arrangement) * 4
+        numbers     = numbers * 5
       end
 
       search(arrangement, numbers)
