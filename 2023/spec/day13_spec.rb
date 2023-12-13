@@ -12,7 +12,7 @@ class Day13 < Helper
         bi += 1
       end
 
-      part2 && fails == 1 || !part2 && fails == 0
+      (!part2 && fails == 0) || (part2 && fails == 1)
     end || 0
   end
 
