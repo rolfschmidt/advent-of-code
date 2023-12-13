@@ -1,23 +1,21 @@
 class Day13 < Helper
   def self.reflection(map, part2 = false)
-    map.keys.each_cons(2).find do |mai, mbi|
+    map.keys.each_cons(2).find do |ai, bi|
       fails = 0
-      cai   = mai
-      cbi   = mbi
-      while cai >= 0 && cbi <= map.size - 1 && map[cai].present? && map[cbi].present?
-        if map[cai].present? && map[cbi].present? && map[cai] != map[cbi]
-          fails += map[cai].keys.count{|i| map[cai][i] != map[cbi][i] }
+      while ai >= 0 && bi <= map.size - 1 && map[ai].present? && map[bi].present?
+        if map[ai].present? && map[bi].present? && map[ai] != map[bi]
+          fails += map[ai].keys.count{|i| map[ai][i] != map[bi][i] }
         end
 
-        cai -= 1
-        cbi += 1
+        ai -= 1
+        bi += 1
       end
 
       next if part2 && fails != 1
       next if !part2 && fails != 0
 
-      [mai, mbi]
-    end
+      true
+    end&.second || 0
   end
 
   def self.part1(part2 = false)
@@ -26,7 +24,7 @@ class Day13 < Helper
       map_v     = map_h.transpose
       reflect_v = reflection(map_v, part2)
 
-      (reflect_v ? reflect_v[1] : 0) + (reflect_h ? reflect_h[1] * 100 : 0)
+      reflect_v + (reflect_h * 100)
     end
   end
 
