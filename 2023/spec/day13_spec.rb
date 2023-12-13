@@ -12,10 +12,7 @@ class Day13 < Helper
         bi += 1
       end
 
-      next if part2 && fails != 1
-      next if !part2 && fails != 0
-
-      true
+      part2 && fails == 1 || !part2 && fails == 0
     end || 0
   end
 
