@@ -6,8 +6,7 @@ class Day13 < Helper
       cbi   = mbi
       while cai >= 0 && cbi <= map.size - 1 && map[cai].present? && map[cbi].present?
         if map[cai].present? && map[cbi].present? && map[cai] != map[cbi]
-          diff_size = map[cai].keys.count{|i| map[cai][i] != map[cbi][i] }
-          fails += diff_size
+          fails += map[cai].keys.count{|i| map[cai][i] != map[cbi][i] }
         end
 
         cai -= 1
