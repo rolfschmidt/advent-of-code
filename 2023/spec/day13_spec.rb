@@ -1,6 +1,7 @@
 class Day13 < Helper
   def self.reflection(map, part2 = false)
-    map.keys.each_cons(2).find do |ai, bi|
+    (1..map.keys.size - 1).find do |bi|
+      ai    = bi - 1
       fails = 0
       while ai >= 0 && bi <= map.size - 1 && map[ai].present? && map[bi].present?
         if map[ai].present? && map[bi].present? && map[ai] != map[bi]
@@ -15,7 +16,7 @@ class Day13 < Helper
       next if !part2 && fails != 0
 
       true
-    end&.second || 0
+    end || 0
   end
 
   def self.part1(part2 = false)
