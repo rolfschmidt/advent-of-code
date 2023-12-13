@@ -56,11 +56,11 @@ class Array
     result
   end
 
-  def select_vec(value)
+  def select_vec(value: nil)
     result = []
     self.each_with_index do |y, yi|
       y.each_with_index do |x, xi|
-        next if x != value
+        next if value && x != value
 
         result << Vector.new(xi, yi)
       end
