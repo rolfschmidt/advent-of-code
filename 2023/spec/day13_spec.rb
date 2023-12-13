@@ -3,7 +3,7 @@ class Day13 < Helper
     (1..map.size - 1).find do |bi|
       ai    = bi - 1
       fails = 0
-      while ai >= 0 && bi <= map.size - 1 && map[ai].present? && map[bi].present?
+      while map.pos?(y: ai) && map.pos?(y: bi)
         if map[ai].present? && map[bi].present? && map[ai] != map[bi]
           fails += map[ai].keys.count{|i| map[ai][i] != map[bi][i] }
         end
