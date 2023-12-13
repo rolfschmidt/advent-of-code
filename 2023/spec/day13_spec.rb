@@ -20,7 +20,7 @@ class Day13 < Helper
   end
 
   def self.part1(part2 = false)
-    results = file.split("\n\n").map(&:to_2d).sum do |map_h|
+    file.split("\n\n").map(&:to_2d).sum do |map_h|
       reflect_h = reflection(map_h, part2)
       map_v     = map_h.transpose
       reflect_v = reflection(map_v, part2)
