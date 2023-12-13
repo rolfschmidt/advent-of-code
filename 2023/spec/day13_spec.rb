@@ -4,12 +4,9 @@ class Day13 < Helper
       ai    = bi - 1
       fails = 0
       while map.pos?(y: ai) && map.pos?(y: bi)
-        if map[ai].present? && map[bi].present? && map[ai] != map[bi]
-          fails += map[ai].keys.count{|i| map[ai][i] != map[bi][i] }
-        end
-
-        ai -= 1
-        bi += 1
+        fails += map[ai].keys.count{|i| map[ai][i] != map[bi][i] } if map[ai] != map[bi]
+        ai    -= 1
+        bi    += 1
       end
 
       (!part2 && fails == 0) || (part2 && fails == 1)
