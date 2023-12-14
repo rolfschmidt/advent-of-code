@@ -56,7 +56,7 @@ class Array
     result
   end
 
-  def select_vec(value: nil)
+  def select_vec(value = nil)
     result = []
     self.each_with_index do |y, yi|
       y.each_with_index do |x, xi|
