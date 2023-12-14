@@ -38,27 +38,17 @@ class Day14 < Helper
         end
       end
 
+      next if !part2
+
       key = [old_map, ddup(map)]
-      if part2
-        if cache[key]
-          step  = round - cache[key]
-          left  = total - round
-          round = total - (left % step)
-          next
-        end
-
-        cache[key] = round
-        # repeating = cache[key] && cache[key].size > 2 && cache[key].each_cons(2).map{|a, b| b - a }.uniq.count == 1
-        # if repeating
-        #   step  = cache[key][1] - cache[key][0]
-        #   left  = total - round
-        #   round = total - (left % step)
-        #   next
-        # end
-
-        # cache[key] ||= []
-        # cache[key] << round
+      if cache[key]
+        step  = round - cache[key]
+        left  = total - round
+        round = total - (left % step)
+        next
       end
+
+      cache[key] = round
     end
 
     map.select_vec('O').sum{|v| map.size - v.y }
