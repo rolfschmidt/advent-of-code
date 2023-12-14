@@ -1,15 +1,8 @@
 class Day14 < Helper
   def self.part1(part2 = false)
     map       = file.to_2d
-    movements = [ Vector.new(0, -1) ]
-    if part2
-      movements = [
-        Vector.new(0, -1),
-        Vector.new(-1, 0),
-        Vector.new(0, 1),
-        Vector.new(1, 0),
-      ]
-    end
+    movements = [top]
+    movements = [top, left, bottom, right] if part2
 
     cache = {}
     total = 1
