@@ -1,0 +1,61 @@
+class Day15 < Helper
+  def self.part1(check = nil)
+    if !check
+      check = file.chomp.split(",")
+    end
+    check = Array.wrap(check)
+
+    result = []
+    check.each do |data|
+
+      pos_value = 0
+      data.chars.each do |value|
+        value     = value.ord
+        pos_value += value
+        pos_value *= 17
+        pos_value %= 256
+      end
+
+      result << pos_value
+    end
+
+    result.sum
+  end
+
+  def self.part2
+    boxes = [nil] * 255
+    file.chomp.split(",").each do |data|
+      box = [data.words[0], data.include?('-') ? '-' : data.numbers[0]]
+
+      location = part1(data.words[0])
+      boxes[location] ||= []
+      if box[1] == '-'
+        boxes[location] = boxes[location].select{|b| b[0] != box[0] }
+      elsif boxes[location].find{|b| b[0] == box[0] }
+        boxes[location] = boxes[location].map{|b| b[0] == box[0] ? box : b }
+      else
+        boxes[location] << box
+      end
+    end
+
+    total = 0
+    boxes.each_with_index do |b, bi|
+      next if b.blank?
+      b.each_with_index do |r, ri|
+        total += (bi + 1) * (ri + 1) * r[1]
+      end
+    end
+
+    total
+  end
+end
+
+RSpec.describe "Day15" do
+  it "does part 1" do
+    expect(Day15.part1).to eq(512283)
+  end
+
+  it "does part 2" do
+    expect(Day15.part2).to eq(215827)
+  end
+end
