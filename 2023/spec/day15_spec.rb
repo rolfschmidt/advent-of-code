@@ -2,7 +2,7 @@ class Day15 < Helper
   def self.part1(check = nil)
     check = file.chomp.split(",") if !check
 
-    result = check.each_with_object([]) do |data, result|
+    check.each_with_object([]) do |data, result|
       pos_value = 0
       data.chars.each do |value|
         value     = value.ord
@@ -12,9 +12,7 @@ class Day15 < Helper
       end
 
       result << pos_value
-    end
-
-    result.sum
+    end.sum
   end
 
   def self.part2
