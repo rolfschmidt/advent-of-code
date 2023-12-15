@@ -14,7 +14,7 @@ class Day15 < Helper
   end
 
   def self.part2
-    boxes = Array.new(256) { [] }
+    boxes = (0..255).map { [] }
     file.chomp.split(",").each do |data|
       box      = [data.words[0], data.numbers[0]]
       location = part1([data.words[0]])
