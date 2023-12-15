@@ -5,12 +5,10 @@ class Day15 < Helper
     check.each_with_object([]) do |data, result|
       pos_value = 0
       data.chars.each do |value|
-        value     = value.ord
-        pos_value += value
+        pos_value += value.ord
         pos_value *= 17
         pos_value %= 256
       end
-
       result << pos_value
     end.sum
   end
@@ -18,11 +16,11 @@ class Day15 < Helper
   def self.part2
     boxes = [nil] * 255
     file.chomp.split(",").each do |data|
-      box = [data.words[0], data.include?('-') ? '-' : data.numbers[0]]
-
+      box      = [data.words[0], data.numbers[0]]
       location = part1([data.words[0]])
+
       boxes[location] ||= []
-      if box[1] == '-'
+      if data.include?('-')
         boxes[location] = boxes[location].select{|b| b[0] != box[0] }
       elsif boxes[location].find{|b| b[0] == box[0] }
         boxes[location] = boxes[location].map{|b| b[0] == box[0] ? box : b }
