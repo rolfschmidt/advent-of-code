@@ -1,13 +1,8 @@
 class Day15 < Helper
   def self.part1(check = nil)
-    if !check
-      check = file.chomp.split(",")
-    end
-    check = Array.wrap(check)
+    check = file.chomp.split(",") if !check
 
-    result = []
-    check.each do |data|
-
+    result = check.each_with_object([]) do |data, result|
       pos_value = 0
       data.chars.each do |value|
         value     = value.ord
@@ -27,7 +22,7 @@ class Day15 < Helper
     file.chomp.split(",").each do |data|
       box = [data.words[0], data.include?('-') ? '-' : data.numbers[0]]
 
-      location = part1(data.words[0])
+      location = part1([data.words[0]])
       boxes[location] ||= []
       if box[1] == '-'
         boxes[location] = boxes[location].select{|b| b[0] != box[0] }
@@ -45,7 +40,6 @@ class Day15 < Helper
         total += (bi + 1) * (ri + 1) * r[1]
       end
     end
-
     total
   end
 end
