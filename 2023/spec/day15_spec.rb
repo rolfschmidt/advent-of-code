@@ -14,12 +14,11 @@ class Day15 < Helper
   end
 
   def self.part2
-    boxes = [nil] * 255
+    boxes = Array.new(256) { [] }
     file.chomp.split(",").each do |data|
       box      = [data.words[0], data.numbers[0]]
       location = part1([data.words[0]])
 
-      boxes[location] ||= []
       if data.include?('-')
         boxes[location] = boxes[location].select{|b| b[0] != box[0] }
       elsif boxes[location].find{|b| b[0] == box[0] }
