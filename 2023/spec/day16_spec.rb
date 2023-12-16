@@ -3,7 +3,8 @@ class Day16 < Helper
     @map ||= file.to_2d.to_map
   end
 
-  def self.get_dirs(char, pos, dir)
+  def self.dirs(pos, dir)
+    char  = map[pos]
     queue = []
     if char == '.'
       queue << [pos, dir]
@@ -49,13 +50,13 @@ class Day16 < Helper
       pos += dir
       next if !map[pos]
 
-      queue += get_dirs(map[pos], pos, dir)
+      queue += dirs(pos, dir)
     end
     seen.keys.map{|v| v[0] }.uniq.count
   end
 
   def self.part1
-    queue = get_dirs(map[Vector.new(0,0)], Vector.new(0,0), right)
+    queue = dirs(Vector.new(0,0), right)
     count(queue)
   end
 
@@ -67,12 +68,12 @@ class Day16 < Helper
 
     total = []
     (minx..maxx).each do |xi|
-      total << count(get_dirs(map[Vector.new(xi, 0)], Vector.new(xi, 0), bottom))
-      total << count(get_dirs(map[Vector.new(xi, maxy)], Vector.new(xi, maxy), top))
+      total << count(dirs(Vector.new(xi, 0), bottom))
+      total << count(dirs(Vector.new(xi, maxy), top))
     end
     (miny..maxy).each do |yi|
-      total << count(get_dirs(map[Vector.new(0, yi)], Vector.new(0, yi), right))
-      total << count(get_dirs(map[Vector.new(maxx, yi)], Vector.new(maxx, yi), left))
+      total << count(dirs(Vector.new(0, yi), right))
+      total << count(dirs(Vector.new(maxx, yi), left))
     end
 
     total.max
