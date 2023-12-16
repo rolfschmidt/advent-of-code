@@ -67,16 +67,12 @@ class Day16 < Helper
 
     total = []
     (minx..maxx).each do |xi|
-      total << count(get_dirs(map[Vector.new(xi, 0)], Vector.new(xi, 0), right))
-      total << count(get_dirs(map[Vector.new(xi, 0)], Vector.new(xi, 0), left))
-      total << count(get_dirs(map[Vector.new(xi, maxy)], Vector.new(xi, 0), right))
-      total << count(get_dirs(map[Vector.new(xi, maxy)], Vector.new(xi, 0), left))
+      total << count(get_dirs(map[Vector.new(xi, 0)], Vector.new(xi, 0), bottom))
+      total << count(get_dirs(map[Vector.new(xi, maxy)], Vector.new(xi, maxy), top))
     end
     (miny..maxy).each do |yi|
-      total << count(get_dirs(map[Vector.new(0, yi)], Vector.new(0, yi), top))
-      total << count(get_dirs(map[Vector.new(0, yi)], Vector.new(0, yi), bottom))
-      total << count(get_dirs(map[Vector.new(maxx, yi)], Vector.new(maxx, yi), top))
-      total << count(get_dirs(map[Vector.new(maxx, yi)], Vector.new(maxx, yi), bottom))
+      total << count(get_dirs(map[Vector.new(0, yi)], Vector.new(0, yi), right))
+      total << count(get_dirs(map[Vector.new(maxx, yi)], Vector.new(maxx, yi), left))
     end
 
     total.max
