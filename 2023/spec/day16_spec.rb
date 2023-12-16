@@ -43,7 +43,7 @@ class Day16 < Helper
     while queue.present?
       pos, dir = queue.shift
 
-      key = [pos.clone, dir.clone]
+      key = [pos, dir]
       next if seen[key]
       seen[key] = true
 
