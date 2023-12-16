@@ -75,6 +75,40 @@ class Array
   def each_keys
     (0..self.count - 1)
   end
+
+  def minx
+    0
+  end
+
+  def maxx
+    self[0].size - 1
+  end
+
+  def miny
+    0
+  end
+
+  def maxy
+    self.size - 1
+  end
+end
+
+class Hash
+  def minx
+    self.keys.min_by{|v| v[0] }.x
+  end
+
+  def maxx
+    self.keys.max_by{|v| v[0] }.x
+  end
+
+  def miny
+    self.keys.min_by{|v| v[1] }.y
+  end
+
+  def maxy
+    self.keys.max_by{|v| v[1] }.y
+  end
 end
 
 class Range
