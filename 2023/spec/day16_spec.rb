@@ -56,24 +56,18 @@ class Day16 < Helper
   end
 
   def self.part1
-    queue = dirs(Vector.new(0,0), right)
-    count(queue)
+    count(dirs(Vector.new(0,0), right))
   end
 
   def self.part2
-    minx = map.minx
-    maxx = map.maxx
-    miny = map.miny
-    maxy = map.maxy
-
     total = []
-    (minx..maxx).each do |xi|
+    (map.minx..map.maxx).each do |xi|
       total << count(dirs(Vector.new(xi, 0), bottom))
-      total << count(dirs(Vector.new(xi, maxy), top))
+      total << count(dirs(Vector.new(xi, map.maxy), top))
     end
-    (miny..maxy).each do |yi|
+    (map.miny..map.maxy).each do |yi|
       total << count(dirs(Vector.new(0, yi), right))
-      total << count(dirs(Vector.new(maxx, yi), left))
+      total << count(dirs(Vector.new(map.maxx, yi), left))
     end
 
     total.max

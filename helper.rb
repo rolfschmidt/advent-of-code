@@ -95,19 +95,23 @@ end
 
 class Hash
   def minx
-    self.keys.min_by{|v| v[0] }.x
+    @minx ||= {}
+    @minx[hash] ||= self.keys.min_by{|v| v[0] }.x
   end
 
   def maxx
-    self.keys.max_by{|v| v[0] }.x
+    @maxx ||= {}
+    @maxx[hash] ||= self.keys.max_by{|v| v[0] }.x
   end
 
   def miny
-    self.keys.min_by{|v| v[1] }.y
+    @miny ||= {}
+    @miny[hash] ||= self.keys.min_by{|v| v[1] }.y
   end
 
   def maxy
-    self.keys.max_by{|v| v[1] }.y
+    @maxy ||= {}
+    @maxy[hash] ||= self.keys.max_by{|v| v[1] }.y
   end
 end
 
