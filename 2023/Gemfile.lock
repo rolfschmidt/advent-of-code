@@ -122,6 +122,7 @@ GEM
       thor (~> 1.0)
     rake (13.0.6)
     range_operators (0.1.1)
+    rb_heap (1.1.0)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -161,6 +162,7 @@ DEPENDENCIES
   pry-rails
   rails
   range_operators
+  rb_heap
   rspec
   rspec-expectations
   ruby-prof

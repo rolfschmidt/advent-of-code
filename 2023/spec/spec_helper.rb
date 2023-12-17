@@ -8,6 +8,7 @@ require 'ruby-prof'
 require 'pry'
 require 'byebug'
 require 'range_operators'
+require 'rb_heap'
 
 require '../helper'
 
