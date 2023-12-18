@@ -96,7 +96,7 @@ class Array
   def poligon_perimeter
     result = 0
     self.each_cons(2).each do |a, b|
-      result += Math.sqrt((b.x - a.x)**2 + (b.y - a.y)**2)
+      result += Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2)
     end
     result.to_i
   end
