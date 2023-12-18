@@ -100,7 +100,7 @@ class Array
   # https://stackoverflow.com/a/4937281
   # https://en.wikipedia.org/wiki/Shoelace_formula
   def poligon_inner_area
-    self.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } / 2
+    self.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) }.abs / 2
   end
 
   # https://en.wikipedia.org/wiki/Pick%27s_theorem
