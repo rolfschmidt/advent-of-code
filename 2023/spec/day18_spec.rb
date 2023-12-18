@@ -30,6 +30,8 @@ class Day18 < Helper
     end
 
     # https://stackoverflow.com/a/4937281
+    # https://en.wikipedia.org/wiki/Shoelace_formula
+    # https://en.wikipedia.org/wiki/Pick%27s_theorem
     return ((edges.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } + edge_length) * 0.5 + 1).to_i
   end
 
