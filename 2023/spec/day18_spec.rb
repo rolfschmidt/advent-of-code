@@ -27,7 +27,7 @@ class Day18 < Helper
       edges << current.clone
     end
 
-    edges.poligon_area
+    edges.poligon_area.to_i
   end
 
   def self.part2
