@@ -108,7 +108,7 @@ class Array
   end
 
   # https://en.wikipedia.org/wiki/Pick%27s_theorem
-  def poligon_outer_area
+  def poligon_area
     (self.poligon_inner_area + (self.poligon_perimeter / 2) + 1).to_i
   end
 end
