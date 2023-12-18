@@ -1,21 +1,21 @@
 class Day18 < Helper
   def self.part1(part2 = false)
     directions = file.split("\n").each_with_object([]) do |line, result|
-      ds = part2 ? line.words[2][5].to_i : line.words[0]
-      d  = if ds == 'R' || ds == 0
+      dir_name = part2 ? line.words[2][5].to_i : line.words[0]
+      dir  = if dir_name == 'R' || dir_name == 0
             right
-          elsif ds == 'L' || ds == 2
+          elsif dir_name == 'L' || dir_name == 2
             left
-          elsif ds == 'U' || ds == 3
+          elsif dir_name == 'U' || dir_name == 3
             top
-          elsif ds == 'D' || ds == 1
+          elsif dir_name == 'D' || dir_name == 1
             bottom
           end
 
       if part2
-        result << [d, line.words[2][0..4].hex]
+        result << [dir, line.words[2][0..4].hex]
       else
-        result << [d, line.numbers[0]]
+        result << [dir, line.numbers[0]]
       end
     end
 
