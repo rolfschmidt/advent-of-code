@@ -94,11 +94,9 @@ class Array
 
   # Umfang / Edge length
   def poligon_perimeter
-    result = 0
-    self.each_cons(2).each do |a, b|
-      result += a.poligon_distance(b)
+    self.each_cons(2).sum do |a, b|
+      a.poligon_distance(b)
     end
-    result.to_i
   end
 
   # https://stackoverflow.com/a/4937281
