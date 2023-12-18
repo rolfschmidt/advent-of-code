@@ -96,7 +96,7 @@ class Array
   def poligon_perimeter
     result = 0
     self.each_cons(2).each do |a, b|
-      result += Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2)
+      result += a.poligon_distance(b)
     end
     result.to_i
   end
@@ -201,6 +201,10 @@ Vector = Struct.new(:x, :y) do
 
   def /(v)
     self.class.new(self.x / v.x, self.y / v.y)
+  end
+
+  def poligon_distance(pos)
+    Math.sqrt((pos.x - self.x) ** 2 + (pos.y - self.y) ** 2)
   end
 
   def magnitude
