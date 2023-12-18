@@ -21,16 +21,16 @@ class Day18 < Helper
 
     current     = Vector.new(0, 1)
     edges       = [current.clone]
-    edges_total = 0
+    edge_length = 0
     directions.each do |d, t|
       current.x += d.x * t
       current.y += d.y * t
-      edges_total += t
+      edge_length += t
       edges << current.clone
     end
 
     # https://stackoverflow.com/a/4937281
-    return ((edges.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } + edges_total) * 0.5 + 1).to_i
+    return ((edges.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } + edge_length) * 0.5 + 1).to_i
   end
 
   def self.part2
