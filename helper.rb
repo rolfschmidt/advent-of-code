@@ -200,7 +200,7 @@ Vector = Struct.new(:x, :y) do
   end
 
   def poligon_distance(pos)
-    Math.sqrt((pos.x - self.x) ** 2 + (pos.y - self.y) ** 2)
+    Math.sqrt((pos.x - self.x).abs2 + (pos.y - self.y).abs2)
   end
 
   def magnitude
