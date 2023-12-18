@@ -21,21 +21,13 @@ class Day18 < Helper
 
     current     = Vector.new(0, 1)
     edges       = [current.clone]
-    edge_length = 0
     directions.each do |d, t|
       current.x += d.x * t
       current.y += d.y * t
-      edge_length += t
       edges << current.clone
     end
 
-    # https://stackoverflow.com/a/4937281
-    # https://en.wikipedia.org/wiki/Shoelace_formula
-    shoelace = edges.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } / 2
-
-    # https://en.wikipedia.org/wiki/Pick%27s_theorem
-    # (42 + (38 / 2) + 1) = 62
-    return (shoelace + (edge_length / 2) + 1).to_i
+    edges.poligon_outer_area
   end
 
   def self.part2

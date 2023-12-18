@@ -91,6 +91,26 @@ class Array
   def maxy
     self.size - 1
   end
+
+  # Umfang / Edge length
+  def poligon_perimeter
+    result = 0
+    self.each_cons(2).each do |a, b|
+      result += Math.sqrt((b.x - a.x)**2 + (b.y - a.y)**2)
+    end
+    result.to_i
+  end
+
+  # https://stackoverflow.com/a/4937281
+  # https://en.wikipedia.org/wiki/Shoelace_formula
+  def poligon_inner_area
+    self.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } / 2
+  end
+
+  # https://en.wikipedia.org/wiki/Pick%27s_theorem
+  def poligon_outer_area
+    (self.poligon_inner_area + (self.poligon_perimeter / 2) + 1).to_i
+  end
 end
 
 class Hash
