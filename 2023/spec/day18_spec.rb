@@ -34,6 +34,7 @@ class Day18 < Helper
     shoelace = edges.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } / 2
 
     # https://en.wikipedia.org/wiki/Pick%27s_theorem
+    # (42 + (38 / 2) + 1) = 62
     return (shoelace + (edge_length / 2) + 1).to_i
   end
 
