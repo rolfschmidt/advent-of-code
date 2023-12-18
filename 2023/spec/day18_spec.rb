@@ -31,8 +31,10 @@ class Day18 < Helper
 
     # https://stackoverflow.com/a/4937281
     # https://en.wikipedia.org/wiki/Shoelace_formula
+    shoelace = edges.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } / 2
+
     # https://en.wikipedia.org/wiki/Pick%27s_theorem
-    return ((edges.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) } + edge_length) * 0.5 + 1).to_i
+    return (shoelace + (edge_length / 2) + 1).to_i
   end
 
   def self.part2
