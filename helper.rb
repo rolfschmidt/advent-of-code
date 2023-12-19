@@ -1,3 +1,9 @@
+class Integer
+  def to_range
+    (self..self)
+  end
+end
+
 class String
   def to_2d
     self.split("\n").map(&:chars)
@@ -66,6 +72,34 @@ class Array
       end
     end
     result
+  end
+
+  def ensure_ranges
+    self.map{|v| v.is_a?(Range) ? v : v.to_range }
+  end
+
+  def add_range(value)
+    self.map do |r|
+      r     = r.to_range if r.respond_to?(:to_range)
+      value = value.to_range if value.respond_to?(:to_range)
+      r + value
+    end.flatten.compact.rangify.ensure_ranges
+  end
+
+  def sub_range(value)
+    self.map do |r|
+      r     = r.to_range if r.respond_to?(:to_range)
+      value = value.to_range if value.respond_to?(:to_range)
+      r - value
+    end.flatten.compact.rangify.ensure_ranges
+  end
+
+  def intersect_range(value)
+    self.map do |r|
+      r     = r.to_range if r.respond_to?(:to_range)
+      value = value.to_range if value.respond_to?(:to_range)
+      r & value
+    end.flatten.compact.rangify.ensure_ranges
   end
 
   def keys

@@ -15,47 +15,6 @@ class Day19 < Helper
 
       rule = rule.split(",").map do |r|
         if r.include?(':')
-          r = r.gsub(':', ' ? sub_')
-          r = "#{r}"
-          "(#{r}(x, m, a, s) : nil)"
-        else
-          "sub_#{r}(x, m, a, s)"
-        end
-      end.reduce do |a, b|
-        a.sub('nil', b)
-      end
-
-      "def sub_#{name}(x, m, a, s); #{rule}; end"
-    end
-
-    workflow_subs << "def sub_A(x, m, a, s); 1; end"
-    workflow_subs << "def sub_R(x, m, a, s); 0; end"
-    instance_eval(workflow_subs.join("\n"))
-  end
-
-  def self.part1
-    add_subs
-
-    total = 0
-    lines.each do |line|
-      x, m, a, s = line.numbers
-      result = sub_in(x, m, a, s)
-      if result > 0
-        total += x + m + a + s
-      end
-    end
-
-    total
-  end
-
-  def self.add_subs_part2
-    workflow_subs = workflows.map do |cw|
-      raise if cw !~ /(\w+)\{(.+)\}/
-      name = $1
-      rule = $2
-
-      rule = rule.split(",").map do |r|
-        if r.include?(':')
           raise if r !~ /^(\w+)(\>|\<)(-?\d+)\:(\w+)$/
 
           rule_name     = $1
@@ -71,11 +30,11 @@ class Day19 < Helper
           end
 
           "
-          check = Array.wrap(#{rule_name}).rangify.map{|r| r & #{rule_range} }.flatten.compact
+          check = Array.wrap(#{rule_name}).intersect_range(#{rule_range})
           if check.present?
             cx, cm, ca, cs = ddup(x), ddup(m), ddup(a), ddup(s)
             c#{rule_name}  = ddup(check)
-            #{rule_name}   = Array.wrap(#{rule_name}).rangify.map{|r| r - #{rule_range} }.flatten.compact
+            #{rule_name}   = Array.wrap(#{rule_name}).sub_range(#{rule_range})
             total         += sub_#{rule_cw}(cx, cm, ca, cs)
           end
           "
@@ -100,8 +59,18 @@ class Day19 < Helper
     instance_eval(workflow_subs.join("\n"))
   end
 
+  def self.part1
+    add_subs
+
+    lines.sum do |line|
+      next 0 if !sub_in(*line.numbers.ensure_ranges).select{|v| v.is_a?(Hash) }.select{|v| v.values.all?(&:present?) }.present?
+
+      line.numbers.sum
+    end
+  end
+
   def self.part2
-    add_subs_part2
+    add_subs
 
     fk = [(1..4000)]
     sub_in(fk, fk, fk, fk).select{|v| v.is_a?(Hash) }.sum do |r|
