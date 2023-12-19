@@ -58,10 +58,10 @@ class Day19 < Helper
         if r.include?(':')
           raise if r !~ /^(\w+)(\>|\<)(-?\d+)\:(\w+)$/
 
-          rule_name = $1
+          rule_name     = $1
           rule_operator = $2
-          rule_value = $3.to_i
-          rule_cw = $4
+          rule_value    = $3.to_i
+          rule_cw       = $4
 
           rule_range = ""
           if rule_operator == '>'
@@ -104,20 +104,9 @@ class Day19 < Helper
     add_subs_part2
 
     fk = [(1..4000)]
-    tx = []
-    tm = []
-    ta = []
-    ts = []
-    total = 0
-    sub_in(fk, fk, fk, fk).select{|v| v.is_a?(Hash) }.each do |r|
-      r[:x] = r[:x].rangify.map(&:count).sum
-      r[:m] = r[:m].rangify.map(&:count).sum
-      r[:a] = r[:a].rangify.map(&:count).sum
-      r[:s] = r[:s].rangify.map(&:count).sum
-      total += r.values.inject(:*)
+    sub_in(fk, fk, fk, fk).select{|v| v.is_a?(Hash) }.sum do |r|
+      r.values.map{|v| v.rangify.map(&:count).sum }.inject(:*)
     end
-
-    total
   end
 end
 
