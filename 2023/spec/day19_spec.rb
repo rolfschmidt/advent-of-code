@@ -63,7 +63,7 @@ class Day19 < Helper
     add_subs
 
     lines.sum do |line|
-      next 0 if !sub_in(*line.numbers.ensure_ranges).select{|v| v.all?(&:present?) }.present?
+      next 0 if sub_in(*line.numbers.ensure_ranges).none?{|v| v.all?(&:present?) }
 
       line.numbers.sum
     end
