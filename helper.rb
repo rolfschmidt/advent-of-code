@@ -78,27 +78,36 @@ class Array
     self.map{|v| v.is_a?(Range) ? v : v.to_range }
   end
 
-  def add_range(value)
+  def add_range(values)
     self.map do |r|
-      r     = r.to_range if r.respond_to?(:to_range)
-      value = value.to_range if value.respond_to?(:to_range)
-      r + value
+      r = r.to_range if r.respond_to?(:to_range)
+      Array.wrap(values).each do |value|
+        value = value.to_range if value.respond_to?(:to_range)
+        r += value
+      end
+      r
     end.flatten.compact.rangify.ensure_ranges
   end
 
-  def sub_range(value)
+  def sub_range(values)
     self.map do |r|
-      r     = r.to_range if r.respond_to?(:to_range)
-      value = value.to_range if value.respond_to?(:to_range)
-      r - value
+      r = r.to_range if r.respond_to?(:to_range)
+      Array.wrap(values).each do |value|
+        value = value.to_range if value.respond_to?(:to_range)
+        r -= value
+      end
+      r
     end.flatten.compact.rangify.ensure_ranges
   end
 
-  def intersect_range(value)
+  def intersect_range(values)
     self.map do |r|
-      r     = r.to_range if r.respond_to?(:to_range)
-      value = value.to_range if value.respond_to?(:to_range)
-      r & value
+      r = r.to_range if r.respond_to?(:to_range)
+      Array.wrap(values).each do |value|
+        value = value.to_range if value.respond_to?(:to_range)
+        r = r & value
+      end
+      r
     end.flatten.compact.rangify.ensure_ranges
   end
 
