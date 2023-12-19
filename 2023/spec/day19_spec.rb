@@ -53,7 +53,7 @@ class Day19 < Helper
       end"
     end
 
-    workflow_subs << "def sub_A(x, m, a, s); [{x: x, m: m, a: a, s: s}]; end"
+    workflow_subs << "def sub_A(x, m, a, s); [[x, m, a, s]]; end"
     workflow_subs << "def sub_R(x, m, a, s); []; end"
 
     instance_eval(workflow_subs.join("\n"))
@@ -63,7 +63,7 @@ class Day19 < Helper
     add_subs
 
     lines.sum do |line|
-      next 0 if !sub_in(*line.numbers.ensure_ranges).select{|v| v.is_a?(Hash) }.select{|v| v.values.all?(&:present?) }.present?
+      next 0 if !sub_in(*line.numbers.ensure_ranges).select{|v| v.all?(&:present?) }.present?
 
       line.numbers.sum
     end
@@ -73,8 +73,8 @@ class Day19 < Helper
     add_subs
 
     fk = [(1..4000)]
-    sub_in(fk, fk, fk, fk).select{|v| v.is_a?(Hash) }.sum do |r|
-      r.values.map{|v| v.rangify.map(&:count).sum }.inject(:*)
+    sub_in(fk, fk, fk, fk).sum do |r|
+      r.map{|v| v.rangify.map(&:count).sum }.inject(:*)
     end
   end
 end
