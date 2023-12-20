@@ -42,8 +42,7 @@ class Day20 < Helper
       }]
     end
 
-    flipper = modules.keys.select{|m| modules[m][:from].include?('%') }
-    conjis  = modules.keys.select{|m| modules[m][:from].include?('&') }
+    conjis = modules.keys.select{|m| modules[m][:from].include?('&') }
     modules.keys.each do |key|
 
       # add defaults for "to"-fields
@@ -58,11 +57,8 @@ class Day20 < Helper
     end
 
     # rx related
-    rx_parent = modules.values.find do |mod|
-      next if (mod[:to] & ['rx']).count.zero?
-      true
-    end
-    rx_parent_states = rx_parent[:state].keys.map{|key| key.gsub(/[\%|\&]/, '') }
+    rx_parent              = modules.values.find{|mod| (mod[:to] & ['rx']).count.positive? }
+    rx_parent_states       = rx_parent[:state].keys.map{|key| key.gsub(/[\%|\&]/, '') }
     rx_parent_states_round = rx_parent_states.to_h{|key| [key, []] }
 
     counter_low = 0
@@ -86,7 +82,7 @@ class Day20 < Helper
           check_mod[:to].each do |sub_to|
             # puts "#{check_mod[:key]} #{(next_signal == false ? '-low' : '-high')}-> #{sub_to}"
 
-            if rx_parent_states.include?(check_mod[:key]) && sub_to == rx_parent[:key] && next_signal == true
+            if part2 && rx_parent_states.include?(check_mod[:key]) && sub_to == rx_parent[:key] && next_signal == true
               rx_parent_states_round[check_mod[:key]] |= [round]
             end
 
@@ -97,7 +93,7 @@ class Day20 < Helper
         break if modules.keys.all?{|m| modules[m][:state] == false }
       end
 
-      if rx_parent_states_round.values.all?{|c| c.size > 2 }
+      if part2 && rx_parent_states_round.values.all?{|c| c.size > 2 }
         return rx_parent_states_round.values.map{|v| v[-1] - v[-2] }.uniq.inject(&:lcm)
       end
     end
