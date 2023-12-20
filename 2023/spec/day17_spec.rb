@@ -1,6 +1,6 @@
 class Day17 < Helper
   def self.map
-    @map ||= file.to_2d.to_map.to_h{|k, v| [k, v.to_i] }
+    @map ||= file.to_2d.to_map.to_flags{|k, v| [k, v.to_i] }
   end
 
   def self.start

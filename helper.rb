@@ -46,7 +46,7 @@ class Array
     result
   end
 
-  def to_h
+  def to_flags
     self.each_with_object({}) do |key, result|
       result[key] = true
     end
