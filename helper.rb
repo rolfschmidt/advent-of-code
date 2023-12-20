@@ -46,12 +46,6 @@ class Array
     result
   end
 
-  def to_flags
-    self.each_with_object({}) do |key, result|
-      result[key] = true
-    end
-  end
-
   def to_map
     result = {}
     self.each_with_index do |y, yi|
