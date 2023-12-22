@@ -265,6 +265,27 @@ Vector = Struct.new(:x, :y) do
   end
 end
 
+class Vector3
+  attr_accessor :fx, :fy, :fz, :tx, :ty, :tz
+
+  def initialize(fx, fy, fz, tx, ty, tz)
+    @fx = fx
+    @fy = fy
+    @fz = fz
+    @tx = tx
+    @ty = ty
+    @tz = tz
+  end
+
+  def overlaps?(other)
+    return [self.fz, other.fz].max <= [self.tz, other.tz].min && [self.fx, other.fx].max <= [self.tx, other.tx].min && [self.fy, other.fy].max <= [self.ty, other.ty].min
+  end
+
+  def to_a
+    [fx, fy, fz, tx, ty, tz]
+  end
+end
+
 class Node
   attr_accessor :value, :prev, :next
 
