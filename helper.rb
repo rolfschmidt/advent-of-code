@@ -265,7 +265,7 @@ Vector = Struct.new(:x, :y) do
   end
 end
 
-class Vector3
+class Box
   attr_accessor :fx, :fy, :fz, :tx, :ty, :tz
 
   def initialize(fx, fy, fz, tx, ty, tz)

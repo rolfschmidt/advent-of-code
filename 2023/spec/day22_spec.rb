@@ -9,7 +9,7 @@ class Day22 < Helper
         b1 = fall_rain[b1i]
         next if b1.fz <= 1
 
-        b1n = Vector3.new(b1.fx, b1.fy, b1.fz - 1, b1.tx, b1.ty, b1.tz - 1)
+        b1n = Box.new(b1.fx, b1.fy, b1.fz - 1, b1.tx, b1.ty, b1.tz - 1)
         next if (0..b1i - 1).to_a.reverse.any? do |bci|
           bc = fall_rain[bci]
           next if bc == b1
@@ -34,7 +34,7 @@ class Day22 < Helper
 
   def self.rain
     @rain ||= begin
-      rain = file.split("\n").map{|v| Vector3.new(*v.numbers) }
+      rain = file.split("\n").map{|v| Box.new(*v.numbers) }
       rain = rain.sort_by{|v| v.fz }
 
       fall(rain).first
@@ -49,7 +49,7 @@ class Day22 < Helper
         combo_rain.each_with_index do |b1, b1i|
           next if b1.fz <= 1
 
-          b1n = Vector3.new(b1.fx, b1.fy, b1.fz - 1, b1.tx, b1.ty, b1.tz - 1)
+          b1n = Box.new(b1.fx, b1.fy, b1.fz - 1, b1.tx, b1.ty, b1.tz - 1)
 
           next if (0..b1i - 1).to_a.reverse.any? do |bci|
             bc = combo_rain[bci]
