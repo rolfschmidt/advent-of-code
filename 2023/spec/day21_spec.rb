@@ -3,66 +3,14 @@ class Day21 < Helper
     @map ||= file.to_2d.to_map
   end
 
-  def self.part1(round_step = 64)
-    start = map.find{|k, v| v == 'S' }[0]
-    queue = [[start, round_step]]
-    result = {}
-    seen = {}
-    while queue.present?
-      pos, step, step_size = queue.shift
-
-      if step <=0
-        result[pos] = true
-        next
-      end
-
-      [top, right, bottom, left].each do |dir|
-        new_pos = pos + dir
-        next if !map[new_pos]
-        next if map[new_pos] == '#'
-        next if seen[[new_pos, step]]
-        seen[[new_pos, step]] = true
-
-        queue << [new_pos, step - 1]
-      end
-    end
-
-    # (map.miny..map.maxy).each do |yi|
-    #   (map.minx..map.maxx).each do |xi|
-    #     sp = Vector.new(xi, yi)
-    #     if result[sp]
-    #       print "O"
-    #     else
-    #       print map[sp]
-    #     end
-    #   end
-    #   print "\n"
-    # end
-
-    return result.keys.count
-  end
-
-  def self.simplified_lagrange(values)
-    return [
-      values[0] / 2 - values[1] + values[2] / 2,
-      -3 * (values[0] / 2) + 2 * values[1] - values[2] / 2,
-      values[0],
-    ]
-  end
-
-  # gave up on this
-  # had a nice idea for warshall solution but couldnt even process the base grid
-  # yoinked, props to https://www.reddit.com/r/adventofcode/comments/18nevo3/comment/keb6a53/
-  def self.part2
-    start = map.find{|k, v| v == 'S' }[0]
-
+  def self.run(need_rounds)
+    start       = map.find{|k, v| v == 'S' }[0]
     queue       = [start]
     seen        = {}
     maxx        = map.maxx
     maxy        = map.maxy
     blocker     = map.keys.select{|key| map[key] == '#' }.to_set
     totals      = {}
-    need_rounds = [65, 65 + 131, 65 + 131 * 2]
     (1..need_rounds.max).each do |round|
       new_queue = Set.new
       queue.each do |pos|
@@ -87,9 +35,30 @@ class Day21 < Helper
         seen[k] = !v
       end
     end
+    totals
+  end
 
-    poly   = simplified_lagrange(need_rounds.map{|v| totals[v] })
-    target = (26_501_365 - 65) / 131
+  def self.part1(round_step = 64)
+    run([64])[64]
+  end
+
+  def self.simplified_lagrange(values)
+    return [
+      values[0] / 2 - values[1] + values[2] / 2,
+      -3 * (values[0] / 2) + 2 * values[1] - values[2] / 2,
+      values[0],
+    ]
+  end
+
+  # gave up on this
+  # had a nice idea for warshall solution but couldnt even process the base grid
+  # yoinked, props to https://www.reddit.com/r/adventofcode/comments/18nevo3/comment/keb6a53/
+  def self.part2
+    need_rounds = [65, 65 + 131, 65 + 131 * 2]
+    totals      = run(need_rounds)
+    poly        = simplified_lagrange(need_rounds.map{|v| totals[v] })
+    target      = (26_501_365 - 65) / 131
+
     return poly[0] * target * target + poly[1] * target + poly[2]
   end
 end
