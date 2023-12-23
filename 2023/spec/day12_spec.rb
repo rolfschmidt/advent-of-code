@@ -23,7 +23,7 @@ class Day12 < Helper
       [arrangement, numbers.numbers]
     end
 
-    Parallel.map(arrangements) do |arrangement, numbers|
+    arrangements.map do |arrangement, numbers|
       if part2
         arrangement = arrangement + ('?' + arrangement) * 4
         numbers     = numbers * 5
