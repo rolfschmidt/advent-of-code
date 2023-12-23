@@ -1,10 +1,5 @@
 class Day23 < Helper
   def self.part1
-    map = file.to_2d.to_map
-
-    start = Vector.new(0, 1)
-    stop = Vector.new(map.maxx - 1, map.maxy)
-
     slopes = {
       '>' => right,
       '<' => left,
@@ -118,12 +113,14 @@ class Day23 < Helper
     end
 
     start_cr = crossroad_ways.keys.find{|cr| crossroad_ways[cr][start] }
-    queue    = [ [start_cr, crossroad_ways[start_cr][start] - 1, {}] ]
+
+    queue = Heap.new{|a, b| a[1] > b[1] }
+    queue << [start_cr, crossroad_ways[start_cr][start] - 1, {}]
 
     totals = []
     counter = 0
     while queue.present?
-      pos, count, seen = queue.shift
+      pos, count, seen = queue.pop
 
       counter += 1
       if counter % 1000000 == 0
