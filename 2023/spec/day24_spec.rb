@@ -24,7 +24,7 @@ class Day24 < Helper
   end
 
   # no math skills, gave up
-  # props to https://github.com/tckmn/polyaoc-2023/blob/97689dc6b5ff38c557cd885b10be425e14928958/24/rb/24.rb
+  # yoinked, props to https://github.com/tckmn/polyaoc-2023/blob/97689dc6b5ff38c557cd885b10be425e14928958/24/rb/24.rb
   def self.part1
     tmin = 200000000000000
     tmax = 400000000000000
@@ -44,7 +44,7 @@ class Day24 < Helper
   end
 
   # no math skills, gave up
-  # props to https://github.com/tckmn/polyaoc-2023/blob/97689dc6b5ff38c557cd885b10be425e14928958/24/rb/24.rb
+  # yoinked, props to https://github.com/tckmn/polyaoc-2023/blob/97689dc6b5ff38c557cd885b10be425e14928958/24/rb/24.rb
   def self.part2
     x, y, *_ = elim(mat stones, 0, 1, 3, 4).map(&:last)
     z,    *_ = elim(mat stones, 2, 1, 5, 4).map(&:last)
