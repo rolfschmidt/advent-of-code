@@ -4,11 +4,11 @@ class Day25 < Helper
       edges = []
       file.split("\n").map{|line| line.words }.each do |comps|
         comps[1..].each do |comp|
-          edges << [comps.first, comp]
-          edges << [comp, comps.first]
+          edges << [comps.first, comp, 1]
+          edges << [comp, comps.first, 1]
         end
       end
-      edges = edges.map{|v| v << 1 }
+      edges
     end
   end
 
