@@ -2,6 +2,24 @@ class Integer
   def to_range
     (self..self)
   end
+
+  def to_vec
+    Vector.new(self, self)
+  end
+
+  def to_vec3
+    Vector3.new(self, self, self)
+  end
+end
+
+class BigDecimal
+  def to_vec
+    Vector.new(self, self)
+  end
+
+  def to_vec3
+    Vector3.new(self, self, self)
+  end
 end
 
 class String
@@ -221,18 +239,22 @@ Vector = Struct.new(:x, :y) do
   end
 
   def +(v)
+    v = v.to_vec if v.respond_to?(:to_vec)
     self.class.new(self.x + v.x, self.y + v.y)
   end
 
   def -(v)
+    v = v.to_vec if v.respond_to?(:to_vec)
     self.class.new(self.x - v.x, self.y - v.y)
   end
 
   def *(v)
+    v = v.to_vec if v.respond_to?(:to_vec)
     self.class.new(self.x * v.x, self.y * v.y)
   end
 
   def /(v)
+    v = v.to_vec if v.respond_to?(:to_vec)
     self.class.new(self.x / v.x, self.y / v.y)
   end
 
@@ -262,6 +284,65 @@ Vector = Struct.new(:x, :y) do
 
   def hash
     [x, y].hash
+  end
+end
+
+Vector3 = Struct.new(:x, :y, :z) do
+  def self.[](x, y)
+    self.new(x, y)
+  end
+
+  def self.random
+    self.new(rand(-1.0..1.0), rand(-1.0..1.0), rand(-1.0..1.0))
+  end
+
+  def +(v)
+    v = v.to_vec3 if v.respond_to?(:to_vec3)
+    self.class.new(self.x + v.x, self.y + v.y, self.z + v.z)
+  end
+
+  def -(v)
+    v = v.to_vec3 if v.respond_to?(:to_vec3)
+    self.class.new(self.x - v.x, self.y - v.y, self.z - v.z)
+  end
+
+  def *(v)
+    v = v.to_vec3 if v.respond_to?(:to_vec3)
+    self.class.new(self.x * v.x, self.y * v.y, self.z * v.z)
+  end
+
+  def /(v)
+    v = v.to_vec3 if v.respond_to?(:to_vec3)
+    self.class.new(self.x / v.x, self.y / v.y, self.z / v.z)
+  end
+
+  def product(v)
+    self.x * v.x + self.y * v.y + self.z * v.z
+  end
+
+  def normalize
+    l = self.r
+    Vector3.new(self.x / l, self.y / l, self.z / l)
+  end
+
+  def magnitude
+    Math.sqrt(self.x.abs2 + self.y.abs2 + self.z.abs2)
+  end
+
+  alias_method :r, :magnitude
+  alias_method :norm, :magnitude
+
+  def to_a
+    [x, y, z]
+  end
+
+  def ==(other)
+    x == other.x && y == other.y && z == other.z
+  end
+  alias_method :==, :eql?
+
+  def hash
+    [x, y, z].hash
   end
 end
 
@@ -314,3 +395,5 @@ end
 def ddup(obj)
   Marshal.load(Marshal.dump(obj))
 end
+
+BigDecimal.limit(100)
