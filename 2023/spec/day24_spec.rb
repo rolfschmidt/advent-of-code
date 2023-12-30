@@ -103,7 +103,6 @@ class Day24 < Helper
     error = Float::INFINITY
     guess = []
     while error == Float::INFINITY
-      error = 0
       guess = Vector3.random.normalize
       error, _ = calc_intersection_error(guess)
     end
