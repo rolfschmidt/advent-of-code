@@ -37,8 +37,8 @@ class Day24 < Helper
     solution_range.cover?(intersection_y)
   end
 
-  # gave up
-  # after aoc i built this solution with @jingchan (big thx) together.
+  # gave up, no math skills
+  # team solution, props to @jingchan (big thx).
   def self.part1
     stones.combination(2).sum do |s1, s2|
       next 0 if !will_crosspath?(s1, s2, 200000000000000, 400000000000000)
@@ -168,8 +168,8 @@ class Day24 < Helper
     retry
   end
 
-  # gave up
-  # after aoc i built this solution with @jingchan (big thx) together.
+  # gave up, no math skills
+  # team solution, props to @jingchan (big thx).
   def self.part2
     guess = mass_guess
 
