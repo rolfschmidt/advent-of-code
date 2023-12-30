@@ -15,9 +15,9 @@ class Day24 < Helper
   def self.will_crosspath?(object1, object2, low, high)
 
     # Calculate the parameters of the line equations for the objects
-    slope1 = object1.vel.y / object1.vel.x
+    slope1     = object1.vel.y / object1.vel.x
     intercept1 = object1.pos.y - slope1 * object1.pos.x
-    slope2 = object2.vel.y / object2.vel.x
+    slope2     = object2.vel.y / object2.vel.x
     intercept2 = object2.pos.y - slope2 * object2.pos.x
 
     # Calculate the x-coordinate of the intersection point
@@ -48,10 +48,10 @@ class Day24 < Helper
 
   def self.crosspath_point(object1, object2)
     # Calculate the parameters of the line equations for the objects
-    slope1 = object1.vel.y / object1.vel.x
+    slope1     = object1.vel.y / object1.vel.x
     intercept1 = object1.pos.y - slope1 * object1.pos.x
 
-    slope2 = object2.vel.y / object2.vel.x
+    slope2     = object2.vel.y / object2.vel.x
     intercept2 = object2.pos.y - slope2 * object2.pos.x
 
     # Calculate the x-coordinate of the intersection point
@@ -174,15 +174,16 @@ class Day24 < Helper
     guess = mass_guess
 
     _, intersections = calc_intersection_error(guess)
-    p1 = stones[0].pos
-    v1 = stones[0].vel * 1_000_000_000_000
-    p2 = stones[1].pos
-    v2 = stones[1].vel * 1_000_000_000_000
+
+    p1    = stones[0].pos
+    v1    = stones[0].vel * 1_000_000_000_000
+    p2    = stones[1].pos
+    v2    = stones[1].vel * 1_000_000_000_000
     time1 = intersections[0][2]
     time2 = intersections[1][2]
 
-    ans_p1 = p1 + v1 * time1
-    ans_p2 = p2 + v2 * time2
+    ans_p1  = p1 + v1 * time1
+    ans_p2  = p2 + v2 * time2
     ans_vel = (ans_p2 - ans_p1) * (1.0 / (time2 - time1))
     ans_pos = ans_p1 - ans_vel * time1
 
