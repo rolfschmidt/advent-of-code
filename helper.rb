@@ -433,6 +433,13 @@ In graph theory, the Stoer–Wagner algorithm is a recursive algorithm
 to solve the minimum cut problem in undirected weighted graphs
 with non-negative weights.
 
+edges = [
+  ['AA', 'BB', 1],
+  ['BB', 'CC', 1],
+]
+
+cut, best = Graph.minimum_cut(Graph.matrix(edges))
+
 Returns:
 
 [<min cut>, <graph_list>]
@@ -472,6 +479,13 @@ https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 Dijkstra's algorithm is an algorithm for finding
 the shortest paths between nodes in a weighted graph, which
 may represent, for example, road networks.
+
+edges = [
+  ['AA', 'BB', 1],
+  ['BB', 'CC', 1],
+]
+
+path = shortest_path(edges, 'AA', 'BB')
 
 Returns:
 
