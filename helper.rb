@@ -53,6 +53,19 @@ class String
 end
 
 class Array
+
+  # returns 2d string
+  def to_2ds
+    result = ""
+    self.each_with_index do |y, yi|
+      y.each_with_index do |x, xi|
+        result += x
+      end
+      result += "\n"
+    end
+    result
+  end
+
   def pos?(x: nil, y: nil)
     result = true
     if x && (x < 0 || x > self[0].length - 1)
@@ -165,6 +178,19 @@ class Array
 end
 
 class Hash
+
+  # returns 2d string
+  def to_2ds
+    result = ""
+    (self.miny..self.maxy).each do |yi|
+      (self.miny..self.maxy).each do |xi|
+        result += self[Vector.new(xi, yi)]
+      end
+      result += "\n"
+    end
+    result
+  end
+
   def minx
     @minx ||= {}
     @minx[hash] ||= self.keys.min_by{|v| v[0] }.x
@@ -389,6 +415,77 @@ class Node
     @next.prev = node
     @next = node
     node
+  end
+end
+
+class Graph
+
+  # return a graph matrix for the list of edges
+  def self.matrix(edges)
+    graph = Dijkstra::Trace.new(edges)
+    graph.graph_matrix
+  end
+
+=begin
+
+https://en.wikipedia.org/wiki/Stoer%E2%80%93Wagner_algorithm
+In graph theory, the Stoer–Wagner algorithm is a recursive algorithm
+to solve the minimum cut problem in undirected weighted graphs
+with non-negative weights.
+
+Returns:
+
+[<min cut>, <graph_list>]
+[3, [6, 9, 12, 13, 2, 10, 8, 5, 1]]
+
+=end
+
+  def self.minimum_cut(matrix)
+    best = [Float::INFINITY, []]
+    n = matrix.length
+    co = Array.new(n) { |i| [i] }
+
+    (1...n).each do |ph|
+      w = matrix[0].dup
+      s = t = 0
+
+      (n - ph).times do
+        w[t] = -Float::INFINITY
+        s, t = t, w.index(w.max)
+        (0...n).each { |i| w[i] += matrix[t][i] }
+      end
+
+      current_value = [w[t] - matrix[t][t], co[t]]
+      best = [best, current_value].min_by { |a, b| [a, b ? b.size : 0] }
+      co[s].concat(co[t])
+      (0...n).each { |i| matrix[s][i] += matrix[t][i] }
+      (0...n).each { |i| matrix[i][s] = matrix[s][i] }
+      matrix[0][t] = -Float::INFINITY
+    end
+
+    best
+  end
+
+=begin
+
+https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+Dijkstra's algorithm is an algorithm for finding
+the shortest paths between nodes in a weighted graph, which
+may represent, for example, road networks.
+
+Returns:
+
+#<Dijkstra::Path:0x00007f9b96d949a8
+  @distance=7,
+  @ending_point="HH",
+  @path=["JJ", "II", "AA", "DD", "EE", "FF", "GG", "HH"],
+  @starting_point="JJ">
+
+=end
+
+  def self.shortest_path(edges, from, to)
+    graph = Dijkstra::Trace.new(edges)
+    graph.path(from, to)
   end
 end
 

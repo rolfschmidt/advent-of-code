@@ -20,10 +20,7 @@ class Day16 < Helper
       @valves.each do |v|
         next if v[0] == from
 
-        graph = Dijkstra::Trace.new(edges)
-        path  = graph.path(from, v[0])
-
-        result << path
+        result << Graph.shortest_path(edges, from, v[0])
       end
       result
         .sort_by {|r| r.distance }
