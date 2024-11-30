@@ -1,11 +1,42 @@
 class Integer
+
+=begin
+
+  4.to_range
+
+Returns:
+
+  Range(4..4)
+
+=end
+
   def to_range
     (self..self)
   end
 
+=begin
+
+  4.to_vec
+
+Returns:
+
+  Vector(4, 4)
+
+=end
+
   def to_vec
     Vector.new(self, self)
   end
+
+=begin
+
+  4.to_vec
+
+Returns:
+
+  Vector(4, 4, 4)
+
+=end
 
   def to_vec3
     Vector3.new(self, self, self)
@@ -13,9 +44,29 @@ class Integer
 end
 
 class BigDecimal
+=begin
+
+  4.to_vec
+
+Returns:
+
+  Vector(4, 4)
+
+=end
+
   def to_vec
     Vector.new(self, self)
   end
+
+=begin
+
+  4.to_vec
+
+Returns:
+
+  Vector(4, 4, 4)
+
+=end
 
   def to_vec3
     Vector3.new(self, self, self)
@@ -23,29 +74,104 @@ class BigDecimal
 end
 
 class String
+
+=begin
+
+  "###\n#.#\n###".to_2d
+
+Returns:
+
+  [
+    "#", "#", "#",
+    "#", ".", "#",
+    "#", "#", "#",
+  ]
+
+=end
+
   def to_2d
     self.split("\n").map(&:chars)
   end
+
+=begin
+
+  "abcd".halve
+
+Returns:
+
+  ['ab', 'cd']
+
+=end
 
   def halve
     [self[0, self.size/2], self[self.size/2..-1]]
   end
 
+=begin
+
+  "ABCD".is_upper?
+
+Returns:
+
+  true
+
+=end
+
   def is_upper?
     self == self.upcase
   end
+
+=begin
+
+  "abcd".is_lower?
+
+Returns:
+
+  true
+
+=end
 
   def is_lower?
     self == self.downcase
   end
 
+=begin
+
+  "5".is_number?
+
+Returns:
+
+  true
+
+=end
+
   def is_number?
     self.match?(/-?\d+/)
   end
 
+=begin
+
+  "a 5 b -5 c 10".numbers
+
+Returns:
+
+  [5, -5, 10]
+
+=end
+
   def numbers
     scan(/-?\d+/).map(&:to_i)
   end
+
+=begin
+
+  "aoc is cool".numbers
+
+Returns:
+
+  ['aoc', 'is', 'cool']
+
+=end
 
   def words
     scan(/\w+/)
@@ -54,7 +180,22 @@ end
 
 class Array
 
-  # returns 2d string
+=begin
+
+  [
+    "#", "#", "#",
+    "#", ".", "#",
+    "#", "#", "#",
+  ].to_2ds
+
+Returns:
+
+ "###
+  #.#
+  ###"
+
+=end
+
   def to_2ds
     result = ""
     self.each_with_index do |y, yi|
@@ -65,6 +206,20 @@ class Array
     end
     result
   end
+
+=begin
+
+  [
+    "#", "#", "#",
+    "#", ".", "#",
+    "#", "#", "#",
+  ].pos?(x: 1, y: 1)
+
+Returns:
+
+  true
+
+=end
 
   def pos?(x: nil, y: nil)
     result = true
@@ -77,6 +232,25 @@ class Array
     result
   end
 
+=begin
+
+  [
+    "#", "#", "#",
+    "#", ".", "#",
+    "#", "#", "#",
+  ].to_map
+
+Returns:
+
+  {
+    Vector(0,0) => '#'
+    Vector(0,1) => '#'
+    Vector(0,2) => '#'
+    # ...
+  }
+
+=end
+
   def to_map
     result = {}
     self.each_with_index do |y, yi|
@@ -86,6 +260,20 @@ class Array
     end
     result
   end
+
+=begin
+
+  [
+    "#", "#", "#",
+    "#", ".", "#",
+    "#", "#", "#",
+  ].select_vec('.')
+
+Returns:
+
+  [ Vector(1,1) ]
+
+=end
 
   def select_vec(value = nil)
     result = []
@@ -99,9 +287,29 @@ class Array
     result
   end
 
+=begin
+
+  [5, Range(5), 5].ensure_ranges
+
+Returns:
+
+  [Range(5), Range(5), Range(5)]
+
+=end
+
   def ensure_ranges
     self.map{|v| v.is_a?(Range) ? v : v.to_range }
   end
+
+=begin
+
+  [5].add_range([6,7,8])
+
+Returns:
+
+  [Range(5..8)]
+
+=end
 
   def add_range(values)
     self.map do |r|
@@ -114,6 +322,16 @@ class Array
     end.flatten.compact.rangify.ensure_ranges
   end
 
+=begin
+
+  [Range(5..8)].sub_range([6,7,8])
+
+Returns:
+
+  [Range(5..5)]
+
+=end
+
   def sub_range(values)
     self.map do |r|
       r = r.to_range if r.respond_to?(:to_range)
@@ -124,6 +342,16 @@ class Array
       r
     end.flatten.compact.rangify.ensure_ranges
   end
+
+=begin
+
+  [Range(5..7), Range(9..11)].intersect_range([6,7,8])
+
+Returns:
+
+  [Range(6..7)]
+
+=end
 
   def intersect_range(values)
     self.map do |r|
@@ -136,9 +364,29 @@ class Array
     end.flatten.compact.rangify.ensure_ranges
   end
 
+=begin
+
+  [1, 2, 3].keys
+
+Returns:
+
+  [0, 1, 2]
+
+=end
+
   def keys
     each_keys.to_a
   end
+
+=begin
+
+  [1, 2, 3].each_keys {|i| puts i }
+
+Returns:
+
+  0 1 2
+
+=end
 
   def each_keys
     (0..self.count - 1)
@@ -160,16 +408,60 @@ class Array
     self.size - 1
   end
 
+=begin
+
+Formula for Edge length (Umfang)
+
+  [Vector(0,1), ...].poligon_perimeter
+
+Returns
+
+  100
+
+=end
+
   # Umfang / Edge length
   def poligon_perimeter
     self.each_cons(2).sum {|a, b| a.poligon_distance(b) }
   end
+
+=begin
+
+Formula for Shoelace
+
+  [Vector(0,1), ...].poligon_inner_area
+
+Returns
+
+  100
+
+=end
 
   # https://stackoverflow.com/a/4937281
   # https://en.wikipedia.org/wiki/Shoelace_formula
   def poligon_inner_area
     self.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) }.abs / 2
   end
+
+=begin
+
+Formula for Picks Theorem
+
+    current     = Vector.new(0, 1)
+    edges       = [current.clone]
+    directions.each do |d, t|
+      current.x += d.x * t
+      current.y += d.y * t
+      edges << current.clone
+    end
+
+    edges.poligon_area.to_i
+
+Returns:
+
+    100 (see 2023/spec/day_18_spec.rb)
+
+=end
 
   # https://en.wikipedia.org/wiki/Pick%27s_theorem
   def poligon_area
@@ -179,7 +471,22 @@ end
 
 class Hash
 
-  # returns 2d string
+=begin
+
+  {
+    Vector(0,0) => '#',
+    Vector(0,1) => '#',
+    Vector(0,2) => '#',
+  }
+
+Returns:
+
+   "###
+    #.#
+    ###"
+
+=end
+
   def to_2ds
     result = ""
     (self.miny..self.maxy).each do |yi|
@@ -494,6 +801,8 @@ Returns:
   @ending_point="HH",
   @path=["JJ", "II", "AA", "DD", "EE", "FF", "GG", "HH"],
   @starting_point="JJ">
+
+  see also 2022/spec/day16_spec.rb
 
 =end
 
