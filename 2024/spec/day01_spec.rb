@@ -11,7 +11,7 @@ class Day01 < Helper
     bl.sort!
 
     return al.sum do |a|
-      a * bl.count{|x| x == a }
+      a * bl.count(a)
     end if part2
 
     return al.map.with_index do |a, ai|
