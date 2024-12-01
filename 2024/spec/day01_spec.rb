@@ -1,14 +1,6 @@
 class Day01 < Helper
   def self.part1(part2 = false)
-    al = []
-    bl = []
-    file.numbers.each_slice(2) do |a, b|
-      al << a
-      bl << b
-    end
-
-    al.sort!
-    bl.sort!
+    al, bl = file.numbers.each_slice(2).to_a.transpose.map(&:sort)
 
     return al.sum do |a|
       a * bl.count(a)
