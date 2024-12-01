@@ -2,7 +2,7 @@ class Day01 < Helper
   def self.part1(part2 = false)
     al = []
     bl = []
-    file.split("\n").map(&:numbers).each do |a, b|
+    file.numbers.each_slice(2) do |a, b|
       al << a
       bl << b
     end
