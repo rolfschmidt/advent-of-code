@@ -16,7 +16,7 @@ class Day01 < Helper
     end if part2
 
     return al.map.with_index do |a, ai|
-      [a, bl[ai]].max - [a, bl[ai]].min
+      (a - bl[ai]).abs
     end.sum
   end
 
