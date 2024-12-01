@@ -2,10 +2,9 @@ class Day01 < Helper
   def self.part1(part2 = false)
     al = []
     bl = []
-    file.split("\n").each do |line|
-      data = line.numbers
-      al << data.first
-      bl << data.last
+    file.split("\n").map(&:numbers).each do |a, b|
+      al << a
+      bl << b
     end
 
     al.sort!
