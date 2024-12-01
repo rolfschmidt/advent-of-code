@@ -529,15 +529,18 @@ class Range
 end
 
 class Helper
+  def self.get_day(url_ext: '')
+    raise 'No session token set: export AOC_SESSION="..."' if ENV['AOC_SESSION'].blank?
+
+    uri_data = Object.const_source_location(self.to_s).first.numbers
+    uri      = URI("https://adventofcode.com/#{uri_data[0].to_i}/day/#{uri_data[1].to_i}#{url_ext}")
+    `curl -s --cookie "session=#{ENV['AOC_SESSION']}" #{uri.to_s}`.strip
+  end
+
   def self.file
     path = "spec/#{self.to_s.downcase}.txt"
     if !File.exist?(path)
-      raise 'No session token set: export AOC_SESSION="..."' if ENV['AOC_SESSION'].blank?
-
-      uri_data = Object.const_source_location(self.to_s).first.numbers
-      uri      = URI("https://adventofcode.com/#{uri_data[0].to_i}/day/#{uri_data[1].to_i}/input")
-      body = `curl -s --cookie "session=#{ENV['AOC_SESSION']}" #{uri.to_s}`
-      File.write(path, body)
+      File.write(path, get_day(url_ext: '/input'))
     end
 
     File.read(path)
@@ -546,15 +549,10 @@ class Helper
   def self.file_test
     path = "spec/#{self.to_s.downcase}_test.txt"
     if !File.exist?(path)
-      raise 'No session token set: export AOC_SESSION="..."' if ENV['AOC_SESSION'].blank?
-
-      uri_data = Object.const_source_location(self.to_s).first.numbers
-      uri      = URI("https://adventofcode.com/#{uri_data[0].to_i}/day/#{uri_data[1].to_i}")
-      body     = `curl -s --cookie "session=#{ENV['AOC_SESSION']}" #{uri.to_s}`
-
+      body = get_day
       raise 'Example not found' if body !~ /<pre><code>(.*?)<\/code><\/pre>/mi
 
-      File.write(path, $1.strip)
+      File.write(path, body)
     end
 
     File.read("spec/#{self.to_s.downcase}_test.txt")
