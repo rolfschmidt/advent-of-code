@@ -534,7 +534,7 @@ class Helper
 
     uri_data = Object.const_source_location(self.to_s).first.numbers
     uri      = URI("https://adventofcode.com/#{uri_data[0].to_i}/day/#{uri_data[1].to_i}#{url_ext}")
-    `curl -s --cookie "session=#{ENV['AOC_SESSION']}" #{uri.to_s}`.strip
+    `curl -s --cookie "session=#{ENV['AOC_SESSION']}" #{uri.to_s}`.chomp
   end
 
   def self.file
