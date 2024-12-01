@@ -1,3 +1,6 @@
+require 'net/http'
+require 'cgi'
+
 class Integer
 
 =begin
@@ -530,7 +533,15 @@ end
 
 class Helper
   def self.file
-    File.read("spec/#{self.to_s.downcase}.txt")
+    path = "spec/#{self.to_s.downcase}.txt"
+    if !File.exist?(path)
+      uri_data = Object.const_source_location(self.to_s).first.numbers
+      uri      = URI("https://adventofcode.com/#{uri_data[0].to_i}/day/#{uri_data[1].to_i}/input")
+      body = `curl -s --cookie "session=#{ENV['AOC_SESSION']}" #{uri.to_s}`
+      File.write(path, body)
+    end
+
+    File.read(path)
   end
 
   def self.file_test
