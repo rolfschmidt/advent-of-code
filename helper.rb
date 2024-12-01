@@ -1,6 +1,3 @@
-require 'net/http'
-require 'cgi'
-
 class Integer
 
 =begin
