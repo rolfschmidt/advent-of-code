@@ -1,3 +1,6 @@
+require 'net/http'
+require 'cgi'
+
 class Integer
 
 =begin
@@ -532,9 +535,17 @@ class Helper
   def self.get_day(url_ext: '')
     raise 'No session token set: export AOC_SESSION="..."' if ENV['AOC_SESSION'].blank?
 
-    uri_data = Object.const_source_location(self.to_s).first.numbers
-    uri      = URI("https://adventofcode.com/#{uri_data[0].to_i}/day/#{uri_data[1].to_i}#{url_ext}")
-    `curl -s --cookie "session=#{ENV['AOC_SESSION']}" #{uri.to_s}`.strip
+    uri_data          = Object.const_source_location(self.to_s).first.numbers
+    uri               = URI("https://adventofcode.com/#{uri_data[0].to_i}/day/#{uri_data[1].to_i}#{url_ext}")
+    http              = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl      = (uri.scheme == "https")
+    request           = Net::HTTP::Get.new(uri.to_s)
+    request['Cookie'] = "session=#{ENV['AOC_SESSION']}"
+    result            = http.request(request)
+
+    raise "Invalid request: #{result.code} #{result.body}" if !result.code.start_with?('2')
+
+    return result.body.strip
   end
 
   def self.file
