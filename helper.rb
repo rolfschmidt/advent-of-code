@@ -414,7 +414,7 @@ Formula for Edge length (Umfang)
 
   [Vector(0,1), ...].poligon_perimeter
 
-Returns
+Returns:
 
   100
 
@@ -431,7 +431,7 @@ Formula for Shoelace
 
   [Vector(0,1), ...].poligon_inner_area
 
-Returns
+Returns:
 
   100
 
