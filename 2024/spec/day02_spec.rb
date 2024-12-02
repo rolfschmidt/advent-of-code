@@ -5,7 +5,7 @@ class Day02 < Helper
     start = nil
     dec = data.all?{|r| c = start.nil? || start > r; start = r; c }
     start = nil
-    diff  = data.all?{|r| c = start.nil? || (start - r).abs <= 3; start = r; c }
+    diff  = data.all?{|r| c = start.nil? || [1, 2, 3].include?((start - r).abs); start = r; c }
 
     (inc || dec) && diff
   end
@@ -18,17 +18,11 @@ class Day02 < Helper
         1
       else
         if part2
-          result = 0
-          data.keys.each do |rmi|
+          data.keys.any? do |rmi|
             data_new = data.dup
             data_new.delete_at(rmi)
-
-            if check(data_new)
-              result = 1
-              break
-            end
-          end
-          result
+            check(data_new)
+          end.to_i
         else
           0
         end
