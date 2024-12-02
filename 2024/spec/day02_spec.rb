@@ -11,8 +11,8 @@ class Day02 < Helper
   end
 
   def self.part1(part2 = false)
-    file.split("\n").sum do |row|
-      data = row.split(" ").map(&:to_i)
+    file.lines.sum do |row|
+      data = row.split.map(&:to_i)
 
       if check(data)
         1
