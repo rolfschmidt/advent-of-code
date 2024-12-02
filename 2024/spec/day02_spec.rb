@@ -1,13 +1,7 @@
 class Day02 < Helper
   def self.check(data)
-    start = nil
-    inc   = data.all?{|r| c = start.nil? || start < r; start = r; c }
-    start = nil
-    dec   = data.all?{|r| c = start.nil? || start > r; start = r; c }
-    start = nil
-    diff  = data.all?{|r| c = start.nil? || [1, 2, 3].include?((start - r).abs); start = r; c }
-
-    (inc || dec) && diff
+    diffs = data.each_cons(2).map { _2 - _1 }
+    diffs.all?{ [1, 2, 3].include?(_1) } || diffs.all?{ [-1, -2, -3].include?(_1) }
   end
 
   def self.part1(part2 = false)
