@@ -1,9 +1,9 @@
 class Day02 < Helper
   def self.check(data)
     start = nil
-    inc = data.all?{|r| c = start.nil? || start < r; start = r; c }
+    inc   = data.all?{|r| c = start.nil? || start < r; start = r; c }
     start = nil
-    dec = data.all?{|r| c = start.nil? || start > r; start = r; c }
+    dec   = data.all?{|r| c = start.nil? || start > r; start = r; c }
     start = nil
     diff  = data.all?{|r| c = start.nil? || [1, 2, 3].include?((start - r).abs); start = r; c }
 
