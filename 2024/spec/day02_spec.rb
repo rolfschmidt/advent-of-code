@@ -14,15 +14,9 @@ class Day02 < Helper
     file.lines.sum do |row|
       data = row.split.map(&:to_i)
 
-      if check(data)
-        1
-      else
-        if part2
-          data.combination(data.size - 1).any? {|row| check(row) }.to_i
-        else
-          0
-        end
-      end
+      next 1 if check(data)
+      next data.combination(data.size - 1).any? {|row| check(row) }.to_i if part2
+      0
     end
   end
 
