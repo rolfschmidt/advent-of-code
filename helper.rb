@@ -563,7 +563,7 @@ class Helper
       body = get_day
       raise 'Example not found' if body !~ /<pre><code>(.*?)<\/code><\/pre>/mi
 
-      File.write(path, body)
+      File.write(path, $1.strip)
     end
 
     File.read("spec/#{self.to_s.downcase}_test.txt")
