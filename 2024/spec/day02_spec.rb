@@ -9,7 +9,7 @@ class Day02 < Helper
       data = row.split.map(&:to_i)
 
       next 1 if check(data)
-      next data.combination(data.size - 1).any? {|row| check(row) }.to_i if part2
+      next data.combination(data.size - 1).any? { check(_1) }.to_i if part2
       0
     end
   end
