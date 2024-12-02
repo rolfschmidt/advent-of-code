@@ -18,11 +18,7 @@ class Day02 < Helper
         1
       else
         if part2
-          data.keys.any? do |rmi|
-            data_new = data.dup
-            data_new.delete_at(rmi)
-            check(data_new)
-          end.to_i
+          data.combination(data.size - 1).any? {|row| check(row) }.to_i
         else
           0
         end
