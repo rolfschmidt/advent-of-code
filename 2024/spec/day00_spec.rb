@@ -9,7 +9,7 @@ class Day00 < Helper
 end
 
 puts Day00.part1
-puts Day00.part2
+# puts Day00.part2
 return
 
 RSpec.describe "Day00" do
