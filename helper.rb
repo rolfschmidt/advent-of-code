@@ -130,6 +130,23 @@ Returns:
 
 =begin
 
+  "###\n#.#\n###".to_2d
+
+Returns:
+
+  {
+    Vector(1,1) => '#',
+    Vector(1,1) => '#',
+  }
+
+=end
+
+  def to_map
+    to_2d.to_map
+  end
+
+=begin
+
   "abcd".halve
 
 Returns:
@@ -545,11 +562,59 @@ Returns:
   def to_2ds
     result = ""
     (self.miny..self.maxy).each do |yi|
-      (self.miny..self.maxy).each do |xi|
+      (self.minx..self.maxx).each do |xi|
         result += self[Vector.new(xi, yi)]
       end
       result += "\n"
     end
+    result
+  end
+
+  def count_pattern(pattern, maxlength: 10, directions: DIRS_ALL)
+    if pattern.is_a?(String)
+      maxlength  = pattern.size
+      pattern    = %r{^#{Regexp.escape(pattern)}$}
+    end
+
+    result = []
+    (self.miny..self.maxy).each do |yi|
+      (self.minx..self.maxx).each do |xi|
+        result += count_pattern_pos(Vector.new(xi, yi), pattern, maxlength: maxlength, directions: directions)
+      end
+    end
+
+    result
+  end
+
+  def count_pattern_pos(start_pos, pattern, maxlength: 10, directions: DIRS_ALL)
+    if pattern.is_a?(String)
+      maxlength  = pattern.size
+      pattern    = %r{^#{Regexp.escape(pattern)}$}
+    end
+
+    result = []
+    directions.each do |direction|
+      search   = ''
+      pos      = start_pos.dup
+      pos_list = []
+      (0..maxlength - 1).each do |step|
+        pos += direction if step.positive?
+        break if self[pos].nil?
+
+        search += self[pos]
+        pos_list << pos
+        next if search !~ pattern
+
+        result.push({
+          match: search,
+          direction: direction,
+          from: start_pos,
+          list: pos_list,
+        })
+        break
+      end
+    end
+
     result
   end
 
@@ -901,3 +966,21 @@ def ddup(obj)
 end
 
 BigDecimal.limit(100)
+
+DIRS_PLUS = [
+  Vector.new(0, -1),
+  Vector.new(1, 0),
+  Vector.new(0, 1),
+  Vector.new(-1, 0),
+]
+
+DIRS_DIAG = [
+  Vector.new(1, 1),
+  Vector.new(-1, -1),
+  Vector.new(-1, 1),
+  Vector.new(1, -1),
+]
+
+DIRS_ALL = DIRS_PLUS + DIRS_DIAG
+
+
