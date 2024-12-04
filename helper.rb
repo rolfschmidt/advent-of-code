@@ -89,7 +89,6 @@ Returns:
 end
 
 class String
-  alias_method :count_original, :count
 
 =begin
 
@@ -105,6 +104,7 @@ Returns:
 
 =end
 
+  alias_method :count_original, :count
   def count(value)
     return self.chars.each_cons(value.size).count{|row| row.join == value } if value.size > 1
     return count_original(value)
