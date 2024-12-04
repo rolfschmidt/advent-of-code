@@ -570,7 +570,7 @@ Returns:
     result
   end
 
-  def count_pattern(pattern, maxlength: nil, directions: DIRS_ALL, wrap: false)
+  def find_pattern(pattern, maxlength: nil, directions: DIRS_ALL, wrap: false)
     if pattern.is_a?(String)
       maxlength  = pattern.size if maxlength.nil?
       pattern    = %r{^#{Regexp.escape(pattern)}$}
@@ -580,14 +580,14 @@ Returns:
     result = []
     (self.miny..self.maxy).each do |yi|
       (self.minx..self.maxx).each do |xi|
-        result += count_pattern_pos(Vector.new(xi, yi), pattern, maxlength: maxlength, directions: directions, wrap: wrap)
+        result += find_pattern_pos(Vector.new(xi, yi), pattern, maxlength: maxlength, directions: directions, wrap: wrap)
       end
     end
 
     result
   end
 
-  def count_pattern_pos(start_pos, pattern, maxlength: 10, directions: DIRS_ALL, wrap: false)
+  def find_pattern_pos(start_pos, pattern, maxlength: 10, directions: DIRS_ALL, wrap: false)
     if pattern.is_a?(String)
       maxlength  = pattern.size
       pattern    = %r{^#{Regexp.escape(pattern)}$}

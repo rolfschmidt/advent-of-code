@@ -1,11 +1,11 @@
 class Day04 < Helper
   def self.part1(part2 = false)
-    file.to_map.count_pattern('XMAS').count
+    file.to_map.find_pattern('XMAS').count
   end
 
   def self.part2
     map = {}
-    file.to_map.count_pattern('MAS', directions: DIRS_DIAG).each do |row|
+    file.to_map.find_pattern('MAS', directions: DIRS_DIAG).each do |row|
       map[row[:list][1]] ||= []
       map[row[:list][1]] << row
     end
