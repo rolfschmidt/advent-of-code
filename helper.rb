@@ -91,6 +91,20 @@ end
 class String
   alias_method :count_original, :count
 
+=begin
+
+  Modified count function. If one char it counts the char, if string it counts the string.
+
+  "aaa".count('a')
+  "aaa".count('aaa')
+
+Returns:
+
+  3
+  1
+
+=end
+
   def count(value)
     return self.chars.each_cons(value.size).count{|row| row.join == value } if value.size > 1
     return count_original(value)
