@@ -570,23 +570,24 @@ Returns:
     result
   end
 
-  def count_pattern(pattern, maxlength: 10, directions: DIRS_ALL)
+  def count_pattern(pattern, maxlength: nil, directions: DIRS_ALL, wrap: false)
     if pattern.is_a?(String)
-      maxlength  = pattern.size
+      maxlength  = pattern.size if maxlength.nil?
       pattern    = %r{^#{Regexp.escape(pattern)}$}
     end
+    maxlength = 10 if maxlength.nil?
 
     result = []
     (self.miny..self.maxy).each do |yi|
       (self.minx..self.maxx).each do |xi|
-        result += count_pattern_pos(Vector.new(xi, yi), pattern, maxlength: maxlength, directions: directions)
+        result += count_pattern_pos(Vector.new(xi, yi), pattern, maxlength: maxlength, directions: directions, wrap: wrap)
       end
     end
 
     result
   end
 
-  def count_pattern_pos(start_pos, pattern, maxlength: 10, directions: DIRS_ALL)
+  def count_pattern_pos(start_pos, pattern, maxlength: 10, directions: DIRS_ALL, wrap: false)
     if pattern.is_a?(String)
       maxlength  = pattern.size
       pattern    = %r{^#{Regexp.escape(pattern)}$}
@@ -598,8 +599,12 @@ Returns:
       pos      = start_pos.dup
       pos_list = []
       (0..maxlength - 1).each do |step|
-        pos += direction if step.positive?
-        break if self[pos].nil?
+        if !wrap
+          pos += direction if step.positive?
+          break if self[pos].nil?
+        else
+          pos = Vector.new((start_pos.x + (step * direction.x)) % (maxx + 1), (start_pos.y + (step * direction.y)) % (maxy + 1))
+        end
 
         search += self[pos]
         pos_list << pos
