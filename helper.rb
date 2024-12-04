@@ -89,6 +89,12 @@ Returns:
 end
 
 class String
+  alias_method :count_original, :count
+
+  def count(value)
+    return self.chars.each_cons(value.size).count{|row| row.join == value } if value.size > 1
+    return count_original(value)
+  end
 
 =begin
 
@@ -221,6 +227,26 @@ Returns:
     end
     result
   end
+
+=begin
+
+  [
+    "#", "#", "#",
+    "#", ".", "#",
+    "#", "#", "#",
+  ].pos(x: x, y: y)
+
+Returns:
+
+  true
+
+=end
+
+def pos(x, y)
+  return if !pos?(x: x, y: y)
+
+  self[y][x]
+end
 
 =begin
 
