@@ -1,4 +1,3 @@
-
 class Day04 < Helper
   def self.part1(part2 = false)
     file.to_map.count_pattern('XMAS').count
