@@ -17,8 +17,8 @@ class Day05 < Helper
 
   def self.part1(part2 = false)
     rules, numbers = file.split("\n\n")
-    rules          = rules.split("\n").map { _1.split('|').map(&:to_i) }
-    numbers        = numbers.split("\n").map { _1.split(',').map(&:to_i) }
+    rules          = rules.lines.map { _1.split('|').map(&:to_i) }
+    numbers        = numbers.lines.map { _1.split(',').map(&:to_i) }
 
     rules_map = {}
     rules.each do |rule|
