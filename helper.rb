@@ -572,15 +572,17 @@ Returns:
 
 =begin
 
-  file.to_map.select_pattern('MAS')
+  input = "M.S\n.A.\nM.S"
 
-  file.to_map.select_pattern([
+  input.to_map.select_pattern('MAS')
+
+  input.to_map.select_pattern([
     /^[MS].[MS]$/,
     /^.A.$/,
     /^[MS].[MS]$/,
   ], directions: DIR_RIGHT, maxlength: 3)
 
-  file.to_map.select_pattern('MAS', directions: DIRS_DIAG)
+  input.to_map.select_pattern('MAS', directions: DIRS_DIAG)
 
 Returns:
 
