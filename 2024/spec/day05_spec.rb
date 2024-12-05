@@ -26,8 +26,7 @@ class Day05 < Helper
       rules_map[rule[0]] |= [rule[1]]
     end
 
-    result = 0
-    numbers.each do |line|
+    numbers.sum do |line|
       valid = true
       line.each_with_index do |a, ai|
         line[..ai].each_with_index do |b, bi|
@@ -38,15 +37,14 @@ class Day05 < Helper
       end
 
       if part2
-        next if valid
+        next 0 if valid
         line = sort(line, rules_map)
       else
-        next if !valid
+        next 0 if !valid
       end
-      result += line[line.size / 2]
-    end
 
-    result
+      line[line.size / 2]
+    end
   end
 
   def self.part2
