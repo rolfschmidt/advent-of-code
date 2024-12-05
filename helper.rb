@@ -570,23 +570,6 @@ Returns:
     result
   end
 
-  def select_pattern(pattern, maxlength: nil, directions: DIRS_ALL, wrap: false)
-    if pattern.is_a?(String)
-      maxlength  = pattern.size if maxlength.nil?
-      pattern    = %r{^#{Regexp.escape(pattern)}$}
-    end
-    maxlength = 10 if maxlength.nil?
-
-    result = []
-    (self.miny..self.maxy).each do |yi|
-      (self.minx..self.maxx).each do |xi|
-        result += select_pattern_pos(Vector.new(xi, yi), pattern, maxlength: maxlength, directions: directions, wrap: wrap)
-      end
-    end
-
-    result
-  end
-
 =begin
 
   file_test.to_map.select_pattern('MAS')
@@ -611,6 +594,23 @@ Returns:
   ]
 
 =end
+
+  def select_pattern(pattern, maxlength: nil, directions: DIRS_ALL, wrap: false)
+    if pattern.is_a?(String)
+      maxlength  = pattern.size if maxlength.nil?
+      pattern    = %r{^#{Regexp.escape(pattern)}$}
+    end
+    maxlength = 10 if maxlength.nil?
+
+    result = []
+    (self.miny..self.maxy).each do |yi|
+      (self.minx..self.maxx).each do |xi|
+        result += select_pattern_pos(Vector.new(xi, yi), pattern, maxlength: maxlength, directions: directions, wrap: wrap)
+      end
+    end
+
+    result
+  end
 
   def select_pattern_pos(start_pos, pattern_list, maxlength: 10, directions: DIRS_ALL, wrap: false)
     directions   = Array.wrap(directions) if !directions.is_a?(Array)
