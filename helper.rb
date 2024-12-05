@@ -519,7 +519,7 @@ Returns:
 
 Formula for Picks Theorem
 
-    current     = Vector.new(0, 1)
+    current     = DIR_DOWN
     edges       = [current.clone]
     directions.each do |d, t|
       current.x += d.x * t
@@ -587,37 +587,51 @@ Returns:
     result
   end
 
-  def select_pattern_pos(start_pos, pattern, maxlength: 10, directions: DIRS_ALL, wrap: false)
-    if pattern.is_a?(String)
-      maxlength  = pattern.size
-      pattern    = %r{^#{Regexp.escape(pattern)}$}
+  def select_pattern_pos(start_pos, pattern_list, maxlength: 10, directions: DIRS_ALL, wrap: false)
+    directions   = Array.wrap(directions) if !directions.is_a?(Array)
+    pattern_list = Array.wrap(pattern_list) if !pattern_list.is_a?(Array)
+    if pattern_list.is_a?(String)
+      pattern_list.map! do |pattern|
+        maxlength  = pattern.size
+        %r{^#{Regexp.escape(pattern)}$}
+      end
     end
 
     result = []
     directions.each do |direction|
-      search   = ''
-      pos      = start_pos.dup
+      search   = ['']
       pos_list = []
-      (0..maxlength - 1).each do |step|
-        if !wrap
-          pos += direction if step.positive?
-          break if self[pos].nil?
-        else
-          pos = Vector.new((start_pos.x + (step * direction.x)) % (maxx + 1), (start_pos.y + (step * direction.y)) % (maxy + 1))
+      pattern_list.each_with_index do |pattern, pi|
+        pos = Vector.new(start_pos.x + (pi * DIRS_NEXT_LINE[direction].x), start_pos.y + (pi * DIRS_NEXT_LINE[direction].y))
+        (0..maxlength - 1).each do |step|
+          if !wrap
+            pos += direction if step.positive?
+            raise 'next_direction' if self[pos].nil?
+          else
+            pos = Vector.new((start_pos.x + (step * direction.x)) % (maxx + 1), (start_pos.y + (step * direction.y)) % (maxy + 1))
+          end
+
+          search[-1] += self[pos]
+          pos_list << pos
+          next if search[-1] !~ pattern
+
+          if pi < pattern_list.size - 1
+            search << ''
+            break
+          end
+
+          result.push({
+            match: search,
+            direction: direction,
+            from: start_pos,
+            list: pos_list,
+          })
+          break
         end
-
-        search += self[pos]
-        pos_list << pos
-        next if search !~ pattern
-
-        result.push({
-          match: search,
-          direction: direction,
-          from: start_pos,
-          list: pos_list,
-        })
-        break
       end
+    rescue => e
+      next if e.message == 'next_direction'
+      raise e
     end
 
     result
@@ -696,19 +710,19 @@ class Helper
   end
 
   def self.top
-    @top ||= Vector.new(0, -1)
+    @top ||= DIR_UP
   end
 
   def self.right
-    @right ||= Vector.new(1, 0)
+    @right ||= DIR_RIGHT
   end
 
   def self.bottom
-    @bottom ||= Vector.new(0, 1)
+    @bottom ||= DIR_DOWN
   end
 
   def self.left
-    @left ||= Vector.new(-1, 0)
+    @left ||= DIR_LEFT
   end
 end
 
@@ -972,18 +986,38 @@ end
 
 BigDecimal.limit(100)
 
+DIR_UP         = Vector.new(0, -1)
+DIR_RIGHT      = Vector.new(1, 0)
+DIR_DOWN       = Vector.new(0, 1)
+DIR_LEFT       = Vector.new(-1, 0)
+DIR_RIGHT_DOWN = Vector.new(1, 1)
+DIR_LEFT_UP    = Vector.new(-1, -1)
+DIR_LEFT_DOWN  = Vector.new(-1, 1)
+DIR_RIGHT_UP   = Vector.new(1, -1)
+
+DIRS_NEXT_LINE = {
+  DIR_RIGHT      => DIR_DOWN,
+  DIR_LEFT       => DIR_UP,
+  DIR_DOWN       => DIR_RIGHT,
+  DIR_UP         => DIR_LEFT,
+  DIR_RIGHT_DOWN => DIR_LEFT_UP,
+  DIR_LEFT_UP    => DIR_RIGHT_DOWN,
+  DIR_LEFT_DOWN  => DIR_RIGHT_UP,
+  DIR_RIGHT_UP   => DIR_LEFT_DOWN,
+}
+
 DIRS_PLUS = [
-  Vector.new(0, -1),
-  Vector.new(1, 0),
-  Vector.new(0, 1),
-  Vector.new(-1, 0),
+  DIR_UP,
+  DIR_RIGHT,
+  DIR_DOWN,
+  DIR_LEFT,
 ]
 
 DIRS_DIAG = [
-  Vector.new(1, 1),
-  Vector.new(-1, -1),
-  Vector.new(-1, 1),
-  Vector.new(1, -1),
+  DIR_RIGHT_DOWN,
+  DIR_LEFT_UP,
+  DIR_LEFT_DOWN,
+  DIR_RIGHT_UP,
 ]
 
 DIRS_ALL = DIRS_PLUS + DIRS_DIAG
