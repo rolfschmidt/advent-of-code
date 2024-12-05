@@ -587,6 +587,31 @@ Returns:
     result
   end
 
+=begin
+
+  file_test.to_map.select_pattern('MAS')
+
+Returns:
+
+  [
+    {
+      :match     => ["MAS"],
+      :direction => #<struct Vector x=1, y=1>,
+      :from      => #<struct Vector x=0, y=0>,
+      :to        => #<struct Vector x=2, y=2>,
+      :list      => [#<struct Vector x=0,  y=0>, #<struct Vector x=1, y=1>, #<struct Vector x=2, y=2>]
+    },
+    {
+      :match     => ["MAS"],
+      :direction => #<struct Vector x=1, y=-1>,
+      :from      => #<struct Vector x=0, y=2>,
+      :to        => #<struct Vector x=2, y=0>,
+      :list      => [#<struct Vector x=0, y=2>, #<struct Vector x=1, y=1>, #<struct Vector x=2, y=0>]
+    }
+  ]
+
+=end
+
   def select_pattern_pos(start_pos, pattern_list, maxlength: 10, directions: DIRS_ALL, wrap: false)
     directions   = Array.wrap(directions) if !directions.is_a?(Array)
     pattern_list = Array.wrap(pattern_list) if !pattern_list.is_a?(Array)
@@ -624,6 +649,7 @@ Returns:
             match: search,
             direction: direction,
             from: start_pos,
+            to: pos,
             list: pos_list,
           })
           break
