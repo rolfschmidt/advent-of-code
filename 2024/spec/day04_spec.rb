@@ -5,9 +5,9 @@ class Day04 < Helper
 
   def self.part2
     file.to_map.select_pattern([
-      /^(M.S|S.M|M.M|S.S)$/,
+      /^[MS].[MS]$/,
       /^.A.$/,
-      /^(M.S|S.M|M.M|S.S)$/,
+      /^[MS].[MS]$/,
     ], directions: DIR_RIGHT, maxlength: 3).select do |row|
       row[:match][0][0] != row[:match][2][2] && row[:match][0][2] != row[:match][2][0]
     end.count
