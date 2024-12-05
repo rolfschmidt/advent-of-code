@@ -4,6 +4,18 @@ class Day04 < Helper
   end
 
   def self.part2
+    file.to_map.select_pattern([
+      /^(M.S|S.M|M.M|S.S)$/,
+      /^.A.$/,
+      /^(M.S|S.M|M.M|S.S)$/,
+    ], directions: DIR_RIGHT, maxlength: 3).select do |row|
+      row[:match][0][0] != row[:match][2][2] && row[:match][0][2] != row[:match][2][0]
+    end.count
+
+=begin
+
+    # alternative solution with diagonal matching (works too)
+
     map = {}
     file.to_map.select_pattern('MAS', directions: DIRS_DIAG).each do |row|
       map[row[:list][1]] ||= []
@@ -13,6 +25,8 @@ class Day04 < Helper
     map.count do |key, value|
       value.count == 2
     end
+=end
+
   end
 end
 

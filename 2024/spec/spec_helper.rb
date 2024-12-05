@@ -1,5 +1,6 @@
 require 'rails'
 require 'active_support/all'
+require 'benchmark'
 
 require 'dijkstra_trace'
 require 'parallel'
