@@ -51,7 +51,7 @@ class Day06 < Helper
     map, blocker = run(map, cur_pos, cur_dir, part2: part2)
     return blocker.values.count(true) if part2
 
-    map.values.count { _1 == 'X' } + 1
+    map.values.count('X') + 1
   end
 
   def self.part2
