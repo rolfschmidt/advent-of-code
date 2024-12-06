@@ -13,14 +13,11 @@ class Day06 < Helper
       if map[check] == '#' || map[check] == 'O'
         cur_dir = @next_dirs[cur_dir]
         next
-      end
-      if part2
-        temp_pos        = cur_pos.dup
-        temp_dir        = @next_dirs[cur_dir].dup
+      elsif part2
         temp_map        = map.dup
         temp_map[check] = 'O'
 
-        blocker[check] = run(temp_map, temp_pos, temp_dir, search: true) if blocker[check].nil?
+        blocker[check] = run(temp_map, cur_pos.dup, @next_dirs[cur_dir], search: true) if blocker[check].nil?
       end
 
       map[check] = 'X'
