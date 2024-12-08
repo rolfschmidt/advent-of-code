@@ -693,6 +693,23 @@ Returns:
     @maxy[hash] ||= self.keys.max_by{|v| v[1] }.y
   end
 
+=begin
+
+  {
+    Vector(0,0) => '#',
+    Vector(0,1) => '.',
+    Vector(0,2) => '#',
+  }.reverse
+
+Returns:
+
+  {
+    '#' => [Vector(0,0), Vector(0,2)],
+    '.' => [Vector(0,1)],
+  }
+
+=end
+
   def reverse
     result = {}
     self.each do |key, value|
