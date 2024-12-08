@@ -13,20 +13,16 @@ class Day08 < Helper
       list.combination(2).each do |pa, pb|
         diff = pa - pb
 
-        [1, -1].each do |dr|
-          pax = pa.x + (diff.x * dr)
-          pay = pa.y + (diff.y * dr)
-          pbx = pb.x + (diff.x * dr)
-          pby = pb.y + (diff.y * dr)
+        [Vector.new(1, 1), Vector.new(-1, -1)].each do |dr|
+          ta = pa + (diff * dr)
+          tb = pb + (diff * dr)
 
-          while map[Vector.new(pax, pay)].present? && map[Vector.new(pbx, pby)].present? do
-            result[Vector.new(pax, pay)] = '#' if map[Vector.new(pax, pay)].present? && map[Vector.new(pax, pay)] != key
-            result[Vector.new(pbx, pby)] = '#' if map[Vector.new(pbx, pby)].present? && map[Vector.new(pbx, pby)] != key
+          while map[ta].present? && map[tb].present? do
+            result[ta] = '#' if map[ta].present? && map[ta] != key
+            result[tb] = '#' if map[tb].present? && map[tb] != key
 
-            pax += (diff.x * dr)
-            pay += (diff.y * dr)
-            pbx += (diff.x * dr)
-            pby += (diff.y * dr)
+            ta += diff * dr
+            tb += diff * dr
             break if !part2
           end
         end
