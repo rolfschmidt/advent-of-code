@@ -11,9 +11,7 @@ class Day08 < Helper
     result = map.clone
     atenna.each do |key, list|
       list.combination(2).each do |pa, pb|
-        diff    = pa - pb
-        diff.x  = diff.x
-        diff.y  = diff.y
+        diff = pa - pb
 
         [1, -1].each do |dr|
           pax = pa.x + (diff.x * dr)
