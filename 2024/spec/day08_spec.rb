@@ -15,20 +15,20 @@ class Day08 < Helper
         diff.x  = diff.x
         diff.y  = diff.y
 
-        [1, -1].each do |da|
-          pax = pa.x + (diff.x * da)
-          pay = pa.y + (diff.y * da)
-          pbx = pb.x + (diff.x * da)
-          pby = pb.y + (diff.y * da)
+        [1, -1].each do |dr|
+          pax = pa.x + (diff.x * dr)
+          pay = pa.y + (diff.y * dr)
+          pbx = pb.x + (diff.x * dr)
+          pby = pb.y + (diff.y * dr)
 
           while map[Vector.new(pax, pay)].present? && map[Vector.new(pbx, pby)].present? do
             result[Vector.new(pax, pay)] = '#' if map[Vector.new(pax, pay)].present? && map[Vector.new(pax, pay)] != key
             result[Vector.new(pbx, pby)] = '#' if map[Vector.new(pbx, pby)].present? && map[Vector.new(pbx, pby)] != key
 
-            pax += (diff.x * da)
-            pay += (diff.y * da)
-            pbx += (diff.x * da)
-            pby += (diff.y * da)
+            pax += (diff.x * dr)
+            pay += (diff.y * dr)
+            pbx += (diff.x * dr)
+            pby += (diff.y * dr)
             break if !part2
           end
         end
