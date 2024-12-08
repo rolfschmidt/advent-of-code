@@ -701,6 +701,14 @@ Returns:
     end
     result
   end
+
+  def select_value(search = nil)
+    self.select { |key, value| !search.nil? ? Array.wrap(value).include?(search) : yield(value) }
+  end
+
+  def reject_value(search = nil)
+    self.reject { |key, value| !search.nil? ? Array.wrap(value).include?(search) : yield(value) }
+  end
 end
 
 class Range

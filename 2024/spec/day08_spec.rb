@@ -1,7 +1,7 @@
 class Day08 < Helper
   def self.part1(part2 = false)
     map     = file.to_map
-    atennas = map.select { map[_1] != '.' }.reverse
+    atennas = map.reject_value('.').reverse
 
     result = map.clone
     atennas.each do |atenna, list|
