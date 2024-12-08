@@ -20,10 +20,10 @@ class Day08 < Helper
           while map[ta].present? && map[tb].present? do
             result[ta] = '#' if map[ta].present? && map[ta] != atenna
             result[tb] = '#' if map[tb].present? && map[tb] != atenna
+            break if !part2
 
             ta += diff * dr
             tb += diff * dr
-            break if !part2
           end
         end
       end
