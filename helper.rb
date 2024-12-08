@@ -702,9 +702,42 @@ Returns:
     result
   end
 
+=begin
+
+  {
+    Vector(0,0) => '#',
+    Vector(0,1) => '.',
+    Vector(0,2) => '#',
+  }.select_value('.')
+
+Returns:
+
+  {
+    Vector(0,1) => '.',
+  }
+
+=end
+
   def select_value(search = nil)
     self.select { |key, value| !search.nil? ? Array.wrap(value).include?(search) : yield(value) }
   end
+
+=begin
+
+  {
+    Vector(0,0) => '#',
+    Vector(0,1) => '.',
+    Vector(0,2) => '#',
+  }.reject_value('.')
+
+Returns:
+
+  {
+    Vector(0,0) => '#',
+    Vector(0,2) => '#',
+  }
+
+=end
 
   def reject_value(search = nil)
     self.reject { |key, value| !search.nil? ? Array.wrap(value).include?(search) : yield(value) }
