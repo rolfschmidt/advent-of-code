@@ -2,14 +2,14 @@ class Day08 < Helper
   def self.part1(part2 = false)
     map = file.to_map
 
-    atenna = {}
+    atennas = {}
     map.select { map[_1] != '.' }.map do
-      atenna[_2] ||= []
-      atenna[_2] |= [_1]
+      atennas[_2] ||= []
+      atennas[_2] |= [_1]
     end
 
     result = map.clone
-    atenna.each do |key, list|
+    atennas.each do |atenna, list|
       list.combination(2).each do |pa, pb|
         diff = pa - pb
 
@@ -18,8 +18,8 @@ class Day08 < Helper
           tb = pb + (diff * dr)
 
           while map[ta].present? && map[tb].present? do
-            result[ta] = '#' if map[ta].present? && map[ta] != key
-            result[tb] = '#' if map[tb].present? && map[tb] != key
+            result[ta] = '#' if map[ta].present? && map[ta] != atenna
+            result[tb] = '#' if map[tb].present? && map[tb] != atenna
 
             ta += diff * dr
             tb += diff * dr
