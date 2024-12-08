@@ -692,6 +692,15 @@ Returns:
     @maxy ||= {}
     @maxy[hash] ||= self.keys.max_by{|v| v[1] }.y
   end
+
+  def reverse
+    result = {}
+    self.each do |key, value|
+      result[value] ||= []
+      result[value] |= [key]
+    end
+    result
+  end
 end
 
 class Range
