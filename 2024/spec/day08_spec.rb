@@ -38,7 +38,7 @@ class Day08 < Helper
     if part2
       result.values.count{ _1 != '.' }
     else
-      result.to_2ds.count('#')
+      result.values.count('#')
     end
   end
 
