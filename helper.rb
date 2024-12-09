@@ -228,6 +228,21 @@ Returns:
   def words
     scan(/\w+/)
   end
+
+=begin
+
+  'abc123abc123'.sub(/.*\Kabc/, 'ABC')
+
+Returns:
+
+  "abc123ABC123"
+
+=end
+
+  def rsub(pattern, replace)
+    pattern = Regexp.quote(pattern) if pattern.is_a?(String)
+    sub(/.*\K#{pattern}/, replace)
+  end
 end
 
 class Array

@@ -1,80 +1,34 @@
 class Day09 < Helper
   def self.part1(part2 = false)
-    check = []
-    on = true
+    on      = true
     counter = 0
+    check   = ''
     file.chars.each_with_index do |value, vi|
       value = value.to_i
-
-      value.times {|i| check << (on ? counter : '.') }
+      value.times {|i| check += "B#{(on ? counter.to_s : '.')}B" }
       counter += 1 if on
       on = !on
     end
 
-    if !part2
-      fi = 0
-      while fi < check.size do
-        if check[fi] != '.'
-          fi += 1
-          next
-        end
+    counts = check.numbers.tally
+    if part2
+      check.numbers.reverse.uniq.each do |num|
+        search  = 'B.B' * counts[num]
+        replace = "B#{num}B" * counts[num]
 
-        new_value = '.'
-        while new_value == '.' do
-          new_value = check.pop
-        end
+        si = check.index(search)
+        ri = check.rindex(replace)
 
-        check[fi] = new_value
+        next if si.blank?
+        next if ri.blank?
+        next if si >= ri
 
-        fi += 1
-      end
-    else
-
-      back_start = nil
-      back_end   = nil
-      back_value = []
-      check.keys.reverse.each do |cri|
-        cr_value = check[cri]
-        back_value << cr_value
-        back_end = cri if back_value.size == 1
-
-        if cr_value != check[cri - 1]
-          back_start = cri
-
-          front_start = nil
-          front_end   = nil
-          front_value = []
-          check.keys.each do |cfi|
-            break if cfi >= back_start
-
-            cf_value = check[cfi]
-            front_value << cf_value
-            front_start = cfi if front_value.size == 1
-            if cf_value != check[cfi + 1]
-              front_end = cfi
-
-              if cf_value == '.' && front_value.size >= back_value.size
-                (0..back_value.size - 1).each do |rei|
-                  check[front_start + rei], check[back_start + rei] = check[back_start + rei], check[front_start + rei]
-                end
-
-                break
-              end
-
-              front_start = nil
-              front_end   = nil
-              front_value = []
-            end
-          end
-
-          back_start = nil
-          back_end   = nil
-          back_value = []
-        end
+        check = check.sub(replace, search)
+        check = check.sub(search, replace)
       end
 
       result = 0
-      check.each_with_index do |value, vi|
+      check.scan(/[^B]+/).flatten.each_with_index do |value, vi|
         next if value == '.'
         result += value.to_i * vi
       end
@@ -82,12 +36,29 @@ class Day09 < Helper
       return result
     end
 
+    check.numbers.reverse.uniq.each do |num|
+      counts[num].times do
+        search  = 'B.B'
+        replace = "B#{num}B"
+
+        si = check.index(search)
+        ri = check.rindex(replace)
+
+        next if si.blank?
+        next if ri.blank?
+        next if si >= ri
+
+        check = check.sub(search, replace)
+        check = check.rsub(replace, search)
+      end
+    end
+
     result = 0
-    check.reject{ _1 == '.' }.each_with_index do |value, vi|
+    check.numbers.each_with_index do |value, vi|
       result += value.to_i * vi
     end
 
-    result
+    return result
   end
 
   def self.part2
