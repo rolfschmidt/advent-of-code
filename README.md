@@ -4,7 +4,7 @@ This repo contains various solutions for different years of Advent of Code.
 
 |  Year  |  Progress   |  Language(s)  |
 |:------:|:-----------:|:-------------:|
-|  2024  |     7/25    | Ruby          |
+|  2024  |     9/25    | Ruby          |
 |  2023  |    25/25    | Ruby          |
 |  2022  |    25/25    | Ruby          |
 |  2021  |    25/25    | Go            |
