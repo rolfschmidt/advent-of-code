@@ -10,9 +10,7 @@ class Day10 < Helper
       next if pos_path.include?(pos)
       pos_path << pos
 
-      trails(map, pos, pos_path).each do |found|
-        result << found
-      end
+      result += trails(map, pos, pos_path)
     end
     result
   end
