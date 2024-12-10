@@ -613,8 +613,11 @@ Returns:
 Returns:
 
   {
+    # amount of total paths to the stop_on
     total: 123,
+    # amount of unqiue destinations for the stop_on
     total_destinations: 30,
+    # all matchings paths to the destination
     paths: [
       [Vector.new(0,0), Vector.new(0,1)],
       [Vector.new(0,2), Vector.new(0,1)],
