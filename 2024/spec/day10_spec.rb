@@ -25,7 +25,7 @@ class Day10 < Helper
     map.reverse[0].sum do |start, si|
       result = trails(map, start, [start])
       if part2
-        result.map(&:last).count
+        result.count
       else
         result.map(&:last).uniq.count
       end
