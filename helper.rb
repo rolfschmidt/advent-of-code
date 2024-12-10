@@ -708,6 +708,20 @@ Returns:
     @maxy[hash] ||= self.keys.max_by{|v| v[1] }.y
   end
 
+  def steps(pos, directions, wrap: false)
+    directions.each_with_object([]) do |dir, result|
+      check = if wrap
+                Vector.new((pos.x + dir.x) % maxx, (pos.y + dir.y) % maxy)
+              else
+                pos + dir
+              end
+
+      next if self[check].blank?
+
+      result << check
+    end
+  end
+
 =begin
 
   {

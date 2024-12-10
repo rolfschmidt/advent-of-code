@@ -4,13 +4,8 @@ class Day10 < Helper
     return [path] if height == 9
 
     result = []
-    DIRS_PLUS.each do |dir|
-      pos = start + dir
-      next if pos.blank?
-
+    map.steps(start, DIRS_PLUS).each do |pos|
       pos_path = path.dup
-
-      next if map[pos].blank?
       next if map[pos].to_i != height + 1
       next if pos_path.include?(pos)
       pos_path << pos
