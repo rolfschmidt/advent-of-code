@@ -731,6 +731,24 @@ Returns:
 
 =begin
 
+  map.step(Vector.new(0,0), DIR_RIGHT)
+
+Returns:
+
+  Vector.new(0,1)
+
+=end
+
+  def step(pos, dir, wrap: false)
+    if wrap
+      Vector.new((pos.x + dir.x) % maxx, (pos.y + dir.y) % maxy)
+    else
+      pos + dir
+    end
+  end
+
+=begin
+
   {
     Vector(0,0) => '#',
     Vector(0,1) => '.',
