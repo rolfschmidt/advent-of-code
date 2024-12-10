@@ -1,6 +1,18 @@
 require 'net/http'
 require 'cgi'
 
+def colorize(text, color_code)
+  "\e[#{color_code}m#{text}\e[0m"
+end
+
+def colorize_red(text)
+  colorize(text, 31)
+end
+
+def colorize_green(text)
+  colorize(text, 32)
+end
+
 class TrueClass
   def to_i
     1
@@ -574,11 +586,20 @@ Returns:
 
 =end
 
-  def to_2ds
+  def to_2ds(highlight: [])
     result = ""
     (self.miny..self.maxy).each do |yi|
       (self.minx..self.maxx).each do |xi|
-        result += self[Vector.new(xi, yi)]
+        pos = Vector.new(xi, yi)
+        if highlight.first == pos
+          result += colorize_red(self[pos].to_s)
+        elsif highlight.last == pos
+          result += colorize_red(self[pos].to_s)
+        elsif highlight.include?(pos)
+          result += colorize_green(self[pos].to_s)
+        else
+          result += self[pos].to_s
+        end
       end
       result += "\n"
     end
