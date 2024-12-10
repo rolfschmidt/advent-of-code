@@ -708,8 +708,21 @@ Returns:
     @maxy[hash] ||= self.keys.max_by{|v| v[1] }.y
   end
 
+=begin
+
+  {
+    Vector(0,0) => '#',
+    Vector(0,1) => '.',
+  }.steps(Vector.new(0,0), DIR_RIGHT)
+
+Returns:
+
+  [ Vector.new(0,1) ]
+
+=end
+
   def steps(pos, directions, wrap: false)
-    directions.each_with_object([]) do |dir, result|
+    Array.wrap(directions).each_with_object([]) do |dir, result|
       check = if wrap
                 Vector.new((pos.x + dir.x) % maxx, (pos.y + dir.y) % maxy)
               else
@@ -747,6 +760,25 @@ Returns:
     end
     result
   end
+
+
+=begin
+
+  {
+    Vector(0,0) => '1',
+    Vector(0,1) => '2',
+    Vector(0,2) => '3',
+  }.map_values(&:to_i)
+
+Returns:
+
+  {
+    Vector(0,0) => 1,
+    Vector(0,1) => 2,
+    Vector(0,2) => 3,
+  }
+
+=end
 
   def map_values
     self.to_h { |key, value| [key, yield(value)] }
