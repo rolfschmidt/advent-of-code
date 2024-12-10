@@ -1,9 +1,13 @@
 class Day10 < Helper
   def self.trails(map, start, path = [])
-    height = map[start]
-    return [path] if height == 9
-
     result = []
+
+    height = map[start]
+    if height == 9
+      result << path
+      return result
+    end
+
     map.steps(start, DIRS_PLUS).each do |pos|
       pos_path = path.dup
       next if map[pos] != height + 1
