@@ -1,18 +1,6 @@
 require 'net/http'
 require 'cgi'
 
-def colorize(text, color_code)
-  "\e[#{color_code}m#{text}\e[0m"
-end
-
-def colorize_red(text)
-  colorize(text, 31)
-end
-
-def colorize_green(text)
-  colorize(text, 32)
-end
-
 class TrueClass
   def to_i
     1
@@ -1189,6 +1177,18 @@ end
 
 def ddup(obj)
   Marshal.load(Marshal.dump(obj))
+end
+
+def colorize(text, color_code)
+  "\e[#{color_code}m#{text}\e[0m"
+end
+
+def colorize_red(text)
+  colorize(text, 31)
+end
+
+def colorize_green(text)
+  colorize(text, 32)
 end
 
 BigDecimal.limit(100)
