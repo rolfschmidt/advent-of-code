@@ -7,8 +7,8 @@ class Day10 < Helper
         map[start] == 9
       end
 
-      skip_on = -> (map, start, pos, path) do
-        map[pos] != map[start] + 1
+      skip_on = -> (map, from, pos, path) do
+        map[pos] != map[from] + 1
       end
 
       result = map.find_paths(start, stop_on: stop_on, skip_on: skip_on)
