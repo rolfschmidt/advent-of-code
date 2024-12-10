@@ -748,6 +748,10 @@ Returns:
     result
   end
 
+  def map_values
+    self.to_h { |key, value| [key, yield(value)] }
+  end
+
 =begin
 
   {
