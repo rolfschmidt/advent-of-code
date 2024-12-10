@@ -580,11 +580,11 @@ Returns:
       (self.minx..self.maxx).each do |xi|
         pos = Vector.new(xi, yi)
         if highlight.first == pos
-          result += colorize_red(self[pos].to_s)
+          result += Rainbow(self[pos].to_s).orange
         elsif highlight.last == pos
-          result += colorize_red(self[pos].to_s)
+          result += Rainbow(self[pos].to_s).red
         elsif highlight.include?(pos)
-          result += colorize_green(self[pos].to_s)
+          result += Rainbow(self[pos].to_s).green
         else
           result += self[pos].to_s
         end
@@ -1177,18 +1177,6 @@ end
 
 def ddup(obj)
   Marshal.load(Marshal.dump(obj))
-end
-
-def colorize(text, color_code)
-  "\e[#{color_code}m#{text}\e[0m"
-end
-
-def colorize_red(text)
-  colorize(text, 31)
-end
-
-def colorize_green(text)
-  colorize(text, 32)
 end
 
 BigDecimal.limit(100)

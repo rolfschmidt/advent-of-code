@@ -164,6 +164,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
+    rainbow (3.1.1)
     rake (13.2.1)
     range_operators (0.1.1)
     rb_heap (1.1.0)
@@ -206,6 +207,7 @@ DEPENDENCIES
   parallel
   pry-rails
   rails
+  rainbow
   range_operators
   rb_heap
   rspec

@@ -10,6 +10,7 @@ require 'pry'
 require 'byebug'
 require 'range_operators'
 require 'rb_heap'
+require 'rainbow'
 
 require '../helper'
 
