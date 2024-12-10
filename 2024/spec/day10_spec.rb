@@ -20,7 +20,7 @@ class Day10 < Helper
   end
 
   def self.part1(part2 = false)
-    map = file.to_map.reject_value('.').map_values(&:to_i)
+    map = file.to_map.map_values(&:to_i)
 
     map.reverse[0].sum do |start, si|
       result = trails(map, start, [start])
