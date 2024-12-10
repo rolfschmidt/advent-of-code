@@ -596,6 +596,69 @@ Returns:
 
 =begin
 
+  This function provides the functionality to search a map step-wise until a condition is met.
+  Define the stop condition with stop_on and the skip condition which is checked on
+  every step with skip_on.
+
+  stop_on = -> (map, start, path) do
+    map[start] == 9
+  end
+
+  skip_on = -> (map, start, pos, path) do
+    map[pos] != map[start] + 1
+  end
+
+  result = map.find_paths(start, stop_on: stop_on, skip_on: skip_on)
+
+Returns:
+
+  {
+    total: 123,
+    total_destinations: 30,
+    paths: [
+      [Vector.new(0,0), Vector.new(0,1)],
+      [Vector.new(0,2), Vector.new(0,1)],
+    ],
+  }
+
+=end
+
+  def find_paths(...)
+    result = find_paths_deep(...)
+
+    {
+      total: result.count,
+      total_destinations: result.map(&:last).uniq.count,
+      paths: result,
+    }
+  end
+
+  def find_paths_deep(start, path: [], directions: DIRS_PLUS, wrap: false, stop_on:, skip_on:)
+    result = []
+
+    path << start if path.blank?
+
+    height = self[start]
+    if stop_on.call(self, start, path).present?
+      result << path
+      return result
+    end
+
+    self.steps(start, directions, wrap: wrap).each do |pos|
+      pos_path = path.dup
+      next if pos_path.include?(pos)
+      pos_path << pos
+
+      next if skip_on.call(self, start, pos, pos_path).present?
+
+      result += self.find_paths_deep(pos, path: pos_path, stop_on: stop_on, skip_on: skip_on)
+    end
+
+    result
+  end
+
+=begin
+
   input = "M.S\n.A.\nM.S"
 
   input.to_map.select_pattern('MAS')

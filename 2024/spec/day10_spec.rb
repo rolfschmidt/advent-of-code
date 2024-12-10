@@ -1,33 +1,21 @@
 class Day10 < Helper
-  def self.trails(map, start, path = [])
-    result = []
-
-    height = map[start]
-    if height == 9
-      result << path
-      return result
-    end
-
-    map.steps(start, DIRS_PLUS).each do |pos|
-      pos_path = path.dup
-      next if map[pos] != height + 1
-      next if pos_path.include?(pos)
-      pos_path << pos
-
-      result += trails(map, pos, pos_path)
-    end
-    result
-  end
-
   def self.part1(part2 = false)
     map = file.to_map.map_values(&:to_i)
 
     map.reverse[0].sum do |start, si|
-      result = trails(map, start, [start])
+      stop_on = -> (map, start, path) do
+        map[start] == 9
+      end
+
+      skip_on = -> (map, start, pos, path) do
+        map[pos] != map[start] + 1
+      end
+
+      result = map.find_paths(start, stop_on: stop_on, skip_on: skip_on)
       if part2
-        result.count
+        result[:total]
       else
-        result.map(&:last).uniq.count
+        result[:total_destinations]
       end
     end
   end
