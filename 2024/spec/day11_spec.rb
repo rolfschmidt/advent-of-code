@@ -2,13 +2,12 @@ class Day11 < Helper
   def self.part1(part2 = false)
     check = file.numbers.to_h { [_1, 1] }
 
-    cache = {}
     (part2 ? 75 : 25).times do |i|
       check.clone.each do |num, count|
         new_values = if num == 0
                       [1]
                     elsif num.to_s.length % 2 == 0
-                      cache[num] ||= num.to_s.halve.map(&:to_i)
+                      num.to_s.halve.map(&:to_i)
                     else
                       [num * 2024]
                     end
