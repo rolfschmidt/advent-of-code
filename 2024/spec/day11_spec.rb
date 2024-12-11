@@ -1,6 +1,6 @@
 class Day11 < Helper
   def self.part1(part2 = false)
-    check = file.numbers.to_h { [_1, 1] }
+    check = file.numbers.to_h(1)
 
     (part2 ? 75 : 25).times do |i|
       check.clone.each do |num, count|

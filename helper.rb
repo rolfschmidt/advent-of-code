@@ -249,6 +249,29 @@ class Array
 
 =begin
 
+  Support for quick array to hash method
+
+  [1,2,3].to_h(true)
+
+Returns:
+
+  {
+    1: true,
+    2: true,
+    3: true,
+  }
+
+=end
+
+  alias_method :original_to_h, :to_h
+  def to_h(*args, **kwargs, &block)
+    return self.to_h { [_1, args.first] } if !args.first.nil?
+
+    original_to_h(*args, **kwargs, &block)
+  end
+
+=begin
+
   [
     "#", "#", "#",
     "#", ".", "#",
