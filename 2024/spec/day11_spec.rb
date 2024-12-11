@@ -5,18 +5,18 @@ class Day11 < Helper
     cache = {}
     (part2 ? 75 : 25).times do |i|
       check.clone.each do |num, count|
-        new_value = if num == 0
-                      1
+        new_values = if num == 0
+                      [1]
                     elsif num.to_s.length % 2 == 0
                       cache[num] ||= num.to_s.halve.map(&:to_i)
                     else
-                      num * 2024
+                      [num * 2024]
                     end
 
         check[num] -= count
-        Array.wrap(new_value).each do |vvv|
-          check[vvv] ||= 0
-          check[vvv] += count
+        new_values.each do |value|
+          check[value] ||= 0
+          check[value] += count
         end
       end
     end
