@@ -2,27 +2,23 @@ class Day11 < Helper
   def self.part1(part2 = false)
     check = file.numbers.to_h { [_1, 1] }
 
-    @cache = {}
+    cache = {}
     (part2 ? 75 : 25).times do |i|
-      new_check = check.dup
-
-      check.each do |num, count|
+      check.clone.each do |num, count|
         new_value = if num == 0
                       1
                     elsif num.to_s.length % 2 == 0
-                      @cache[num] ||= num.to_s.halve.map(&:to_i)
+                      cache[num] ||= num.to_s.halve.map(&:to_i)
                     else
                       num * 2024
                     end
 
-        new_check[num] -= count
+        check[num] -= count
         Array.wrap(new_value).each do |vvv|
-          new_check[vvv] ||= 0
-          new_check[vvv] += count
+          check[vvv] ||= 0
+          check[vvv] += count
         end
       end
-
-      check = new_check
     end
 
     check.values.sum
