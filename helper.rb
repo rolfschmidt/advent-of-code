@@ -665,19 +665,19 @@ Returns:
 
 =end
 
-  def flood(start, values: nil, directions: DIRS_PLUS, wrap: false, path: Set.new)
+  def flood(start, values: nil, directions: DIRS_PLUS, wrap: false, result: Set.new)
     values = Array.wrap(self[start]) if values.nil?
 
-    return {} if path.include?(start)
-    path << start
+    return {} if result.include?(start)
+    result << start
 
     self.steps(start, directions, wrap: wrap).each do |pos|
       next if values.exclude?(self[pos])
 
-      path += self.flood(pos, values: values, directions: directions, wrap: wrap, path: path)
+      result += self.flood(pos, values: values, directions: directions, wrap: wrap, result: result)
     end
 
-    return path
+    return result
   end
 
 =begin
