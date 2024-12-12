@@ -1,5 +1,10 @@
 {
   "editor.autoClosingBrackets": "never",
   "editor.autoClosingQuotes": "never",
-  "editor.autoClosingComments": "never"
+  "editor.autoClosingComments": "never",
+  "[ruby]": {
+    "editor.autoClosingBrackets": "never",
+    "editor.autoClosingQuotes": "never",
+    "editor.autoClosingComments": "never"
+  }
 }
