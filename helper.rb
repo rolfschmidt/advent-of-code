@@ -631,7 +631,7 @@ Returns:
 
   area = map.flood(Vector.new(0,0))
 
-  perimeter = map.area_edges(area)
+  edges = map.area_edges(area)
 
 Returns:
 
@@ -651,6 +651,53 @@ Returns:
     end
 
     return result
+  end
+
+=begin
+
+  This function uses a list of area edges and reduces it so that there is only one edge per side of the poligion.
+
+  area = map.flood(Vector.new(0,0))
+  edges = map.area_edges(area)
+
+  sides = map.area_sides(area)
+
+Returns:
+
+  Set.new[Vector.new(1,0)]
+
+=end
+
+  def area_sides(edges)
+    edges_uniq   = Set.new
+    edges_search = edges.dup.to_a
+
+    opposite_dirs = {
+      DIR_UP => [DIR_LEFT, DIR_RIGHT],
+      DIR_DOWN => [DIR_LEFT, DIR_RIGHT],
+      DIR_RIGHT => [DIR_UP, DIR_DOWN],
+      DIR_LEFT => [DIR_UP, DIR_DOWN],
+    }
+
+    while edges_search.present? do
+      rowa = edges_search.shift
+      posa, dira = rowa
+
+      opposite_dirs[dira].each do |search_dir|
+        (1..1000000000000).each do |step|
+          rowl = [posa + (search_dir * step), dira]
+
+          if edges_search.include?(rowl)
+            edges_search = edges_search.select{ _1 != rowl }
+          else
+            break
+          end
+        end
+      end
+
+      edges_uniq << rowa
+    end
+    edges_uniq
   end
 
 =begin

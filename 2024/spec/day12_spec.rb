@@ -13,42 +13,15 @@ class Day12 < Helper
       seen += result
     end
 
-    opposite_dirs = {
-      DIR_UP => [DIR_LEFT, DIR_RIGHT],
-      DIR_DOWN => [DIR_LEFT, DIR_RIGHT],
-      DIR_RIGHT => [DIR_UP, DIR_DOWN],
-      DIR_LEFT => [DIR_UP, DIR_DOWN],
-    }
-
     result = 0
     areas.each do |area|
-      perimeter = map.area_edges(area)
+      edges = map.area_edges(area)
 
       if part2
-        perimeter_uniq   = []
-        perimeter_search = perimeter.dup.to_a
-        while perimeter_search.present? do
-          rowa = perimeter_search.shift
-          posa, dira = rowa
-
-          opposite_dirs[dira].each do |search_dir|
-            (1..1000000000000).each do |step|
-              rowl = [posa + (search_dir * step), dira]
-
-              if perimeter_search.include?(rowl)
-                perimeter_search = perimeter_search.select{ _1 != rowl }
-              else
-                break
-              end
-            end
-          end
-
-          perimeter_uniq << rowa
-        end
-
-        result += area.count * perimeter_uniq.count
+        sides = map.area_sides(edges)
+        result += area.count * sides.count
       else
-        result += area.count * perimeter.count
+        result += area.count * edges.count
       end
     end
 
