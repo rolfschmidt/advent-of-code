@@ -722,7 +722,7 @@ Returns:
     self.each do |pos, value|
       next if seen.include?(pos)
 
-      result = self.flood(pos)
+      result = self.flood_pos(pos)
 
       areas |= [result]
       seen += result
@@ -735,7 +735,7 @@ Returns:
 
   This function floods a specific position and everything with the same value.
 
-  map.flood(Vector.new(0,0))
+  map.flood_pos(Vector.new(0,0))
 
 Returns:
 
@@ -743,7 +743,7 @@ Returns:
 
 =end
 
-  def flood(start, values: nil, directions: DIRS_PLUS, wrap: false, result: Set.new)
+  def flood_pos(start, values: nil, directions: DIRS_PLUS, wrap: false, result: Set.new)
     values = Array.wrap(self[start]) if values.nil?
 
     return Set.new if result.include?(start)
@@ -752,7 +752,7 @@ Returns:
     self.steps(start, directions, wrap: wrap).each do |pos|
       next if values.exclude?(self[pos])
 
-      result += self.flood(pos, values: values, directions: directions, wrap: wrap, result: result)
+      result += self.flood_pos(pos, values: values, directions: directions, wrap: wrap, result: result)
     end
 
     return result
