@@ -668,7 +668,7 @@ Returns:
   def flood(start, values: nil, directions: DIRS_PLUS, wrap: false, result: Set.new)
     values = Array.wrap(self[start]) if values.nil?
 
-    return {} if result.include?(start)
+    return Set.new if result.include?(start)
     result << start
 
     self.steps(start, directions, wrap: wrap).each do |pos|
