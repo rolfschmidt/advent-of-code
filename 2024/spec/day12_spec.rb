@@ -1,6 +1,6 @@
 class Day12 < Helper
   def self.part1(part2 = false)
-    map = file_test.to_map
+    map = file.to_map
 
     areas = []
     seen  = Set.new
