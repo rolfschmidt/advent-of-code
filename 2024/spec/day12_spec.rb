@@ -24,28 +24,28 @@ class Day12 < Helper
     areas.each do |area|
       perimeter = map.area_edges(area)
 
-      perimeter_uniq   = []
-      perimeter_search = perimeter.dup.to_a
-      while perimeter_search.present? do
-        rowa = perimeter_search.shift
-        posa, dira = rowa
+      if part2
+        perimeter_uniq   = []
+        perimeter_search = perimeter.dup.to_a
+        while perimeter_search.present? do
+          rowa = perimeter_search.shift
+          posa, dira = rowa
 
-        opposite_dirs[dira].each do |search_dir|
-          (1..1000000000000).each do |step|
-            rowl = [posa + (search_dir * step), dira]
+          opposite_dirs[dira].each do |search_dir|
+            (1..1000000000000).each do |step|
+              rowl = [posa + (search_dir * step), dira]
 
-            if perimeter_search.include?(rowl)
-              perimeter_search = perimeter_search.select{ _1 != rowl }
-            else
-              break
+              if perimeter_search.include?(rowl)
+                perimeter_search = perimeter_search.select{ _1 != rowl }
+              else
+                break
+              end
             end
           end
+
+          perimeter_uniq << rowa
         end
 
-        perimeter_uniq << rowa
-      end
-
-      if part2
         result += area.count * perimeter_uniq.count
       else
         result += area.count * perimeter.count
