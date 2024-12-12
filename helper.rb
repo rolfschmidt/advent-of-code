@@ -624,6 +624,21 @@ Returns:
     result
   end
 
+
+=begin
+
+  This function uses a list of area positions and finds the edge positions.
+
+  area = map.flood(Vector.new(0,0))
+
+  perimeter = map.area_edges(area)
+
+Returns:
+
+  Set.new[Vector.new(1,0)]
+
+=end
+
   def area_edges(list, directions: DIRS_PLUS)
     result = Set.new
     list.each do |check|
@@ -640,7 +655,13 @@ Returns:
 
 =begin
 
+  This function floods a specific position and everything with the same value.
+
   map.flood(Vector.new(0,0))
+
+Returns:
+
+  Set.new[Vector.new(1,0)]
 
 =end
 
