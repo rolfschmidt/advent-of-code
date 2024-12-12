@@ -597,11 +597,18 @@ Returns:
 
 =end
 
-  def to_2ds(highlight: [])
+  def to_2ds(highlight: [], xrange: nil, yrange: nil, fill_nil: false)
+    xrange = (self.minx..self.maxx) if xrange.nil?
+    yrange = (self.miny..self.maxy) if yrange.nil?
+
     result = ""
-    (self.miny..self.maxy).each do |yi|
-      (self.minx..self.maxx).each do |xi|
+    yrange.each do |yi|
+      xrange.each do |xi|
         pos = Vector.new(xi, yi)
+        if fill_nil && self[pos].nil?
+          self[pos] = '.'
+        end
+
         if highlight.first == pos
           result += Rainbow(self[pos].to_s).orange
         elsif highlight.last == pos
@@ -615,6 +622,41 @@ Returns:
       result += "\n"
     end
     result
+  end
+
+  def area_edges(list, directions: DIRS_PLUS)
+    result = Set.new
+    list.each do |check|
+      directions.each do |dir|
+        pos = check + dir
+        next if list.include?(pos)
+
+        result << [pos, Vector.new(dir.x, dir.y)]
+      end
+    end
+
+    return result
+  end
+
+=begin
+
+  map.flood(Vector.new(0,0))
+
+=end
+
+  def flood(start, values: nil, directions: DIRS_PLUS, wrap: false, path: Set.new)
+    values = Array.wrap(self[start]) if values.nil?
+
+    return {} if path.include?(start)
+    path << start
+
+    self.steps(start, directions, wrap: wrap).each do |pos|
+      next if values.exclude?(self[pos])
+
+      path += self.flood(pos, values: values, directions: directions, wrap: wrap, path: path)
+    end
+
+    return path
   end
 
 =begin
@@ -845,7 +887,7 @@ Returns:
                 pos + dir
               end
 
-      next if self[check].blank?
+      next if self[check].nil?
 
       result << check
     end

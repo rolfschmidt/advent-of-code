@@ -1,4 +1,5 @@
 {
   "editor.autoClosingBrackets": "never",
-  "editor.autoClosingQuotes": "never"
+  "editor.autoClosingQuotes": "never",
+  "editor.autoClosingComments": "never"
 }
