@@ -1,17 +1,7 @@
 class Day12 < Helper
   def self.part1(part2 = false)
-    map = file.to_map
-
-    areas = []
-    seen  = Set.new
-    map.each do |pos, value|
-      next if seen.include?(pos)
-
-      result = map.flood(pos)
-
-      areas |= [result]
-      seen += result
-    end
+    map   = file.to_map
+    areas = map.flood_areas
 
     result = 0
     areas.each do |area|

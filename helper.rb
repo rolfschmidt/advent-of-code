@@ -702,6 +702,37 @@ Returns:
 
 =begin
 
+  This function floods a map by their value
+
+  areas = map.flood_areas
+
+Returns:
+
+  [
+    Set.new[Vector.new(1,0)],
+    Set.new[Vector.new(2,0)],
+    Set.new[Vector.new(3,0)],
+  ]
+
+=end
+
+  def flood_areas
+    areas = []
+    seen  = Set.new
+    self.each do |pos, value|
+      next if seen.include?(pos)
+
+      result = self.flood(pos)
+
+      areas |= [result]
+      seen += result
+    end
+
+    areas
+  end
+
+=begin
+
   This function floods a specific position and everything with the same value.
 
   map.flood(Vector.new(0,0))
