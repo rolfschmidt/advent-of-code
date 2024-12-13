@@ -4,6 +4,10 @@ class Day13 < Helper
     a      = Z3.Int('a')
     b      = Z3.Int('b')
 
+    # sanity checks
+    solver.assert(a >= 0)
+    solver.assert(b >= 0)
+
     # will resolve variables a & b
     # and return the values if possible
     solver.assert(ax * a + bx * b == px)
