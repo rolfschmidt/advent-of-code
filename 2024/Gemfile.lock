@@ -86,6 +86,7 @@ GEM
     dijkstra_trace (0.1.1)
     drb (2.2.1)
     erubi (1.13.0)
+    ffi (1.17.0-x86_64-linux-gnu)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.6)
@@ -196,6 +197,8 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    z3 (0.0.20230311)
+      ffi (~> 1.9)
     zeitwerk (2.6.18)
 
 PLATFORMS
@@ -213,6 +216,7 @@ DEPENDENCIES
   rspec
   rspec-expectations
   ruby-prof
+  z3
 
 BUNDLED WITH
    2.3.23

@@ -11,6 +11,7 @@ require 'byebug'
 require 'range_operators'
 require 'rb_heap'
 require 'rainbow'
+require 'z3' # equations
 
 require '../helper'
 
