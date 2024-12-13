@@ -110,6 +110,21 @@ Returns:
     return count_original(value)
   end
 
+
+=begin
+
+  "###\n\n#.#\n\n###".blocks
+
+Returns:
+
+  [
+    "###",
+    "#.#",
+    "###",
+  ]
+
+=end
+
   def blocks
     split("\n\n")
   end
