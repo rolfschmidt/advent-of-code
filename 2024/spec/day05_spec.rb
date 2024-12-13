@@ -16,7 +16,7 @@ class Day05 < Helper
   end
 
   def self.part1(part2 = false)
-    rules, numbers = file.split("\n\n")
+    rules, numbers = file.blocks
     rules          = rules.lines.map { _1.split('|').map(&:to_i) }
     numbers        = numbers.lines.map { _1.split(',').map(&:to_i) }
 

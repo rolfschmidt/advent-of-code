@@ -19,7 +19,7 @@ class Day13 < Helper
 
   # had part 1 as loop solution (see git history)
   def self.part1(part2 = false)
-    rules = file.split("\n\n").map(&:numbers)
+    rules = file.blocks.map(&:numbers)
 
     rules.sum do |ax, ay, bx, by, px, py|
       if part2

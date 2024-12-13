@@ -110,6 +110,10 @@ Returns:
     return count_original(value)
   end
 
+  def blocks
+    split("\n\n")
+  end
+
 =begin
 
   "###\n#.#\n###".to_2d
