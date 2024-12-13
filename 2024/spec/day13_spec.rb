@@ -1,80 +1,4 @@
 class Day13 < Helper
-
-=begin
-
-works but moved to solver solution here for training
-
-  def self.part1(part2 = false)
-    rules = file.split("\n\n").map(&:numbers)
-
-    rules.sum do |ax, ay, bx, by, px, py|
-      rounds = 100
-
-      result = 0
-      catch(:result) do
-        tx = 0
-        ty = 0
-        tt = 0
-        rounds.times do |at|
-          tx += ax
-          ty += ay
-          tt += 3
-          if tx == px && ty == py
-            result = tt
-            throw :result
-          end
-          break if tx > px && ty > py
-
-          stx = tx
-          sty = ty
-          stt = tt
-          rounds.times do |bt|
-            stx += bx
-            sty += by
-            stt += 1
-            if stx == px && sty == py
-              result = stt
-              throw :result
-            end
-            break if stx > px && sty > py
-          end
-        end
-
-        tx = 0
-        ty = 0
-        tt = 0
-        rounds.times do |bt|
-          tx += bx
-          ty += by
-          tt += 1
-          if tx == px && ty == py
-            result = tt
-            throw :result
-          end
-          break if tx > px && ty > py
-
-          stx = tx
-          sty = ty
-          stt = tt
-          rounds.times do |at|
-            stx += ax
-            sty += ay
-            stt += 3
-            if stx == px && sty == py
-              result = stt
-              throw :result
-            end
-            break if stx > px && sty > py
-          end
-        end
-      end
-
-      result
-    end
-  end
-
-=end
-
   def self.solve_z3(ax, ay, bx, by, px, py)
     solver = Z3::Solver.new
     a      = Z3.Int('a')
@@ -93,7 +17,7 @@ works but moved to solver solution here for training
     }
   end
 
-
+  # had part 1 as loop solution (see git history)
   def self.part1(part2 = false)
     rules = file.split("\n\n").map(&:numbers)
 
