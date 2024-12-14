@@ -32,21 +32,21 @@ class Day14 < Helper
     end
 
     counts = {}
-    map.each_2d(stepx, stepy) do |cx, cy|
-      next if map[Vector.new(cx, cy)].blank?
+    map.each_2d(stepx, stepy) do |cx, cy, pos|
+      next if map[pos].blank?
 
       if cy < ((stepy - 1) / 2) && cx < ((stepx - 1) / 2)
         counts[:top_left] ||= 0
-        counts[:top_left] += map[Vector.new(cx, cy)].count
+        counts[:top_left] += map[pos].count
       elsif cy < ((stepy - 1) / 2) && cx > ((stepx - 1) / 2)
         counts[:top_right] ||= 0
-        counts[:top_right] += map[Vector.new(cx, cy)].count
+        counts[:top_right] += map[pos].count
       elsif cy > ((stepy - 1) / 2) && cx < ((stepx - 1) / 2)
         counts[:bottom_left] ||= 0
-        counts[:bottom_left] += map[Vector.new(cx, cy)].count
+        counts[:bottom_left] += map[pos].count
       elsif cy > ((stepy - 1) / 2) && cx > ((stepx - 1) / 2)
         counts[:bottom_right] ||= 0
-        counts[:bottom_right] += map[Vector.new(cx, cy)].count
+        counts[:bottom_right] += map[pos].count
       end
     end
 

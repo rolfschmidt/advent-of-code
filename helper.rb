@@ -664,7 +664,7 @@ Returns:
   def each_2d(mx = maxx + 1, my = maxy + 1)
     (0..(my - 1)).each do |cy|
       (0..(mx - 1)).each do |cx|
-        yield(cx, cy)
+        yield(cx, cy, Vector.new(cx,cy))
       end
     end
   end
