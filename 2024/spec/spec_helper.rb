@@ -17,5 +17,12 @@ require '../helper'
 
 RSpec.configure do |config|
   config.default_formatter = "doc"
-end
 
+  config.around(:each) do |example|
+    start_time = Time.now
+    puts example.run
+    end_time = Time.now
+    duration = end_time - start_time
+    puts "in #{'%.3f' % duration.to_f}s:"
+  end
+end
