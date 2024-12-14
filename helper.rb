@@ -647,13 +647,21 @@ Returns:
 
   This function will iterate the 2d grid with x, y
 
+  Full map:
+
   file.to_map.each_2d do |x, y|
+    pp [x, y]
+  end
+
+  Fixed area:
+
+  file.to_map.each_2d(11, 7) do |x, y|
     pp [x, y]
   end
 
 =end
 
-  def each_2d(mx = maxx, my = maxy)
+  def each_2d(mx = maxx + 1, my = maxy + 1)
     (0..(my - 1)).each do |cy|
       (0..(mx - 1)).each do |cx|
         yield(cx, cy)
