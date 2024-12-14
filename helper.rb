@@ -788,7 +788,7 @@ Returns:
 =end
 
   def flood_pos(start, values: nil, directions: DIRS_PLUS, wrap: false, result: Set.new)
-    values = Array.wrap(self[start]) if values.nil?
+    values = Array.wrap(self[start]).to_set if values.nil?
 
     return Set.new if result.include?(start)
     result << start
