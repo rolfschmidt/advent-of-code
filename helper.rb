@@ -643,6 +643,23 @@ Returns:
     result
   end
 
+=begin
+
+  This function will iterate the 2d grid with x, y
+
+  file.to_map.each_2d do |x, y|
+    pp [x, y]
+  end
+
+=end
+
+  def each_2d(mx = maxx, my = maxy)
+    (0..(my - 1)).each do |cy|
+      (0..(mx - 1)).each do |cx|
+        yield(cx, cy)
+      end
+    end
+  end
 
 =begin
 

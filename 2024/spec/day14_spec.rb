@@ -18,10 +18,11 @@ class Day14 < Helper
       new_map = {}
       map.each do |pos, robots|
         robots.each do |robot|
-          new_map[Vector.new((pos.x + robot[:step].x) % stepx, (pos.y + robot[:step].y) % stepy)] ||= []
-          new_map[Vector.new((pos.x + robot[:step].x) % stepx, (pos.y + robot[:step].y) % stepy)] << robot
+          new_pos            = Vector.new((pos.x + robot[:step].x) % stepx, (pos.y + robot[:step].y) % stepy)
+          new_map[new_pos] ||= []
+          new_map[new_pos] << robot
 
-          duplicates = true if new_map[Vector.new((pos.x + robot[:step].x) % stepx, (pos.y + robot[:step].y) % stepy)].count > 1
+          duplicates = true if new_map[new_pos].count > 1
         end
       end
 
@@ -31,23 +32,21 @@ class Day14 < Helper
     end
 
     counts = {}
-    (0..(stepy - 1)).each do |cy|
-      (0..(stepx - 1)).each do |cx|
-        next if map[Vector.new(cx, cy)].blank?
+    map.each_2d(stepx, stepy) do |cx, cy|
+      next if map[Vector.new(cx, cy)].blank?
 
-        if cy < ((stepy - 1) / 2) && cx < ((stepx - 1) / 2)
-          counts[:top_left] ||= 0
-          counts[:top_left] += map[Vector.new(cx, cy)].count
-        elsif cy < ((stepy - 1) / 2) && cx > ((stepx - 1) / 2)
-          counts[:top_right] ||= 0
-          counts[:top_right] += map[Vector.new(cx, cy)].count
-        elsif cy > ((stepy - 1) / 2) && cx < ((stepx - 1) / 2)
-          counts[:bottom_left] ||= 0
-          counts[:bottom_left] += map[Vector.new(cx, cy)].count
-        elsif cy > ((stepy - 1) / 2) && cx > ((stepx - 1) / 2)
-          counts[:bottom_right] ||= 0
-          counts[:bottom_right] += map[Vector.new(cx, cy)].count
-        end
+      if cy < ((stepy - 1) / 2) && cx < ((stepx - 1) / 2)
+        counts[:top_left] ||= 0
+        counts[:top_left] += map[Vector.new(cx, cy)].count
+      elsif cy < ((stepy - 1) / 2) && cx > ((stepx - 1) / 2)
+        counts[:top_right] ||= 0
+        counts[:top_right] += map[Vector.new(cx, cy)].count
+      elsif cy > ((stepy - 1) / 2) && cx < ((stepx - 1) / 2)
+        counts[:bottom_left] ||= 0
+        counts[:bottom_left] += map[Vector.new(cx, cy)].count
+      elsif cy > ((stepy - 1) / 2) && cx > ((stepx - 1) / 2)
+        counts[:bottom_right] ||= 0
+        counts[:bottom_right] += map[Vector.new(cx, cy)].count
       end
     end
 
