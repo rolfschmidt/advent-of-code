@@ -993,23 +993,21 @@ Returns:
 
     xrange = nil
     yrange = nil
-    search_dir = DIR_RIGHT
     if dir == DIR_DOWN
       xrange = (0..maxx)
       yrange = ((pos.y + dir.y)..maxy)
     elsif dir == DIR_UP
       xrange = (0..maxx)
-      yrange = ((pos.y + dir.y)..0)
+      yrange = (0..(pos.y + dir.y))
     elsif dir == DIR_RIGHT
       xrange = ((pos.x + dir.x)..maxx)
       yrange = ((pos.y + dir.y)..maxy)
     elsif dir == DIR_LEFT
-      xrange = ((pos.x + dir.x)..0)
-      yrange = ((pos.y + dir.y)..0)
-      search_dir = DIR_LEFT
+      xrange = (0..(pos.x + dir.x))
+      yrange = (0..(pos.y + dir.y))
     end
 
-    moveable = select_pattern(move_pattern, directions: search_dir, xrange: xrange, yrange: yrange).map do |row|
+    moveable = select_pattern(move_pattern, directions: DIR_RIGHT, xrange: xrange, yrange: yrange).map do |row|
       row[:list].to_set
     end
     moveable_flatten = moveable.present? ? moveable.inject(:+) : Set.new

@@ -1,4 +1,4 @@
-class Day15 < Helper
+class Day15Push < Helper
   def self.part1(part2 = false)
     map, moves = file.blocks
     moves      = moves.split(/\n/).join.chars
@@ -36,12 +36,12 @@ class Day15 < Helper
   end
 end
 
-RSpec.describe "Day15" do
+RSpec.describe "Day15Push" do
   it "does part 1" do
-    expect(Day15.part1).to eq(1442192)
+    expect(Day15Push.part1).to eq(1442192)
   end
 
   it "does part 2" do
-    expect(Day15.part2).to eq(1448458) # 2221627 2451358 2895107 2876971 2897517
+    expect(Day15Push.part2).to eq(1448458) # 2221627 2451358 2895107 2876971 2897517
   end
 end
