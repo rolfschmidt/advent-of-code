@@ -1,7 +1,7 @@
 class Day15Push < Helper
   def self.part1(part2 = false)
     map, moves = file.blocks
-    moves      = moves.split(/\n/).join.chars
+    moves      = moves.lines.join.chars
     map        = map.to_map
 
     pos = map.select_value('@').keys.first
@@ -19,7 +19,7 @@ class Day15Push < Helper
 
   def self.part2
     map, moves = file.blocks
-    moves      = moves.split(/\n/).join.chars
+    moves      = moves.lines.join.chars
     map        = map.gsub('#', '##').gsub('O', '[]').gsub('.', '..').gsub('@', '@.')
     map        = map.to_map
     pos        = map.select_value('@').keys.first
