@@ -110,6 +110,23 @@ Returns:
     return count_original(value)
   end
 
+=begin
+
+  "###\n#.#\n###".lines
+
+Returns:
+
+  [
+    "###",
+    "#.#",
+    "###",
+  ]
+
+=end
+
+def lines # does overwrite default and properly removes \n
+  split("\n")
+end
 
 =begin
 
