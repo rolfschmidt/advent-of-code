@@ -616,7 +616,7 @@ Returns:
 
 =end
 
-  def to_2ds(highlight: [], xrange: nil, yrange: nil, fill_nil: false)
+  def to_2ds(highlight: [], xrange: nil, yrange: nil, fill_nil: false, same_color: false)
     xrange = (self.minx..self.maxx) if xrange.nil?
     yrange = (self.miny..self.maxy) if yrange.nil?
 
@@ -628,7 +628,9 @@ Returns:
           self[pos] = '.'
         end
 
-        if highlight.first == pos
+        if same_color && highlight.include?(pos)
+          result += Rainbow(self[pos].to_s).orange
+        elsif highlight.first == pos
           result += Rainbow(self[pos].to_s).orange
         elsif highlight.last == pos
           result += Rainbow(self[pos].to_s).red
