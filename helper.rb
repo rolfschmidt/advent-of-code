@@ -905,16 +905,10 @@ Returns:
 
 =end
 
-  def select_pattern(pattern, maxlength: nil, directions: DIRS_ALL, wrap: false)
-    if pattern.is_a?(String)
-      maxlength  = pattern.size if maxlength.nil?
-      pattern    = %r{^#{Regexp.escape(pattern)}$}
-    end
-    maxlength = 10 if maxlength.nil?
-
+  def select_pattern(pattern, maxlength: nil, directions: DIRS_ALL, wrap: false, xrange: (minx..maxx), yrange: (miny..maxy))
     result = []
-    (self.miny..self.maxy).each do |yi|
-      (self.minx..self.maxx).each do |xi|
+    yrange.each do |yi|
+      xrange.each do |xi|
         result += select_pattern_pos(Vector.new(xi, yi), pattern, maxlength: maxlength, directions: directions, wrap: wrap)
       end
     end
@@ -922,7 +916,13 @@ Returns:
     result
   end
 
-  def select_pattern_pos(start_pos, pattern_list, maxlength: 10, directions: DIRS_ALL, wrap: false)
+  def select_pattern_pos(start_pos, pattern_list, maxlength: nil, directions: DIRS_ALL, wrap: false)
+    if pattern_list.is_a?(String)
+      maxlength    = pattern_list.size if maxlength.nil?
+      pattern_list = %r{^#{Regexp.escape(pattern_list)}$}
+    end
+    maxlength = 10 if maxlength.nil?
+
     directions   = Array.wrap(directions) if !directions.is_a?(Array)
     pattern_list = Array.wrap(pattern_list) if !pattern_list.is_a?(Array)
     if pattern_list.is_a?(String)
@@ -971,6 +971,94 @@ Returns:
     end
 
     result
+  end
+
+=begin
+
+  This function will moves blocks in a certain direction.
+  **move_pattern** defines the pattern which is moveable.
+
+  pos = map.select_value('@').keys.first
+  new_map = map.push_dir(pos, right, 'O')
+
+=end
+
+  def push_dir(pos, dir, move_pattern, free_char: '.', block_char: '#')
+    if self[pos + dir] == free_char
+      self[pos], self[pos + dir] = self[pos + dir], self[pos]
+      return self
+    end
+
+    return if self[pos + dir] == block_char
+
+    xrange = nil
+    yrange = nil
+    search_dir = DIR_RIGHT
+    if dir == DIR_DOWN
+      xrange = (0..maxx)
+      yrange = ((pos.y + dir.y)..maxy)
+    elsif dir == DIR_UP
+      xrange = (0..maxx)
+      yrange = ((pos.y + dir.y)..0)
+    elsif dir == DIR_RIGHT
+      xrange = ((pos.x + dir.x)..maxx)
+      yrange = ((pos.y + dir.y)..maxy)
+    elsif dir == DIR_LEFT
+      xrange = ((pos.x + dir.x)..0)
+      yrange = ((pos.y + dir.y)..0)
+      search_dir = DIR_LEFT
+    end
+
+    moveable = select_pattern(move_pattern, directions: search_dir, xrange: xrange, yrange: yrange).map do |row|
+      row[:list].to_set
+    end
+    moveable_flatten = moveable.present? ? moveable.inject(:+) : Set.new
+
+    return if moveable_flatten.exclude?(pos + dir)
+
+    connected = Set.new
+    queue     = [pos]
+    seen      = Set.new
+    while queue.present?
+      check_pos = queue.shift
+      connected << check_pos
+
+      next if seen.include?(check_pos)
+      seen << check_pos
+
+      steps(check_pos, dir).each do |step_pos|
+        next if moveable_flatten.exclude?(step_pos)
+
+        queue << step_pos
+        moveable.each do |matching|
+          next if matching.exclude?(step_pos)
+
+          matching.each do |also_pos|
+            next if also_pos == step_pos
+            queue << also_pos
+          end
+        end
+      end
+    end
+
+    return if connected.select { connected.exclude?(_1 + dir) }.any? { self[_1 + dir] != free_char }
+
+    new_map = self.clone
+
+    connected = if [DIR_UP, DIR_DOWN].include?(dir)
+                  connected.sort_by { _1.y }
+                else
+                  connected.sort_by { _1.x }
+                end
+
+    connected.reverse! if [DIR_DOWN, DIR_RIGHT].include?(dir)
+
+    connected.each do |check_pos|
+      new_map[check_pos + dir] = self[check_pos]
+      new_map[check_pos] = '.'
+    end
+
+    new_map
   end
 
   def minx
@@ -1130,6 +1218,16 @@ Returns:
 end
 
 class Range
+  def each
+    if self.first < self.last
+      self.to_s=~(/\.\.\./)  ?  last = self.last-1 : last = self.last
+      self.first.upto(last)  { |i| yield i}
+    else
+      self.to_s=~(/\.\.\./)  ?  last = self.last+1 : last = self.last
+      self.first.downto(last) { |i|  yield i }
+    end
+  end
+
   def intersection(other)
     return nil if (self.max < other.begin or other.max < self.begin)
     [self.begin, other.begin].max..[self.max, other.max].min
