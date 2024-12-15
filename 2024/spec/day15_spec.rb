@@ -47,17 +47,10 @@ class Day15 < Helper
     map = map.gsub('#', '##').gsub('O', '[]').gsub('.', '..').gsub('@', '@.')
     map = map.to_map
 
-    dirs = {
-      '^' => DIR_UP,
-      '>' => DIR_RIGHT,
-      'v' => DIR_DOWN,
-      '<' => DIR_LEFT,
-    }
-
     start = map.select_value('@').keys.first
     pos = start
     moves.each do |move|
-      dir   = dirs[move]
+      dir   = DIRS_STRING[move]
       next_pos = pos + dir
       next if map[next_pos] == '#'
 
