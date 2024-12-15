@@ -61,7 +61,6 @@ class Day15 < Helper
       next_pos = pos + dir
       next if map[next_pos] == '#'
 
-      highlight = []
       if map[next_pos] == '.'
         map[pos] = '.'
         map[next_pos] = '@'
@@ -98,22 +97,12 @@ class Day15 < Helper
           next if connected.select { connected.exclude?(_1 + dir) }.any? { map[_1 + dir] != '.' }
 
           new_map = map.clone
-          while connected.present? do
-            min_y = connected.min_by { _1.y }.y
-            max_y = connected.max_by { _1.y }.y
-            move_list = if dir == DIR_UP
-                          connected.select { _1.y == min_y }
-                        else
-                          connected.select { _1.y == max_y }
-                        end
+          connected = connected.sort_by { _1.y }
+          connected.reverse! if dir == DIR_DOWN
 
-            move_list.each do |check_pos|
-              new_map[check_pos + dir] = map[check_pos]
-              new_map[check_pos] = '.'
-              highlight << check_pos + dir
-            end
-
-            connected -= move_list
+          connected.each do |check_pos|
+            new_map[check_pos + dir] = map[check_pos]
+            new_map[check_pos] = '.'
           end
 
           map = new_map
@@ -153,9 +142,6 @@ class Day15 < Helper
 
         map[pos] = '.'
         map[next_pos] = '@'
-
-        highlight << next_pos
-        maps = map.to_2ds(highlight: highlight)
       end
 
       pos = next_pos
