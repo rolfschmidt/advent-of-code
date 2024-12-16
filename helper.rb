@@ -978,7 +978,7 @@ Returns:
     }
   end
 
-  def find_paths_deep(start, path: [], directions: DIRS_PLUS, wrap: false, stop_on:, skip_on:, data: {}, stop_pos: nil)
+  def find_paths_deep(start, path: [], directions: DIRS_PLUS, wrap: false, stop_on:, skip_on:, data: {})
     result = []
 
     path << start if path.blank?
@@ -988,11 +988,7 @@ Returns:
       return result
     end
 
-    steps = self.steps(start, directions, wrap: wrap, with_dir: true)
-    if stop_pos.present?
-      steps = steps.sort_by { (_1 + _2).manhattan(stop_pos) }
-    end
-    steps.each do |pos, dir|
+    self.steps(start, directions, wrap: wrap, with_dir: true).each do |pos, dir|
       pos_path = path.clone
       pos_data = data.deep_dup
       next if pos_path.include?(pos)
