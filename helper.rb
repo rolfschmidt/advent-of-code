@@ -880,7 +880,11 @@ Returns:
     shortest_seen = nil
 
     queue = Heap.new do |a, b|
-      a[0].manhattan(stop) < b[0].manhattan(stop)
+      if a[3][:score]
+        a[3][:score] < b[3][:score]
+      else
+        a[0].manhattan(stop) < b[0].manhattan(stop)
+      end
     end
 
     start_seen = Set.new
