@@ -1,42 +1,42 @@
 class Day16 < Helper
   def self.shortest_way(map, start, stop)
-    lowest_score = nil
-    score_seen   = {}
+    lowest_cost  = nil
+    cost_seen    = {}
     total_seen   = Set.new
     stop_on = -> (map:, pos:, path:, seen:, data:) do
-      next if lowest_score.present? && lowest_score < data[:score]
+      next if lowest_cost.present? && lowest_cost < data[:cost]
 
       print "."
-      total_seen   = Set.new if lowest_score != data[:score]
-      lowest_score = data[:score]
+      total_seen   = Set.new if lowest_cost != data[:cost]
+      lowest_cost  = data[:cost]
       total_seen  += path.to_set
-      return [lowest_score, path, seen]
+      return [lowest_cost, path, seen]
     end
 
     skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do
       next true if map[pos] == '#'
 
       if data[:last_dir] == dir
-        data[:score] += 1
+        data[:cost] += 1
       else
-        data[:score] += 1001
+        data[:cost] += 1001
       end
 
-      next true if lowest_score && lowest_score < data[:score]
+      next true if lowest_cost && lowest_cost < data[:cost]
 
       ss_key = "#{pos}_#{dir}"
-      next true if score_seen[ss_key] && score_seen[ss_key] < data[:score]
-      score_seen[ss_key] = data[:score]
+      next true if cost_seen[ss_key] && cost_seen[ss_key] < data[:cost]
+      cost_seen[ss_key] = data[:cost]
 
       data[:last_dir] = dir
 
       false
     end
 
-    map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, score: 0 })
+    map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, cost: 0 })
 
     {
-      min: lowest_score,
+      min: lowest_cost,
       seen: total_seen,
     }
   end

@@ -837,38 +837,38 @@ Returns:
 
   This function provides a short path functionality.
 
-  lowest_score = nil
+  lowest_cost  = nil
   seen_pos_dir = {}
 
   stop_on = -> (map:, pos:, path:, seen:, data:) do
-    next if lowest_score.present? && lowest_score < data[:score]
+    next if lowest_cost.present? && lowest_cost < data[:cost]
 
     print "."
-    lowest_score = data[:score]
-    return [lowest_score, path, seen]
+    lowest_cost = data[:cost]
+    return [lowest_cost, path, seen]
   end
 
   skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do
     next true if map[pos] == '#'
 
     if data[:last_dir] == dir
-      data[:score] += 1
+      data[:cost] += 1
     else
-      data[:score] += 1001
+      data[:cost] += 1001
     end
 
-    next true if lowest_score && lowest_score < data[:score]
+    next true if lowest_cost && lowest_cost < data[:cost]
 
     ss_key = "#{pos}_#{dir}"
-    next true if seen_pos_dir[ss_key] && seen_pos_dir[ss_key] < data[:score]
-    seen_pos_dir[ss_key] = data[:score]
+    next true if seen_pos_dir[ss_key] && seen_pos_dir[ss_key] < data[:cost]
+    seen_pos_dir[ss_key] = data[:cost]
 
     data[:last_dir] = dir
 
     false
   end
 
-  shortest, shortest_path, shortest_seen = map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, score: 0 })
+  shortest, shortest_path, shortest_seen = map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, cost: 0 })
 
 Returns:
 
@@ -886,8 +886,8 @@ Returns:
     shortest_seen = nil
 
     queue = Heap.new do |a, b|
-      if a[3][:score]
-        a[3][:score] < b[3][:score]
+      if a[3][:cost]
+        a[3][:cost] < b[3][:cost]
       else
         a[0].manhattan(stop) < b[0].manhattan(stop)
       end
