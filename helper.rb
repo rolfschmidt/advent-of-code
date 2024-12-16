@@ -131,14 +131,11 @@ Returns:
 
 =end
 
-# alias_method :lines_original, :lines
-# def lines # does overwrite default and properly removes \n
-#   if caller.first.include?('/spec/') && 1== 0
-#     puts "yes"
-#     return split("\n")
-#   end
-#   lines_original
-# end
+  alias_method :lines_original, :lines
+  def lines(*args, **kwargs, &block)
+    return split("\n") if args.first.nil?
+    lines_original
+  end
 
 =begin
 
