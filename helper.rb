@@ -868,10 +868,7 @@ Returns:
     false
   end
 
-  map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, score: 0 })
-
-  pp result
-  puts lowest_score
+  shortest, shortest_path, shortest_seen = map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, score: 0 })
 
 Returns:
 
