@@ -4,14 +4,13 @@ class Day16 < Helper
     score_seen   = {}
     total_seen   = Set.new
     stop_on = -> (map:, pos:, path:, seen:, data:) do
-      if lowest_score.blank? || lowest_score >= data[:score]
-        print "."
-        total_seen   = Set.new if lowest_score != data[:score]
-        lowest_score = data[:score]
-        total_seen  += path.to_set
-        next true
-      end
-      false
+      next if lowest_score.present? && lowest_score < data[:score]
+
+      print "."
+      total_seen   = Set.new if lowest_score != data[:score]
+      lowest_score = data[:score]
+      total_seen  += path.to_set
+      return [lowest_score, path, seen]
     end
 
     skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do

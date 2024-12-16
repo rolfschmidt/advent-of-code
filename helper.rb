@@ -899,8 +899,7 @@ Returns:
         if queue_pos == stop
           result = stop_on.call(map: self, pos: queue_pos, path: path, seen: seen, data: data)
           if result.present?
-            shortest      = path.size
-            shortest_path = path
+            shortest, shortest_path, shortest_seen = result
             next
           end
         end
