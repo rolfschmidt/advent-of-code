@@ -3,11 +3,11 @@ class Day10 < Helper
     map = file.to_map.map_values(&:to_i)
 
     map.reverse[0].sum do |start, si|
-      stop_on = -> (map, start, path) do
+      stop_on = -> (map:, start:, path:, data:) do
         map[start] == 9
       end
 
-      skip_on = -> (map, from, pos, path) do
+      skip_on = -> (map:, from:, pos:, dir:, path:, data:) do
         map[pos] != map[from] + 1
       end
 

@@ -89,6 +89,13 @@ Returns:
 end
 
 class String
+  def to_vec
+    Vector.new(*self.split('_').map(&:to_i))
+  end
+
+  def to_vec3
+    Vector.new(*self.split('_').map(&:to_i))
+  end
 
 =begin
 
@@ -124,9 +131,14 @@ Returns:
 
 =end
 
-def lines # does overwrite default and properly removes \n
-  split("\n")
-end
+# alias_method :lines_original, :lines
+# def lines # does overwrite default and properly removes \n
+#   if caller.first.include?('/spec/') && 1== 0
+#     puts "yes"
+#     return split("\n")
+#   end
+#   lines_original
+# end
 
 =begin
 
@@ -823,6 +835,101 @@ Returns:
 
 =begin
 
+  This function provides a short path functionality.
+
+  lowest_score = nil
+
+  stop_on = -> (map:, pos:, path:, seen:, data:) do
+    if lowest_score.blank? || lowest_score > data[:score]
+      lowest_score = data[:score]
+      next true
+    end
+    false
+  end
+
+  skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do
+    if data[:last_dir] == dir
+      data[:score] += 1
+    else
+      data[:score] += 1001
+    end
+
+    data[:last_dir] = dir
+
+    false
+  end
+
+  map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, score: 0 })
+
+  pp result
+  puts lowest_score
+
+Returns:
+
+  [
+    13,
+    [...],
+    Set[...],
+  ]
+
+=end
+
+  def shortest_path(start, stop, skip_on: nil, stop_on: nil, data: {})
+    shortest      = nil
+    shortest_path = nil
+    shortest_seen = nil
+
+    queue = Heap.new do |a, b|
+      a[0].manhattan(stop) < b[0].manhattan(stop)
+    end
+
+    start_seen = Set.new
+    start_seen << start
+
+    queue << [start, [start], start_seen, data]
+
+    while queue.present? do
+      queue_pos, path, seen, data = queue.pop
+
+      if stop_on.present?
+        if queue_pos == stop
+          result = stop_on.call(map: self, pos: queue_pos, path: path, seen: seen, data: data)
+          if result.present?
+            shortest      = path.size
+            shortest_path = path
+            next
+          end
+        end
+      else
+        if queue_pos == stop && (shortest.nil? || path.size < shortest)
+          shortest      = path.size
+          shortest_path = path
+          shortest_seen = seen
+          next
+        end
+      end
+
+      steps(queue_pos, with_dir: true).each do |pos, dir|
+        next if seen.include?(pos)
+
+        pos_path = path.clone
+        pos_seen = seen.clone
+        pos_data = data.deep_dup
+
+        pos_path << pos.to_s
+        pos_seen << pos.to_s
+
+        next if skip_on && skip_on.call(map: self, pos: pos, dir: dir, path: pos_path, seen: pos_seen, data: pos_data).present?
+        queue << [pos, pos_path, pos_seen, pos_data]
+      end
+    end
+
+    return if shortest.blank?
+    return [shortest, shortest_path, shortest_seen]
+  end
+
+=begin
+
   This function provides the functionality to search a map step-wise until a condition is met.
   Define the stop condition with stop_on and the skip condition which is checked on
   every step with skip_on.
@@ -863,25 +970,29 @@ Returns:
     }
   end
 
-  def find_paths_deep(start, path: [], directions: DIRS_PLUS, wrap: false, stop_on:, skip_on:)
+  def find_paths_deep(start, path: [], directions: DIRS_PLUS, wrap: false, stop_on:, skip_on:, data: {}, stop_pos: nil)
     result = []
 
     path << start if path.blank?
 
-    height = self[start]
-    if stop_on.call(self, start, path).present?
+    if stop_on.call(map: self, start: start, path: path, data: data).present?
       result << path
       return result
     end
 
-    self.steps(start, directions, wrap: wrap).each do |pos|
-      pos_path = path.dup
+    steps = self.steps(start, directions, wrap: wrap, with_dir: true)
+    if stop_pos.present?
+      steps = steps.sort_by { (_1 + _2).manhattan(stop_pos) }
+    end
+    steps.each do |pos, dir|
+      pos_path = path.clone
+      pos_data = data.deep_dup
       next if pos_path.include?(pos)
-      pos_path << pos
+      pos_path << pos.to_s
 
-      next if skip_on.call(self, start, pos, pos_path).present?
+      next if skip_on.call(map: self, from: start, pos: pos, dir: dir, path: pos_path, data: pos_data).present?
 
-      result += self.find_paths_deep(pos, path: pos_path, stop_on: stop_on, skip_on: skip_on)
+      result += self.find_paths_deep(pos, path: pos_path, stop_on: stop_on, skip_on: skip_on, data: pos_data)
     end
 
     result
@@ -1127,7 +1238,7 @@ Returns:
 
 =end
 
-  def steps(pos, directions, wrap: false)
+  def steps(pos, directions = DIRS_PLUS, wrap: false, with_dir: false)
     Array.wrap(directions).each_with_object([]) do |dir, result|
       check = if wrap
                 Vector.new((pos.x + dir.x) % maxx, (pos.y + dir.y) % maxy)
@@ -1137,7 +1248,11 @@ Returns:
 
       next if self[check].nil?
 
-      result << check
+      if with_dir
+        result << [check, dir]
+      else
+        result << check
+      end
     end
   end
 
@@ -1544,7 +1659,7 @@ edges = [
   ['BB', 'CC', 1],
 ]
 
-path = shortest_path(edges, 'AA', 'BB')
+result = Graph.shortest_path(edges, 'AA', 'BB')
 
 Returns:
 
