@@ -1,6 +1,6 @@
 # Advent of Code
 
-This repo contains various solutions for different years of Advent of Code.
+<a href="http://www.adventofcode.com" target="_blank"> ![image](https://github.com/user-attachments/assets/3aeb954d-9dda-437d-90fa-e5abf4e9a68d) </a>
 
 |  Year  |  Progress   |  Language(s)  |
 |:------:|:-----------:|:-------------:|
