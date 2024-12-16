@@ -1,16 +1,12 @@
 class Day16 < Helper
   def self.shortest_way(map, start, stop)
-    lowest_cost  = nil
-    cost_seen    = {}
     total_seen   = Set.new
-    stop_on = -> (map:, pos:, path:, seen:, data:) do
-      next if lowest_cost.present? && lowest_cost < data[:cost]
 
+    stop_on = -> (map:, pos:, path:, seen:, data:, cost_min:) do
       print "."
-      total_seen   = Set.new if lowest_cost != data[:cost]
-      lowest_cost  = data[:cost]
+      total_seen   = Set.new if cost_min != data[:cost]
       total_seen  += path.to_set
-      return [lowest_cost, path, seen]
+      return [ path.size, path, seen, data[:cost] ]
     end
 
     skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do
@@ -22,21 +18,15 @@ class Day16 < Helper
         data[:cost] += 1001
       end
 
-      next true if lowest_cost && lowest_cost < data[:cost]
-
-      ss_key = "#{pos}_#{dir}"
-      next true if cost_seen[ss_key] && cost_seen[ss_key] < data[:cost]
-      cost_seen[ss_key] = data[:cost]
-
       data[:last_dir] = dir
 
       false
     end
 
-    map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, cost: 0 })
+    cost_min = map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, cost: 0 }).last
 
     {
-      min: lowest_cost,
+      min: cost_min,
       seen: total_seen,
     }
   end

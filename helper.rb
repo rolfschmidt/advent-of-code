@@ -836,16 +836,12 @@ Returns:
 =begin
 
   This function provides a short path functionality.
+  If the moves are related to a cost factor this can be used.
+  If no cost is involved, it will sort by distance.
 
-  lowest_cost  = nil
-  seen_pos_dir = {}
-
-  stop_on = -> (map:, pos:, path:, seen:, data:) do
-    next if lowest_cost.present? && lowest_cost < data[:cost]
-
+  stop_on = -> (map:, pos:, path:, seen:, data:, cost_min:) do
     print "."
-    lowest_cost = data[:cost]
-    return [lowest_cost, path, seen]
+    return [ path.size, path, seen, data[:cost] ]
   end
 
   skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do
@@ -857,18 +853,12 @@ Returns:
       data[:cost] += 1001
     end
 
-    next true if lowest_cost && lowest_cost < data[:cost]
-
-    ss_key = "#{pos}_#{dir}"
-    next true if seen_pos_dir[ss_key] && seen_pos_dir[ss_key] < data[:cost]
-    seen_pos_dir[ss_key] = data[:cost]
-
     data[:last_dir] = dir
 
     false
   end
 
-  shortest, shortest_path, shortest_seen = map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, cost: 0 })
+  shortest, shortest_path, shortest_seen, cost_min = map.shortest_path(start, stop, stop_on: stop_on, skip_on: skip_on, data: { last_dir: DIR_RIGHT, cost: 0 })
 
 Returns:
 
@@ -876,6 +866,7 @@ Returns:
     13,
     [...],
     Set[...],
+    5,
   ]
 
 =end
@@ -884,6 +875,8 @@ Returns:
     shortest      = nil
     shortest_path = nil
     shortest_seen = nil
+    cost_min      = nil
+    cost_seen     = {}
 
     queue = Heap.new do |a, b|
       if a[3][:cost]
@@ -902,10 +895,10 @@ Returns:
       queue_pos, path, seen, data = queue.pop
 
       if stop_on.present?
-        if queue_pos == stop
-          result = stop_on.call(map: self, pos: queue_pos, path: path, seen: seen, data: data)
+        if queue_pos == stop && (cost_min.nil? || cost_min >= data[:cost])
+          result = stop_on.call(map: self, pos: queue_pos, path: path, seen: seen, data: data, cost_min: cost_min)
           if result.present?
-            shortest, shortest_path, shortest_seen = result
+            shortest, shortest_path, shortest_seen, cost_min = result
             next
           end
         end
@@ -929,12 +922,21 @@ Returns:
         pos_seen << pos.to_s
 
         next if skip_on && skip_on.call(map: self, pos: pos, dir: dir, path: pos_path, seen: pos_seen, data: pos_data).present?
+
+        if pos_data.key?(:cost)
+          next if cost_min && cost_min < pos_data[:cost]
+
+          cs_key = "#{pos}_#{dir}"
+          next if cost_seen[cs_key] && cost_seen[cs_key] < pos_data[:cost]
+          cost_seen[cs_key] = pos_data[:cost]
+        end
+
         queue << [pos, pos_path, pos_seen, pos_data]
       end
     end
 
     return if shortest.blank?
-    return [shortest, shortest_path, shortest_seen]
+    return [shortest, shortest_path, shortest_seen, cost_min]
   end
 
 =begin
