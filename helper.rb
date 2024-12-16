@@ -838,21 +838,30 @@ Returns:
   This function provides a short path functionality.
 
   lowest_score = nil
+  seen_pos_dir = {}
 
   stop_on = -> (map:, pos:, path:, seen:, data:) do
-    if lowest_score.blank? || lowest_score > data[:score]
-      lowest_score = data[:score]
-      next true
-    end
-    false
+    next if lowest_score.present? && lowest_score < data[:score]
+
+    print "."
+    lowest_score = data[:score]
+    return [lowest_score, path, seen]
   end
 
   skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do
+    next true if map[pos] == '#'
+
     if data[:last_dir] == dir
       data[:score] += 1
     else
       data[:score] += 1001
     end
+
+    next true if lowest_score && lowest_score < data[:score]
+
+    ss_key = "#{pos}_#{dir}"
+    next true if seen_pos_dir[ss_key] && seen_pos_dir[ss_key] < data[:score]
+    seen_pos_dir[ss_key] = data[:score]
 
     data[:last_dir] = dir
 
