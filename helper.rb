@@ -884,9 +884,9 @@ Returns:
     end
 
     start_seen = Set.new
-    start_seen << start
+    start_seen << start.to_s
 
-    queue << [start, [start], start_seen, data]
+    queue << [start, [start.to_s], start_seen, data]
 
     while queue.present? do
       queue_pos, path, seen, data = queue.pop
@@ -909,7 +909,7 @@ Returns:
       end
 
       steps(queue_pos, with_dir: true).each do |pos, dir|
-        next if seen.include?(pos)
+        next if seen.include?(pos.to_s)
 
         pos_path = path.clone
         pos_seen = seen.clone
