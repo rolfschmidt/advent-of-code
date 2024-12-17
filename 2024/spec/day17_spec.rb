@@ -2,156 +2,86 @@ class Day17 < Helper
   def self.parse_input(input)
     data = input.blocks.map(&:lines).flatten.map(&:numbers).flatten
 
-    {
-      'A' => data.shift,
-      'B' => data.shift,
-      'C' => data.shift,
-      'prog' => data,
-      'prog_string' => data.join(','),
-    }
+    [data.shift, data.shift, data.shift, data, data.join(',')]
   end
 
-  ADV = 0
-  BXL = 1
-  BST = 2
-  JNZ = 3
-  BXC = 4
-  OUT = 5
-  BDV = 6
-  CDV = 7
-  def self.part1(register = parse_input(file))
-    prog = register['prog']
+  def self.calc_state(opcode, literal_operand, progi, rega, regb, regc)
+    result = nil
 
-    result = ''
+    combo_map = {
+      0 => literal_operand,
+      1 => literal_operand,
+      2 => literal_operand,
+      3 => literal_operand,
+      4 => rega,
+      5 => regb,
+      6 => regc,
+    }
+    combo_operand = combo_map[literal_operand] || literal_operand
+
+    if opcode == 0 # ADV
+      rega /= 2 ** combo_operand
+    elsif opcode == 1 # BXL
+      regb = regb ^ literal_operand
+    elsif opcode == 2 # BST
+      regb = combo_operand % 8
+    elsif opcode == 3 # JNZ
+      return [literal_operand, rega, regb, regc, result] if rega != 0
+    elsif opcode == 4 # BXC
+      regb = regb ^ regc
+    elsif opcode == 5 # OUT
+      result = combo_operand % 8
+    elsif opcode == 6 # BDV
+      regb = rega / (2 ** combo_operand)
+    elsif opcode == 7 # CDV
+      regc = rega / (2 ** combo_operand)
+    else
+      raise 'calc fail'
+    end
+
+    [progi + 2, rega, regb, regc, result]
+  end
+
+  def self.calc_prog(rega, regb, regc, prog)
+    result = []
 
     progi = 0
     while progi < prog.size
       opcode          = prog[progi]
       literal_operand = prog[progi + 1]
 
-      combo_operand = nil
-      if [0, 1, 2, 3].include?(literal_operand)
-        combo_operand = literal_operand
-      elsif literal_operand == 4
-        combo_operand = register['A']
-      elsif literal_operand == 5
-        combo_operand = register['B']
-      elsif literal_operand == 6
-        combo_operand = register['C']
-      else
-        combo_operand = literal_operand
+      progi, rega, regb, regc, result_add = calc_state(opcode, literal_operand, progi, rega, regb, regc)
+      if result_add
+        result << result_add
       end
-
-      # pp [opcode, literal_operand, combo_operand, register]
-
-      inst_value = nil
-      if opcode == ADV
-        register['A'] /= 2 ** combo_operand
-      elsif opcode == BXL
-        register['B'] = register['B'] ^ literal_operand
-      elsif opcode == BST
-        register['B'] = combo_operand % 8
-      elsif opcode == JNZ
-        if register['A'] != 0
-          # puts "Jump #{literal_operand}"
-          progi = literal_operand
-          next
-        end
-      elsif opcode == BXC
-        register['B'] = register['B'] ^ register['C']
-      elsif opcode == OUT
-        inst_value = combo_operand % 8
-        result += "#{inst_value},"
-      elsif opcode == BDV
-        register['B'] = register['A'] / (2 ** combo_operand)
-      elsif opcode == CDV
-        register['C'] = register['A'] / (2 ** combo_operand)
-      else
-        raise 'calc fail'
-      end
-
-      progi += 2
     end
 
-    result[..-2]
+    result
+  end
+
+  def self.part1
+    rega, regb, regc, prog, prog_string = parse_input(file)
+    calc_prog(rega, regb, regc, prog).join(',')
+  end
+
+  # gave up, props to https://github.com/ypisetsky/advent-of-code/blob/main/yr2024/day17.py
+  def self.get_best_quine_input(program, cursor, sofar)
+    (0...8).each do |candidate|
+      if calc_prog(sofar * 8 + candidate, 0, 0, program) == program[cursor..-1]
+        return sofar * 8 + candidate if cursor.zero?
+
+        ret = get_best_quine_input(program, cursor - 1, sofar * 8 + candidate)
+        return ret unless ret.nil?
+      end
+    end
+    nil
   end
 
   def self.part2
-    input    = file
-#     input = "Register A: 2024
-# Register B: 0
-# Register C: 0
-
-# Program: 0,3,5,4,3,0"
-    register = parse_input(input)
-
-
-    if 0 == 1
-      5.times do
-        puts Benchmark.measure {
-          sti = 1
-          cores = 1
-          tregister = register.clone
-          total = tregister['A'] + 10000000000000000
-          round = tregister['A']
-          while round < total do
-            num = round + (sti - 1)
-            # puts "#{num} of #{tregister['A'] + 10}"
-            tregister['A'] = num
-
-            if num % 1000000 == 0
-              print "."
-            end
-
-            result = part1(tregister)
-            if result == tregister['prog_string']
-              puts num
-              break
-            end
-
-            round += cores + sti - 1
-          end
-        }
-      end
-
-      return 0
-    end
-
-
-    found = []
-    cores = 24
-    Parallel.each((1..cores)) do |sti|
-      tregister = register.clone
-
-      total = tregister['A'] + 10000000000000000
-      round = tregister['A']
-      while round < total do
-        num = round + (sti - 1)
-        # puts "#{num} of #{tregister['A'] + 10}"
-        tregister['A'] = num
-
-        if num % 1000000 == 0
-          print "."
-        end
-
-        result = part1(tregister)
-        if result == tregister['prog_string']
-          puts num
-          raise Parallel::Break
-          break
-        end
-
-        round += cores + sti - 1
-      end
-    end
-
-    found.min
+    rega, regb, regc, prog, prog_string = parse_input(file)
+    get_best_quine_input(prog, prog.size - 1, 0)
   end
 end
-
-# puts Day17.part1
-puts Day17.part2
-return
 
 RSpec.describe "Day17" do
   it "does part 1" do
@@ -159,6 +89,6 @@ RSpec.describe "Day17" do
   end
 
   it "does part 2" do
-    expect(Day17.part2).to eq(100)
+    expect(Day17.part2).to eq(265652340990875)
   end
 end
