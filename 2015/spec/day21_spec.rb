@@ -55,7 +55,7 @@ Defense three   80     0       3"
     weapons, armor, rings = shop_string.blocks.map(&:numbers).map{ _1.each_slice(3).to_a }
 
     enemy = file.numbers
-    queue = Heap.new {|a, b| cost(a) < cost(b) }
+    queue = []
 
     weapons.each do |iw|
       queue << [100, [iw.clone], enemy.clone]
