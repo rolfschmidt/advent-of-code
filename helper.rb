@@ -699,6 +699,8 @@ Returns:
 =end
 
   def to_2ds(highlight: [], xrange: nil, yrange: nil, fill_nil: false, same_color: false)
+    highlight = highlight.clone.map(&:to_vec) if highlight.present? && highlight.first.is_a?(String)
+
     xrange = (self.minx..self.maxx) if xrange.nil?
     yrange = (self.miny..self.maxy) if yrange.nil?
 
@@ -959,7 +961,6 @@ Returns:
           end
         end
       else
-        # puts self.to_2ds(highlight: path.map(&:to_vec))
         if queue_pos == stop && (shortest.nil? || path.size < shortest)
           shortest      = path.size
           shortest_path = path
