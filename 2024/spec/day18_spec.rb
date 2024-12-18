@@ -20,16 +20,16 @@ class Day18 < Helper
       false
     end
 
-    shortest, shortest_path, shortest_seen, cost_min = map.shortest_path(start, stop, skip_on: skip_on)
+    shortest, shortest_path = map.shortest_path(start, stop, skip_on: skip_on)
 
     if part2
       while bytes.present?
         byte = bytes.shift
         map[byte] = '#'
 
-        next if shortest_seen.exclude?(byte.to_s)
+        next if shortest_path.exclude?(byte.to_s)
 
-        shortest, shortest_path, shortest_seen, cost_min = map.shortest_path(start, stop, skip_on: skip_on)
+        shortest, shortest_path = map.shortest_path(start, stop, skip_on: skip_on)
         return "#{byte.x},#{byte.y}" if shortest.blank?
       end
     end
