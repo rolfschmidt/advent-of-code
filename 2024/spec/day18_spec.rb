@@ -3,7 +3,7 @@ class Day18 < Helper
     input     = file
     bytes     = input.lines.map(&:numbers).map(&:to_vec)
     grid_size = input == file_test ? 6 : 70
-    map       = Hash.init_grid(grid_size)
+    map       = Hash.init_map(grid_size)
 
     byte_times = input == file_test ? 12 : 1024
     byte_times.times do |round|

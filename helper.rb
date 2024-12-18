@@ -644,7 +644,7 @@ Returns:
 
 =end
 
-  def self.init_grid(to_x, to_y = to_x, char = '.')
+  def self.init_map(to_x, to_y = to_x, char = '.')
     map = {}
     (0..to_y).each do |yi|
       (0..to_x).each do |xi|
