@@ -3,7 +3,7 @@ class Day18 < Helper
     input     = file
     bytes     = input.lines.map(&:numbers).map(&:to_vec)
     grid_size = input == file_test ? 6 : 70
-    map       = {}.init_grid(grid_size)
+    map       = Hash.init_grid(grid_size)
 
     byte_times = input == file_test ? 12 : 1024
     byte_times.times do |round|
@@ -11,16 +11,13 @@ class Day18 < Helper
       map[byte] = '#'
     end
 
-    start = Vector.new(0, 0)
-    stop  = Vector.new(map.maxx, map.maxy)
-
     skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do
       next true if map[pos] == '#'
 
       false
     end
 
-    shortest, shortest_path = map.shortest_path(start, stop, skip_on: skip_on)
+    shortest, shortest_path = map.shortest_path(map.start, map.stop, skip_on: skip_on)
 
     if part2
       while bytes.present?
@@ -29,7 +26,7 @@ class Day18 < Helper
 
         next if shortest_path.exclude?(byte.to_s)
 
-        shortest, shortest_path = map.shortest_path(start, stop, skip_on: skip_on)
+        shortest, shortest_path = map.shortest_path(map.start, map.stop, skip_on: skip_on)
         return "#{byte.x},#{byte.y}" if shortest.blank?
       end
     end

@@ -632,7 +632,7 @@ class Hash
 
 =begin
 
-  {}.init_grid(2)
+  Hash.init_grid(2)
 
 Returns:
 
@@ -644,13 +644,42 @@ Returns:
 
 =end
 
-  def init_grid(to_x, to_y = to_x, char = '.')
+  def self.init_grid(to_x, to_y = to_x, char = '.')
+    map = {}
     (0..to_y).each do |yi|
       (0..to_x).each do |xi|
-        self[[xi, yi].to_vec] = char
+        map[[xi, yi].to_vec] = char
       end
     end
-    self
+    map
+  end
+
+=begin
+
+  map.start
+
+Returns:
+
+  Vector(0,0)
+
+=end
+
+  def start
+    Vector.new(0, 0)
+  end
+
+=begin
+
+  map.stop
+
+Returns:
+
+  Vector(5,5)
+
+=end
+
+  def stop
+    Vector.new(maxx, maxy)
   end
 
 =begin
