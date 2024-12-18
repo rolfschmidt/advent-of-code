@@ -387,6 +387,10 @@ Returns:
     result
   end
 
+  def to_vec
+    Vector.new(self[0], self[1])
+  end
+
 =begin
 
   [
@@ -625,6 +629,29 @@ Returns:
 end
 
 class Hash
+
+=begin
+
+  {}.init_grid(2)
+
+Returns:
+
+  {
+    Vector(0,0) => '.',
+    Vector(0,1) => '.',
+    Vector(0,2) => '.',
+  }
+
+=end
+
+  def init_grid(to_x, to_y = to_x, char = '.')
+    (0..to_y).each do |yi|
+      (0..to_x).each do |xi|
+        self[[xi, yi].to_vec] = char
+      end
+    end
+    self
+  end
 
 =begin
 
@@ -874,12 +901,15 @@ Returns:
     shortest_seen = nil
     cost_min      = nil
     cost_seen     = {}
+    pos_dir_seen  = {}
 
     queue = Heap.new do |a, b|
       if a[3][:cost]
         a[3][:cost] < b[3][:cost]
-      else
+      elsif shortest.nil?
         a[0].manhattan(stop) < b[0].manhattan(stop)
+      else
+        a[1].size < b[1].size
       end
     end
 
@@ -900,6 +930,7 @@ Returns:
           end
         end
       else
+        # puts self.to_2ds(highlight: path.map(&:to_vec))
         if queue_pos == stop && (shortest.nil? || path.size < shortest)
           shortest      = path.size
           shortest_path = path
@@ -926,6 +957,10 @@ Returns:
           cs_key = "#{pos}_#{dir}"
           next if cost_seen[cs_key] && cost_seen[cs_key] < pos_data[:cost]
           cost_seen[cs_key] = pos_data[:cost]
+        else
+          pos_dir_key = "#{pos}_#{dir}"
+          next if pos_dir_seen[pos_dir_key] && pos_dir_seen[pos_dir_key] <= pos_path.size
+          pos_dir_seen[pos_dir_key] = pos_path.size
         end
 
         queue << [pos, pos_path, pos_seen, pos_data]
