@@ -1452,6 +1452,8 @@ class Helper
     return result.body.strip
   end
 
+  @@test = false
+
   def self.file
     path = "spec/#{self.to_s.downcase}.txt"
     if !File.exist?(path)
@@ -1470,7 +1472,13 @@ class Helper
       File.write(path, $1.strip)
     end
 
+    @@test = true
+
     File.read("spec/#{self.to_s.downcase}_test.txt")
+  end
+
+  def self.test?
+    @@test
   end
 
   def self.all_chars

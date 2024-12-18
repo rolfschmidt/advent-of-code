@@ -1,11 +1,10 @@
 class Day18 < Helper
   def self.part1(part2 = false)
-    input     = file
-    bytes     = input.lines.map(&:numbers).map(&:to_vec)
-    grid_size = input == file_test ? 6 : 70
+    bytes     = file.lines.map(&:numbers).map(&:to_vec)
+    grid_size = test? ? 6 : 70
     map       = Hash.init_map(grid_size)
 
-    byte_times = input == file_test ? 12 : 1024
+    byte_times = test? ? 12 : 1024
     byte_times.times do |round|
       byte = bytes.shift
       map[byte] = '#'
