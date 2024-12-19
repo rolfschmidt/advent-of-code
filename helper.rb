@@ -1487,7 +1487,7 @@ class Helper
 
   @@cache = {}
   def self.cache(*args)
-    key = args.map(&:to_s).to_s
+    key = caller(0, 1).first + args.map(&:to_s).to_s
     return @@cache[key] if !@@cache[key].nil?
 
     @@cache[key] ||= yield
