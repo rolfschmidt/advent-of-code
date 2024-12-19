@@ -5,13 +5,7 @@ class Day19 < Helper
 
   def self.search(row)
     cache(row) do
-      if row.blank?
-        1
-      else
-        matches(row).map do |match|
-          search(row[match.size..])
-        end.sum
-      end
+      row.blank?.to_i | matches(row).map { search(row[_1.size..]) }.sum
     end
   end
 
