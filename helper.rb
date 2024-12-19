@@ -1257,23 +1257,19 @@ Returns:
   end
 
   def minx
-    @minx ||= {}
-    @minx[hash] ||= self.keys.min_by{|v| v[0] }.x
+    cache(hash) { self.keys.min_by{|v| v[0] }.x }
   end
 
   def maxx
-    @maxx ||= {}
-    @maxx[hash] ||= self.keys.max_by{|v| v[0] }.x
+    cache(hash) { self.keys.max_by{|v| v[0] }.x }
   end
 
   def miny
-    @miny ||= {}
-    @miny[hash] ||= self.keys.min_by{|v| v[1] }.y
+    cache(hash) { self.keys.min_by{|v| v[1] }.y }
   end
 
   def maxy
-    @maxy ||= {}
-    @maxy[hash] ||= self.keys.max_by{|v| v[1] }.y
+    cache(hash) { self.keys.max_by{|v| v[1] }.y }
   end
 
 =begin
@@ -1483,18 +1479,6 @@ class Helper
 
   def self.all_chars
     ("a".."z").to_a + ("A".."Z").to_a
-  end
-
-  @@cache = {}
-  def self.cache(*args)
-    key = caller(0, 1).first + args.map(&:to_s).to_s
-    return @@cache[key] if @@cache.key?(key)
-
-    @@cache[key] ||= yield
-  end
-
-  def self.reset_cache
-    @@cache = {}
   end
 
   def self.top
@@ -1770,6 +1754,18 @@ end
 
 def ddup(obj)
   Marshal.load(Marshal.dump(obj))
+end
+
+$cache = {}
+def cache(*args)
+  key = caller(1, 1).first + args.map(&:to_s).to_s
+  return $cache[key] if $cache.key?(key)
+
+  $cache[key] ||= yield
+end
+
+def reset_cache
+  $cache = {}
 end
 
 BigDecimal.limit(100)
