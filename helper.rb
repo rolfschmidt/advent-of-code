@@ -1485,6 +1485,18 @@ class Helper
     ("a".."z").to_a + ("A".."Z").to_a
   end
 
+  @@cache = {}
+  def self.cache(*args)
+    key = args.map(&:to_s).to_s
+    return @@cache[key] if !@@cache[key].nil?
+
+    @@cache[key] ||= yield
+  end
+
+  def self.reset_cache
+    @@cache = {}
+  end
+
   def self.top
     @top ||= DIR_UP
   end
