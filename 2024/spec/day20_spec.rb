@@ -18,8 +18,6 @@ class Day20 < Helper
     save_at_least = test? ? 50 : 100
     result        = 0
     shortest_path.keys.combination(2).each do |posai, posbi|
-      next if posai > posbi
-
       posa = shortest_path[posai]
       posb = shortest_path[posbi]
 
@@ -27,8 +25,7 @@ class Day20 < Helper
       next if dist > cheat_dist
 
       normal_dist = shortest_path[posai..posbi].size - 1
-
-      save_dist = normal_dist - dist
+      save_dist   = normal_dist - dist
       next if save_dist < save_at_least
 
       result += 1
