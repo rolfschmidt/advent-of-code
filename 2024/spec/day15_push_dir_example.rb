@@ -4,7 +4,7 @@ class Day15Push < Helper
     moves      = moves.lines.join.chars
     map        = map.to_map
 
-    pos = map.select_value('@').keys.first
+    pos = map.key('@')
     moves.each_with_index do |move, mi|
       dir     = DIRS_STRING[move]
       new_map = map.push_dir(pos, dir, 'O')
@@ -22,7 +22,7 @@ class Day15Push < Helper
     moves      = moves.lines.join.chars
     map        = map.gsub('#', '##').gsub('O', '[]').gsub('.', '..').gsub('@', '@.')
     map        = map.to_map
-    pos        = map.select_value('@').keys.first
+    pos        = map.key('@')
     moves.each_with_index do |move, mi|
       dir     = DIRS_STRING[move]
       new_map = map.push_dir(pos, dir, '[]')

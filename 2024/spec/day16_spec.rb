@@ -33,8 +33,8 @@ class Day16 < Helper
 
   def self.part1(part2 = false)
     map   = file.to_map
-    start = map.select_value('S').keys.first
-    stop  = map.select_value('E').keys.first
+    start = map.key('S')
+    stop  = map.key('E')
 
     @result ||= shortest_way(map, start, stop)
 
