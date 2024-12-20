@@ -7,8 +7,7 @@ class Day20 < Helper
     map[stop]  = '.'
 
     skip_on = -> (map:, pos:, dir:, path:, seen:, data:) do
-      next true if map[pos] == '#'
-      false
+      map[pos] == '#'
     end
 
     shortest, shortest_path, shortest_seen, cost_min = map.shortest_path(start, stop, skip_on: skip_on)
