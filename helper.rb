@@ -1046,7 +1046,7 @@ Returns:
   def find_paths_deep(start, path: [], directions: DIRS_PLUS, wrap: false, stop_on:, skip_on:, data: {})
     result = []
 
-    path << start if path.blank?
+    path << start.to_s if path.blank?
 
     if stop_on.call(map: self, start: start, path: path, data: data).present?
       result << path
@@ -1056,7 +1056,7 @@ Returns:
     self.steps(start, directions, wrap: wrap, with_dir: true).each do |pos, dir|
       pos_path = path.clone
       pos_data = data.deep_dup
-      next if pos_path.include?(pos)
+      next if pos_path.include?(pos.to_s)
       pos_path << pos.to_s
 
       next if skip_on.call(map: self, from: start, pos: pos, dir: dir, path: pos_path, data: pos_data).present?
