@@ -10,7 +10,7 @@ class Day20 < Helper
       map[pos] == '#'
     end
 
-    shortest, shortest_path, shortest_seen, cost_min = map.shortest_path(start, stop, skip_on: skip_on)
+    shortest, shortest_path = map.shortest_path(start, stop, skip_on: skip_on)
 
     shortest_path = shortest_path.map(&:to_vec)
 
