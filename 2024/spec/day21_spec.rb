@@ -46,30 +46,6 @@ pad 2
     }
   end
 
-  # @lowest = {}
-
-  # def self.code_variants(list, ci = 0, result = [], &block)
-  #   @lowest[list.hash] ||= 9999999999
-  #   if result.size > @lowest[list.hash]
-  #     puts "too high #{result.size}"
-  #     return
-  #   end
-
-  #   if ci == list.size
-  #     @lowest[list.hash] = [result.size, @lowest[list.hash]].min
-  #     return block.call(result)
-  #   end
-
-  #   list[ci].each_with_index do |value, vi|
-  #     code_variants(list, ci + 1, result + value, &block)
-  #   end
-  # end
-
-  def self.select_lowest(list)
-    min_size = list.min_by(&:size).size
-    list.select { _1.size <= min_size }
-  end
-
   def self.quick_paths(pad, from, to)
     cache(pad, from, to) do
       stop_on = -> (map: , start: , path: , data: ) do
@@ -80,44 +56,47 @@ pad 2
         false
       end
 
-      find_paths = pad.find_paths(from, stop_on: stop_on, skip_on: skip_on)
-      select_lowest(find_paths[:paths])
+      result   = pad.find_paths(from, stop_on: stop_on, skip_on: skip_on)[:paths]
+      min_size = result.min_by(&:size).size
+      result.select { _1.size <= min_size }
     end
   end
 
-  def self.solve_new(code, pad, ci: 0, result: { -1 => [ [''].to_set ] })
-    cur_key = ci == 0 ? 'A' : code[ci - 1]
-    key     = code[ci]
-
-    result[ci] = solve_move(pad, from: cur_key, to: key)
-
-    if ci == code.size - 1
-      lists = (0..code.size - 1).map { result[_1].to_a }
-
-      return lists[0].product(*lists[1..-1]).map(&:flatten)
-    end
-    return solve_new(code, pad, ci: ci + 1, result: result)
-  end
-
-  def self.solve_move(pad, from:, to:)
+  def self.solve_key(pad, from:, to:)
     cache(pad, from, to) do
-      cur_key = from
-      key     = to
-
+      cur_key    = from
+      key        = to
       find_paths = quick_paths(pad, pad.key(cur_key), pad.key(key))
+      result     = []
 
-      result = Set.new
-      find_paths.each do |shortest_path|
+      find_paths.each_with_object([]) do |shortest_path, result|
         new_path = []
         if shortest_path.size > 1
           new_path += shortest_path.dirs.map { DIRS_STRING_OPPOSITE[_1] }
         end
-        new_path << 'A'
 
+        new_path << 'A'
         result << new_path
       end
+    end
+  end
 
-      result
+  def self.solve_length(value, rounds = 2, depth = 0)
+    cache(value, rounds, depth) do
+      length = 0
+      pad    = depth == 0 ? pad1 : pad2
+      value.each_with_index do |char, ci|
+        key_last = ci == 0 ? 'A' : value[ci - 1]
+        key_curr = value[ci]
+        moves    = solve_key(pad, from: key_last, to: key_curr)
+
+        if depth == rounds
+          length += moves[0].size
+        else
+          length += moves.map { solve_length(_1, rounds, depth + 1) }.min
+        end
+      end
+      length
     end
   end
 
@@ -126,48 +105,7 @@ pad 2
 
     result = 0
     codes.each do |code|
-      puts "---"
-      puts code.join
-
-      # list = solve_new(code, pad1)
-      # pp list
-
-      # puts "done #{list.size}"
-      # (part2 ? 25 : 2).times do |round|
-      #   puts "round #{round}"
-
-      #   new_list = []
-      #   code_variants(list) do |code_p1|
-      #     puts new_list.size if new_list.size % 1000 == 0
-      #     new_list += solve_new(code_p1, pad2)
-      #   end
-      #   list = new_list
-      #   puts "done #{list.size}"
-      # end
-
-      # # exit
-
-      # # pp list.map { _1.map(&:join) }.combination(4).to_a
-
-      # # exit
-
-      list = solve_new(code, pad1)
-      (part2 ? 25 : 2).times do |round|
-        puts "round #{round}"
-
-        new_list = Set.new
-        list.each_with_index do |code_p1, cpi|
-          print "."
-          new_list += solve_new(code_p1, pad2)
-        end
-        list = select_lowest(new_list)
-        puts "done #{list.size}"
-      end
-      puts
-
-      shortest = list.min_by(&:size).size
-
-      pp [shortest, code.join.numbers.first]
+      shortest = solve_length(code, part2 ? 25 : 2)
       result += shortest * code.join.numbers.first
     end
 
@@ -179,16 +117,12 @@ pad 2
   end
 end
 
-puts Day21.part1
-# puts Day21.part2
-return
-
 RSpec.describe "Day21" do
   it "does part 1" do
     expect(Day21.part1).to eq(138764) # 151012
   end
 
   it "does part 2" do
-    expect(Day21.part2).to eq(100)
+    expect(Day21.part2).to eq(169137886514152)
   end
 end
