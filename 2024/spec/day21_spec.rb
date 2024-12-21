@@ -3,12 +3,12 @@ class Day21 < Helper
     # 7 8 9
     # 4 5 6
     # 1 2 3
-    # . 0 A
+    # # 0 A
     @pad1 ||= "789\n456\n123\n#0A".to_map
   end
 
   def self.pad2
-    # . ^ A
+    # # ^ A
     # < v >
     @pad2 ||= "#^A\n<v>".to_map
   end
