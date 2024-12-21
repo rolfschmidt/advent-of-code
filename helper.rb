@@ -421,7 +421,7 @@ Returns:
   end
 
   def dirs
-    path = self.map(&:to_vec) if self.first.is_a?(String)
+    path   = self.first.is_a?(String) ? self.map(&:to_vec) : self
     result = []
     (0..path.size - 2).each do |ai|
       va = path[ai]
@@ -898,6 +898,49 @@ Returns:
     end
 
     return result
+  end
+
+  def manhattan_paths(start, stop, block_char: '#')
+    result   = []
+    path     = []
+    cur_pos  = start.clone
+    (cur_pos.x..stop.x).each do |xi|
+      check_pos = Vector.new(xi, cur_pos.y)
+      break if self[check_pos].blank? || self[check_pos] == block_char
+      path |= [check_pos]
+      cur_pos.x = xi
+    end
+    (cur_pos.y..stop.y).each do |yi|
+      check_pos = Vector.new(cur_pos.x, yi)
+      break if self[check_pos].blank? || self[check_pos] == block_char
+      path |= [check_pos]
+      cur_pos.y = yi
+    end
+
+    if cur_pos == stop
+      result << path
+    end
+
+    path     = []
+    cur_pos  = start.clone
+    (cur_pos.y..stop.y).each do |yi|
+      check_pos = Vector.new(cur_pos.x, yi)
+      break if self[check_pos].blank? || self[check_pos] == block_char
+      path |= [check_pos]
+      cur_pos.y = yi
+    end
+    (cur_pos.x..stop.x).each do |xi|
+      check_pos = Vector.new(xi, cur_pos.y)
+      break if self[check_pos].blank? || self[check_pos] == block_char
+      path |= [check_pos]
+      cur_pos.x = xi
+    end
+
+    if cur_pos == stop
+      result << path
+    end
+
+    result
   end
 
 =begin

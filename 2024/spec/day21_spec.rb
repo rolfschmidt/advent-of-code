@@ -48,13 +48,7 @@ pad 2
 
   def self.quick_paths(pad, from, to)
     cache(pad, from, to) do
-      stop_on = -> (map: , start: , path: , data: ) do
-        start == to
-      end
-
-      result   = pad.find_paths(from, stop_on: stop_on)[:paths]
-      min_size = result.min_by(&:size).size
-      result.select { _1.size <= min_size }
+      pad.manhattan_paths(from, to)
     end
   end
 
