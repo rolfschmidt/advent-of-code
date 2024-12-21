@@ -93,13 +93,10 @@ pad 2
   def self.part1(part2 = false)
     codes = file.lines.map(&:chars)
 
-    result = 0
-    codes.each do |code|
+    codes.sum do |code|
       shortest = solve_length(code, part2 ? 25 : 2)
-      result += shortest * code.join.numbers.first
+      shortest * code.join.numbers.first
     end
-
-    result
   end
 
   def self.part2
