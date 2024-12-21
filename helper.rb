@@ -918,7 +918,7 @@ Returns:
     end
 
     if cur_pos == stop
-      result << path
+      result |= [path]
     end
 
     path     = []
@@ -937,7 +937,7 @@ Returns:
     end
 
     if cur_pos == stop
-      result << path
+      result |= [path]
     end
 
     result
