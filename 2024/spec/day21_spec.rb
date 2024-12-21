@@ -1,49 +1,16 @@
 class Day21 < Helper
-
-=begin
-
-pad 1
-
-7 8 9
-4 5 6
-1 2 3
-. 0 A
-
-=end
-
   def self.pad1
-    @pad1 ||= {
-      Vector.new(0, 0) => '7',
-      Vector.new(1, 0) => '8',
-      Vector.new(2, 0) => '9',
-      Vector.new(0, 1) => '4',
-      Vector.new(1, 1) => '5',
-      Vector.new(2, 1) => '6',
-      Vector.new(0, 2) => '1',
-      Vector.new(1, 2) => '2',
-      Vector.new(2, 2) => '3',
-      Vector.new(1, 3) => '0',
-      Vector.new(2, 3) => 'A',
-    }
+    # 7 8 9
+    # 4 5 6
+    # 1 2 3
+    # . 0 A
+    @pad1 ||= "789\n456\n123\n#0A".to_map
   end
 
-=begin
-
-pad 2
-
-. ^ A
-< v >
-
-=end
-
   def self.pad2
-    @pad2 ||= {
-      Vector.new(1, 0) => '^',
-      Vector.new(2, 0) => 'A',
-      Vector.new(0, 1) => '<',
-      Vector.new(1, 1) => 'v',
-      Vector.new(2, 1) => '>',
-    }
+    # . ^ A
+    # < v >
+    @pad2 ||= "#^A\n<v>".to_map
   end
 
   def self.solve_key(pad, from:, to:)
