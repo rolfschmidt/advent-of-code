@@ -420,6 +420,18 @@ Returns:
     result
   end
 
+  def dirs
+    path = self.map(&:to_vec) if self.first.is_a?(String)
+    result = []
+    (0..path.size - 2).each do |ai|
+      va = path[ai]
+      vb = path[ai + 1]
+
+      result << vb - va
+    end
+    result
+  end
+
 =begin
 
   [
@@ -926,7 +938,7 @@ Returns:
 
 =end
 
-  def shortest_path(start, stop, skip_on: nil, stop_on: nil, data: {})
+  def shortest_path(start, stop, directions: DIRS_PLUS, skip_on: nil, stop_on: nil, data: {})
     shortest      = nil
     shortest_path = nil
     shortest_seen = nil
@@ -969,7 +981,7 @@ Returns:
         end
       end
 
-      steps(queue_pos, with_dir: true).each do |pos, dir|
+      steps(queue_pos, directions, with_dir: true).each do |pos, dir|
         next if seen.include?(pos.to_s)
 
         pos_path = path.clone
@@ -1806,6 +1818,13 @@ DIRS_STRING = {
   '>' => DIR_RIGHT,
   'v' => DIR_DOWN,
   '<' => DIR_LEFT,
+}
+
+DIRS_STRING_OPPOSITE = {
+  DIR_UP => '^',
+  DIR_RIGHT => '>',
+  DIR_DOWN => 'v',
+  DIR_LEFT => '<',
 }
 
 DIRS_PLUS = [
