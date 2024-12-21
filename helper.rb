@@ -1055,7 +1055,7 @@ Returns:
     }
   end
 
-  def find_paths_deep(start, path: [], directions: DIRS_PLUS, wrap: false, stop_on:, skip_on:, data: {})
+  def find_paths_deep(start, path: [], directions: DIRS_PLUS, wrap: false, stop_on:, skip_on: nil, data: {})
     result = []
 
     path << start.to_s if path.blank?
@@ -1071,7 +1071,7 @@ Returns:
       next if pos_path.include?(pos.to_s)
       pos_path << pos.to_s
 
-      next if skip_on.call(map: self, from: start, pos: pos, dir: dir, path: pos_path, data: pos_data).present?
+      next if skip_on && skip_on.call(map: self, from: start, pos: pos, dir: dir, path: pos_path, data: pos_data).present?
 
       result += self.find_paths_deep(pos, path: pos_path, stop_on: stop_on, skip_on: skip_on, data: pos_data)
     end

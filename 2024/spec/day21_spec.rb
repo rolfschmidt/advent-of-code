@@ -52,11 +52,7 @@ pad 2
         start == to
       end
 
-      skip_on = -> (map: , from: , pos: , dir: , path: , data: ) do
-        false
-      end
-
-      result   = pad.find_paths(from, stop_on: stop_on, skip_on: skip_on)[:paths]
+      result   = pad.find_paths(from, stop_on: stop_on)[:paths]
       min_size = result.min_by(&:size).size
       result.select { _1.size <= min_size }
     end
