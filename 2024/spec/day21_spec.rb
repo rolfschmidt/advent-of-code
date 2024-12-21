@@ -46,17 +46,11 @@ pad 2
     }
   end
 
-  def self.quick_paths(pad, from, to)
-    cache(pad, from, to) do
-      pad.manhattan_paths(from, to)
-    end
-  end
-
   def self.solve_key(pad, from:, to:)
     cache(pad, from, to) do
       cur_key    = from
       key        = to
-      find_paths = quick_paths(pad, pad.key(cur_key), pad.key(key))
+      find_paths = pad.manhattan_paths(pad.key(cur_key), pad.key(key))
       result     = []
 
       find_paths.each_with_object([]) do |shortest_path, result|
