@@ -1826,9 +1826,7 @@ def cache(*args)
 end
 
 def reset_cache
-  $cache             = {}
-  $cache_counter_set = 0
-  $cache_counter_get = 0
+  $cache = {}
 end
 
 BigDecimal.limit(100)
