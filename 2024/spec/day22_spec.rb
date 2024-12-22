@@ -31,7 +31,6 @@ class Day22 < Helper
   def self.part2
     part1
 
-    result  = 0
     highest = {}
     @changes.each do |key, value|
       @changes[key] = value.map { _1.to_s[-1].to_i }.each_cons(2).map { [_1[1], _1[1] - _1[0]] }
