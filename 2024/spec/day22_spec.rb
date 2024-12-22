@@ -29,7 +29,7 @@ class Day22 < Helper
   end
 
   def self.part2
-    part1(file.numbers, 2000)
+    part1
 
     result  = 0
     highest = {}
