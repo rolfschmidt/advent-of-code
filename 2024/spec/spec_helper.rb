@@ -25,4 +25,11 @@ RSpec.configure do |config|
     duration = end_time - start_time
     puts "in #{'%.3f' % duration.to_f}s:"
   end
+
+  config.after(:all) do |example|
+    puts
+    cache_in = $cache_counter_set.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1.")
+    cache_out = $cache_counter_get.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1.")
+    puts "Cache used in: #{cache_in}, out: #{cache_out}"
+  end
 end

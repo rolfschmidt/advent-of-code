@@ -1812,15 +1812,23 @@ def ddup(obj)
 end
 
 $cache = {}
+$cache_counter_set = 0
+$cache_counter_get = 0
 def cache(*args)
   key = caller(1, 1).first + args.map(&:to_s).to_s
-  return $cache[key] if $cache.key?(key)
+  if $cache.key?(key)
+    $cache_counter_get += 1
+    return $cache[key]
+  end
 
+  $cache_counter_set += 1
   $cache[key] ||= yield
 end
 
 def reset_cache
-  $cache = {}
+  $cache             = {}
+  $cache_counter_set = 0
+  $cache_counter_get = 0
 end
 
 BigDecimal.limit(100)
