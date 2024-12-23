@@ -27,7 +27,6 @@ class Day23 < Helper
           break if part2
         end
       end
-
     end
 
     return sets.max_by(&:size).sort.join(',') if part2
