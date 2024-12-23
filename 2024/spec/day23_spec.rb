@@ -23,11 +23,11 @@ class Day23 < Helper
           next if list.combination(2).any? { connections[_1].exclude?(_2) }
 
           sets << list.to_set
+          range = (counter + 1..15) if part2
           break if part2
         end
       end
 
-      range = (sets.max_by(&:size).size..15) if part2
     end
 
     return sets.max_by(&:size).sort.join(',') if part2
