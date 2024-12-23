@@ -14,7 +14,7 @@ class Day23 < Helper
       next if from[0] != 't'
 
       range.each do |counter|
-        combos = ([from] + to.to_a).combination(counter)
+        combos = [from, *to].combination(counter)
         break if combos.count.zero?
 
         combos.each do |list|
