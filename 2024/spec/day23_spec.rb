@@ -1,6 +1,6 @@
 class Day23 < Helper
   def self.part1(part2 = false)
-    range       = part2 ? (10..15) : (3..3)
+    range       = part2 ? (3..15) : (3..3)
     connections = {}
     file.lines.map { _1.split('-') }.each do |a, b|
       connections[a] ||= Set.new
@@ -11,7 +11,7 @@ class Day23 < Helper
 
     sets = Set.new
     connections.each do |from, to|
-      next if from[0] != 't' && !part2
+      next if !part2 && from[0] != 't'
 
       all = [from, *to]
       range.each do |counter|
@@ -19,12 +19,14 @@ class Day23 < Helper
         break if combos.blank?
 
         combos.each do |list|
-          next if list.none? { _1[0] == 't' } && !part2
+          next if !part2 && list.none? { _1[0] == 't' }
           next if list.combination(2).any? { connections[_1].exclude?(_2) }
 
           sets << list.to_set
         end
       end
+
+      range = (sets.max_by(&:size).size..15) if part2
     end
 
     return sets.max_by(&:size).sort.join(',') if part2
