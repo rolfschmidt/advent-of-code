@@ -27,9 +27,13 @@ RSpec.configure do |config|
   end
 
   config.after(:all) do |example|
-    puts
-    cache_in = $cache_counter_set.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1.")
-    cache_out = $cache_counter_get.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1.")
-    puts "Cache used in: #{cache_in}, out: #{cache_out}"
+    if $cache_counter_set.positive? && $cache_counter_get.positive?
+      puts
+      cache_in = $cache_counter_set.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1.")
+      cache_out = $cache_counter_get.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1.")
+      puts "Cache used in: #{cache_in}, out: #{cache_out}"
+      $cache_counter_set = 0
+      $cache_counter_get = 0
+    end
   end
 end

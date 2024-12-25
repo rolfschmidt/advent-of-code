@@ -1515,6 +1515,8 @@ class Helper
       File.write(path, get_day(url_ext: '/input'))
     end
 
+    @@test = false
+
     File.read(path)
   end
 
