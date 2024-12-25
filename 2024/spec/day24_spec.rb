@@ -3,13 +3,13 @@ class Day24 < Helper
     register.select {|key, value| key =~ /^#{show_key}\d+$/ }.to_a.sort.reverse.map { _2 }.join
   end
 
-  def self.run_commands(commands, register)
-    register = register.deep_dup
+  def self.run_commands
+    register = @register.deep_dup
     seen     = {}
     found    = true
     while found do
       found = false
-      commands.each do |cmd|
+      @commands.each do |cmd|
         aa, op, bb, rr = cmd
 
         aa = register[aa]
@@ -111,7 +111,7 @@ class Day24 < Helper
     @register = register.map(&:words).to_h { [_1, _2.to_i] }
     @commands = commands.map(&:words)
 
-    register_first = run_commands(@commands, @register)
+    register_first = run_commands
     return show_bin(register_first, 'z').to_i(2) if !part2
 
     @current_z  = show_bin(register_first, 'z')
