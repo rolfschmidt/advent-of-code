@@ -14,9 +14,7 @@ class Day25 < Helper
           match = false
         end
 
-        next 0 if !match
-
-        1
+        match ? 1 : 0
       end
     end
   end
