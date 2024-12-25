@@ -12,6 +12,7 @@ class Day25 < Helper
           next if key_map[key] == '.'
 
           match = false
+          break
         end
 
         match ? 1 : 0
