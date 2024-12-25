@@ -6,16 +6,13 @@ class Day25 < Helper
 
     keys.sum do |key_map|
       locks.sum do |lock_map|
-        match = true
-        lock_map.each do |key, value|
+        next 0 if lock_map.any? do |key, value|
           next if value != '#'
           next if key_map[key] == '.'
-
-          match = false
-          break
+          true
         end
 
-        match ? 1 : 0
+        1
       end
     end
   end
