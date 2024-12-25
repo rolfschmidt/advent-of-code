@@ -56,11 +56,11 @@ class Day24 < Helper
     end
 
     cmd4 = commands.find do |cmd|
-      next true if (cmd[0..2].any? {|v| v == cmd1[3] } && cmd[1] == 'AND')
+      (cmd[0..2].any? {|v| v == cmd1[3] } && cmd[1] == 'AND')
     end
 
     cmd5 = commands.find do |cmd|
-      next true if (cmd[0..2].any? {|v| v == cmd2[3] } && cmd[1] == 'OR')
+      (cmd[0..2].any? {|v| v == cmd2[3] } && cmd[1] == 'OR')
     end
 
     return [cmd1, cmd2, cmd3, cmd4, cmd5]
