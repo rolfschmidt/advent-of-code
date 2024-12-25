@@ -45,10 +45,14 @@ class Day24 < Helper
     yid = "y%02d" % ci
     zid = "z%02d" % ci
 
-    cmd1 = commands.find { [xid, yid].include?(_1[0]) && _1[1] == 'XOR' && [xid, yid].include?(_1[2]) }
+    cmd1 = commands.find do |cmd|
+      [xid, yid].include?(cmd[0]) && cmd[1] == 'XOR' && [xid, yid].include?(cmd[2])
+    end
     return if cmd1.blank?
 
-    cmd2 = commands.find { [xid, yid].include?(_1[0]) && _1[1] == 'AND' && [xid, yid].include?(_1[2]) }
+    cmd2 = commands.find do |cmd|
+      [xid, yid].include?(cmd[0]) && cmd[1] == 'AND' && [xid, yid].include?(cmd[2])
+    end
 
     cmd3 = commands.select do |cmd|
       next true if (cmd[0..2].any? {|v| v == cmd1[3] } && cmd[1] == 'XOR')
