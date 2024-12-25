@@ -68,7 +68,7 @@ class Day24 < Helper
   end
 
   def self.find_circuit_fails(commands)
-    (0..@zindex - 1).each_with_object([]) do |ci, result|
+    (0..@zindex - 1).each_with_object(Set.new) do |ci, result|
       xid = "x%02d" % ci
       yid = "y%02d" % ci
       zid = "z%02d" % ci
@@ -94,11 +94,7 @@ class Day24 < Helper
 
         result << commands[ai][3]
         result << commands[bi][3]
-
-        commands[ai][3], commands[bi][3] = commands[bi][3], commands[ai][3]
-        redo
       end
-
       if ci != 0 && cmd4.nil?
         result << cmd1[3]
       end
