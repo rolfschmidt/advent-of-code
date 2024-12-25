@@ -40,36 +40,6 @@ class Day24 < Helper
   # BUT I built my own logic to solve it in ruby since 99% of people solved it by hand
   # and I would never solve a puzzle by hand.
   # https://www.build-electronic-circuits.com/full-adder/
-  def self.find_circuit(ci)
-    xid = "x%02d" % ci
-    yid = "y%02d" % ci
-    zid = "z%02d" % ci
-
-    cmd1 = @commands.find do |cmd|
-      [xid, yid].include?(cmd[0]) && cmd[1] == 'XOR' && [xid, yid].include?(cmd[2])
-    end
-    return if cmd1.blank?
-
-    cmd2 = @commands.find do |cmd|
-      [xid, yid].include?(cmd[0]) && cmd[1] == 'AND' && [xid, yid].include?(cmd[2])
-    end
-
-    cmd3 = @commands.select do |cmd|
-      next true if (cmd[0..2].any? {|v| v == cmd1[3] } && cmd[1] == 'XOR')
-      next true if cmd[3] == zid
-    end
-
-    cmd4 = @commands.find do |cmd|
-      (cmd[0..2].any? {|v| v == cmd1[3] } && cmd[1] == 'AND')
-    end
-
-    cmd5 = @commands.find do |cmd|
-      (cmd[0..2].any? {|v| v == cmd2[3] } && cmd[1] == 'OR')
-    end
-
-    return [cmd1, cmd2, cmd3, cmd4, cmd5]
-  end
-
   def self.find_circuit_fails
     (0..@zindex - 1).each_with_object(Set.new) do |ci, result|
       xid = "x%02d" % ci
@@ -87,8 +57,27 @@ class Day24 < Helper
       # -> condition contains cmd1 result + AND
       # cmd5. [nhk OR ftf pvb]
       # -> condition contains cmd2 result + OR
+      cmd1 = @commands.find do |cmd|
+        [xid, yid].include?(cmd[0]) && cmd[1] == 'XOR' && [xid, yid].include?(cmd[2])
+      end
+      return if cmd1.blank?
 
-      cmd1, cmd2, cmd3, cmd4, cmd5 = find_circuit(ci)
+      cmd2 = @commands.find do |cmd|
+        [xid, yid].include?(cmd[0]) && cmd[1] == 'AND' && [xid, yid].include?(cmd[2])
+      end
+
+      cmd3 = @commands.select do |cmd|
+        next true if (cmd[0..2].any? {|v| v == cmd1[3] } && cmd[1] == 'XOR')
+        next true if cmd[3] == zid
+      end
+
+      cmd4 = @commands.find do |cmd|
+        (cmd[0..2].any? {|v| v == cmd1[3] } && cmd[1] == 'AND')
+      end
+
+      cmd5 = @commands.find do |cmd|
+        (cmd[0..2].any? {|v| v == cmd2[3] } && cmd[1] == 'OR')
+      end
 
       if cmd3.count != 1
         ai = @commands.index(cmd3[0])
