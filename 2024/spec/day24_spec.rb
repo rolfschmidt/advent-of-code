@@ -35,6 +35,10 @@ class Day24 < Helper
     register
   end
 
+  # technically i gave up on part 2 since I did not now what a full adder is
+  # watched https://www.twitch.tv/videos/2335064966 to understand it.
+  # BUT I built my own logic to solve it in ruby since 99% of people solved it by hand
+  # and I would never solve a puzzle by hand.
   # https://www.build-electronic-circuits.com/full-adder/
   def self.find_circuit(commands, ci, deep: true)
     xid = "x%02d" % ci
