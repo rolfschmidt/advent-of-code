@@ -87,7 +87,6 @@ class Day24 < Helper
 
       cmd1, cmd2, cmd3, cmd4, cmd5 = find_circuit(commands, ci)
 
-      # if cmd3 result is not z** then swap where it matches
       if cmd3.count != 1
         ai = commands.index(cmd3[0])
         bi = commands.index(cmd3[1])
