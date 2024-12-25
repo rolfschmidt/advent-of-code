@@ -40,7 +40,7 @@ class Day24 < Helper
   # BUT I built my own logic to solve it in ruby since 99% of people solved it by hand
   # and I would never solve a puzzle by hand.
   # https://www.build-electronic-circuits.com/full-adder/
-  def self.find_circuit(ci, deep: true)
+  def self.find_circuit(ci)
     xid = "x%02d" % ci
     yid = "y%02d" % ci
     zid = "z%02d" % ci
