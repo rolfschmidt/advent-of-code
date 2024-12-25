@@ -79,11 +79,11 @@ class Day24 < Helper
       # cmd2. [y09 AND x09 nhk]
       # -> condition contains x[ID] and y[ID] + AND
       # cmd3. [gdm XOR jkm z09]
-      # -> condition contains cmd1 + XOR || cmd result is z[ID]
+      # -> condition contains cmd1 result + XOR || cmd result is z[ID]
       # cmd4. [gdm AND jkm ftf]
-      # -> condition contains cmd1 result
+      # -> condition contains cmd1 result + AND
       # cmd5. [nhk OR ftf pvb]
-      # -> condition contains cmd2 result
+      # -> condition contains cmd2 result + OR
 
       cmd1, cmd2, cmd3, cmd4, cmd5 = find_circuit(commands, ci)
 
