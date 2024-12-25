@@ -35,7 +35,7 @@ class Day24 < Helper
     register
   end
 
-  # technically I gave up on part 2 since I did not know what a full adder  is or that the input represents it.
+  # technically I gave up on part 2 since I did not know what a full adder is or that the input represents it.
   # I watched https://www.twitch.tv/videos/2335064966 to understand it.
   # BUT I built my own logic to solve it in ruby since 99% of people solved it by hand
   # and I would never solve a puzzle by hand.
