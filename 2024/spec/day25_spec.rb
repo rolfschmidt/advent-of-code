@@ -4,9 +4,8 @@ class Day25 < Helper
     keys    = schemas.select { _1[Vector.new(0,0)] == '#' }
     locks   = schemas.select { _1[Vector.new(_1.minx, _1.maxy)] == '#' }
 
-    result = 0
-    keys.each do |key_map|
-      locks.each do |lock_map|
+    keys.sum do |key_map|
+      locks.sum do |lock_map|
         match = true
         lock_map.each do |key, value|
           next if value != '#'
@@ -15,13 +14,11 @@ class Day25 < Helper
           match = false
         end
 
-        next if !match
+        next 0 if !match
 
-        result += 1
+        1
       end
     end
-
-    result
   end
 end
 
