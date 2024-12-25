@@ -60,7 +60,6 @@ class Day24 < Helper
     end
 
     cmd5 = commands.find do |cmd|
-      next true if ci == 0 && cmd == cmd2
       next true if (cmd[0..2].any? {|v| v == cmd2[3] } && cmd[1] == 'OR')
     end
 
@@ -94,11 +93,11 @@ class Day24 < Helper
         result << commands[ai][3]
         result << commands[bi][3]
       end
-      if ci != 0 && cmd4.nil?
-        result << cmd1[3]
-      end
-      if cmd5.nil?
-        result << cmd2[3]
+
+      # first circuit is a half-adder, so ignore
+      if ci != 0
+        result << cmd1[3] if cmd4.nil?
+        result << cmd2[3] if cmd5.nil?
       end
     end
   end
