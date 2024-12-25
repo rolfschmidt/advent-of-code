@@ -9,8 +9,8 @@ class Day14 < Helper
       map[Vector.new(x, y)] << { step: Vector.new(vx, vy) }
     end
 
-    stepx = input == file_test ? 11 : 101
-    stepy = input == file_test ? 7 : 103
+    stepx = input == test? ? 11 : 101
+    stepy = input == test? ? 7 : 103
 
     (part2 ? 1000000000 : 100).times do |rounds|
       duplicates = false

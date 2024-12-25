@@ -1312,19 +1312,23 @@ Returns:
   end
 
   def minx
-    cache(hash) { self.keys.min_by{|v| v[0] }.x }
+    @minx ||= {}
+    @minx[hash] ||= self.keys.min_by{|v| v[0] }.x
   end
 
   def maxx
-    cache(hash) { self.keys.max_by{|v| v[0] }.x }
+    @maxx ||= {}
+    @maxx[hash] ||= self.keys.max_by{|v| v[0] }.x
   end
 
   def miny
-    cache(hash) { self.keys.min_by{|v| v[1] }.y }
+    @miny ||= {}
+    @miny[hash] ||= self.keys.min_by{|v| v[1] }.y
   end
 
   def maxy
-    cache(hash) { self.keys.max_by{|v| v[1] }.y }
+    @maxy ||= {}
+    @maxy[hash] ||= self.keys.max_by{|v| v[1] }.y
   end
 
 =begin
