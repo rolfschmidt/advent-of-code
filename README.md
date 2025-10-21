@@ -1,6 +1,7 @@
 # Advent of Code
 
-<a href="http://www.adventofcode.com" target="_blank"> ![image](https://github.com/user-attachments/assets/3aeb954d-9dda-437d-90fa-e5abf4e9a68d) </a>
+<a href="http://www.adventofcode.com" target="_blank"><img width="700" alt="image" src="https://github.com/user-attachments/assets/8252cdba-9787-464e-aac3-ab422541abe9" /></a>
+
 
 |  Year  |  Progress   |  Language(s)  |
 |:------:|:-----------:|:-------------:|
