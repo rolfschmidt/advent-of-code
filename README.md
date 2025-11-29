@@ -17,4 +17,10 @@
 |  2016  |     0/25    | -             |
 |  2015  |    25/25    | Ruby          |
 
+## Bash alias
 
+Auto reload bash alias for aoc days:
+
+```
+alias aoc='f() { while inotifywait -q -e close_write /home/debian-rs/ws/advent-of-code/2025/spec/day"$1"_spec.rb; do rspec --format f spec/day"$1"_spec.rb; done; }; f'
+```
