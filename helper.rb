@@ -1817,6 +1817,24 @@ def ddup(obj)
   Marshal.load(Marshal.dump(obj))
 end
 
+=begin
+
+This function does cache the result by it's file code location.
+
+cache([nums, rounds]) do
+  nums.map { secret(_1, rounds: rounds) }.sum
+end
+
+cache(nums, rounds) do
+  nums.map { secret(_1, rounds: rounds) }.sum
+end
+
+Returns:
+
+123
+
+=end
+
 $cache = {}
 $cache_counter_set = 0
 $cache_counter_get = 0
