@@ -276,7 +276,7 @@ Returns:
 
 =begin
 
-  'abc123abc123'.sub(/.*\Kabc/, 'ABC')
+  'abc123abc123'.rsub(/abc/, 'ABC')
 
 Returns:
 
