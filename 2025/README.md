@@ -1,6 +1,6 @@
-# advent-of-code-2024
+# advent-of-code-2025
 
-Advent of Code 2024 in Ruby
+Advent of Code 2025 in Ruby
 
 # Run
 
@@ -8,7 +8,7 @@ Advent of Code 2024 in Ruby
 export AOC_SESSION="your browser session token"
 git clone https://github.com/rolfschmidt/advent-of-code.git
 cd advent-of-code
-cd 2024
+cd 2025
 sudo apt install libz3-dev
 bundle install
 rspec
