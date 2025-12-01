@@ -1,5 +1,5 @@
 class Day01 < Helper
-  def self.part1(part2 = false, result = 50)
+  def self.part1(part2: false, position: 50)
     lines = file.lines
     total = 0
     lines.each do |value|
@@ -7,16 +7,16 @@ class Day01 < Helper
       op_add = value.include?('R') ? :+ : :-
 
       if !part2
-        result = result.send(op_add, turn) % 100
+        position = position.send(op_add, turn) % 100
 
-        if result == 0
+        if position == 0
           total += 1
         end
       else
         turn.times do
-          result = result.send(op_add, 1) % 100
+          position = position.send(op_add, 1) % 100
 
-          if result == 0
+          if position == 0
             total += 1
           end
         end
@@ -27,7 +27,7 @@ class Day01 < Helper
   end
 
   def self.part2
-    part1(true)
+    part1(part2: true)
   end
 end
 
