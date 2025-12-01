@@ -1,7 +1,6 @@
 class Day01 < Helper
   def self.part1(part2: false, position: 50, total: 0)
-    lines = file.lines
-    lines.each do |value|
+    file.lines.each do |value|
       turn   = value[1..].to_i
       op_add = value.include?('R') ? :+ : :-
 
