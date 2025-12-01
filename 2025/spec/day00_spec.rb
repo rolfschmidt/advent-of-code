@@ -1,10 +1,10 @@
 class Day00 < Helper
-  def self.part1(part2 = false)
+  def self.part1(part2: false)
     100
   end
 
   def self.part2
-    part1(true)
+    part1(part2: true)
   end
 end
 
