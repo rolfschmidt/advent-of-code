@@ -1,6 +1,35 @@
 class Day01 < Helper
-  def self.part1(part2 = false)
-    100
+  def self.part1(part2 = false, result = 50)
+    lines = file.lines
+    total = 0
+    lines.each do |value|
+      turn   = value[1..].to_i
+      op_add = value.include?('R') ? :+ : :-
+
+      if !part2
+        result = result.send(op_add, turn) % 100
+
+        if result == 0
+          total += 1
+        end
+      else
+        turn.times do
+          result = result.send(op_add, 1)
+
+          if result > 99
+            result = 0
+          elsif result < 0
+            result = 99
+          end
+
+          if result == 0
+            total += 1
+          end
+        end
+      end
+    end
+
+    total
   end
 
   def self.part2
@@ -8,16 +37,12 @@ class Day01 < Helper
   end
 end
 
-puts Day01.part1
-# puts Day01.part2
-return
-
 RSpec.describe "Day01" do
   it "does part 1" do
-    expect(Day01.part1).to eq(100)
+    expect(Day01.part1).to eq(1011)
   end
 
-  it "does part 2" do
-    expect(Day01.part2).to eq(100)
+  it "does part 2" do # 13515 6011 6018
+    expect(Day01.part2).to eq(5937)
   end
 end
