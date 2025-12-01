@@ -1,22 +1,15 @@
 class Day01 < Helper
   def self.part1(part2: false, position: 50, total: 0)
     file.lines.each do |value|
-      step   = value[1..].to_i
-      op_add = value[0] == 'R' ? :+ : :-
+      op_add    = value[0] == 'R' ? :+ : :-
+      steps     = part2 ? value[1..].to_i : 1
+      step_size = part2 ? 1 : value[1..].to_i
 
-      if !part2
-        position = position.send(op_add, step) % 100
+      steps.times do
+        position = position.send(op_add, step_size) % 100
 
         if position == 0
           total += 1
-        end
-      else
-        step.times do
-          position = position.send(op_add, 1) % 100
-
-          if position == 0
-            total += 1
-          end
         end
       end
     end
