@@ -14,13 +14,7 @@ class Day01 < Helper
         end
       else
         turn.times do
-          result = result.send(op_add, 1)
-
-          if result > 99
-            result = 0
-          elsif result < 0
-            result = 99
-          end
+          result = result.send(op_add, 1) % 100
 
           if result == 0
             total += 1
