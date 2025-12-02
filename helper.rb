@@ -226,7 +226,6 @@ Returns:
       next unless n % len == 0
 
       seq = s[0, len]
-
       if s == seq * (n / len)
         result << s.to_i
         break if count && result.count == count
