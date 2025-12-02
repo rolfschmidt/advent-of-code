@@ -206,6 +206,38 @@ Returns:
 
 =begin
 
+This function returns the sequence if there is any.
+
+  "101010".sequences
+  "101010".sequences(count: 1) # stops after first match
+
+Returns:
+
+  ["10"]
+
+=end
+
+  def sequences(count: nil)
+    s      = self.to_s
+    n      = s.size
+    result = []
+
+    (1...n).each do |len|
+      next unless n % len == 0
+
+      seq = s[0, len]
+
+      if s == seq * (n / len)
+        result << s.to_i
+        break if count && result.count == count
+      end
+    end
+
+    result
+  end
+
+=begin
+
   "ABCD".is_upper?
 
 Returns:
@@ -291,6 +323,36 @@ Returns:
 end
 
 class Array
+
+=begin
+
+This function checks if all the elements are the same.
+
+  [1, 1, 1, 1].same?
+
+Returns:
+
+  true
+
+=end
+
+  def same?
+    self.uniq.size <= 1
+  end
+
+=begin
+
+  [3, 5].to_range
+
+Returns:
+
+  Range(3..5)
+
+=end
+
+  def to_range
+    (self[0]..self[1])
+  end
 
 =begin
 
