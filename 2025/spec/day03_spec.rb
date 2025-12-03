@@ -1,36 +1,13 @@
 class Day03 < Helper
-  def self.find_number(nums, max)
-    result = ''
-    li = 0
-    while result.size < max do
-      fi = nil
-      fv = 0
-      (li..(nums.size - (max - result.size))).each do |ci|
-        if fv < nums[ci]
-          fi = ci
-          fv = nums[ci]
-        end
-      end
-
-      result += fv.to_s
-      li = fi + 1
-    end
-    result.to_i
-  end
-
   def self.part1(part2: false)
     file.lines.sum do |line|
-      nums = line.chars.map(&:to_i)
-
-      find_number(nums, 2)
+      line.chars.map(&:to_i).highest_number(2).join.to_i
     end
   end
 
   def self.part2
     file.lines.sum do |line|
-      nums = line.chars.map(&:to_i)
-
-      find_number(nums, 12)
+      nums = line.chars.map(&:to_i).highest_number(12).join.to_i
     end
   end
 end

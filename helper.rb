@@ -355,6 +355,37 @@ Returns:
 
 =begin
 
+  Find the highest number of a specific size in the list.
+
+  [9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1].highest_number(12)
+
+Returns:
+
+  [9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1]
+
+=end
+
+  def highest_number(max)
+    result = []
+    li = 0
+    while result.size < max do
+      fi = nil
+      fv = 0
+      (li..(self.size - (max - result.size))).each do |ci|
+        if fv < self[ci]
+          fi = ci
+          fv = self[ci]
+        end
+      end
+
+      result << fv
+      li = fi + 1
+    end
+    result
+  end
+
+=begin
+
   Support for quick array to hash method
 
   [1,2,3].to_h(true)
