@@ -365,13 +365,13 @@ Returns:
 
 =end
 
-  def highest_number(max)
+  def highest_number(size)
     result = []
     li = 0
-    while result.size < max do
+    while result.size < size do
       fi = nil
       fv = 0
-      (li..(self.size - (max - result.size))).each do |ci|
+      (li..(self.size - (size - result.size))).each do |ci|
         if fv < self[ci]
           fi = ci
           fv = self[ci]
