@@ -370,7 +370,6 @@ Returns:
     li = 0
     while result.size < size do
       fi = nil
-      fv = 0
       (li..(self.size - (size - result.size))).each do |ci|
         if fi.nil? || self[fi] < self[ci]
           fi = ci
