@@ -1,11 +1,11 @@
 class Day03 < Helper
   def self.find_number(nums, max = 2)
     result = ''
-    last_index = 0
+    li = 0
     while result.size < max do
       fi = nil
       fv = 0
-      (last_index..(nums.size - (max - result.size))).each do |ci|
+      (li..(nums.size - (max - result.size))).each do |ci|
         if fv < nums[ci]
           fi = ci
           fv = nums[ci]
@@ -13,7 +13,7 @@ class Day03 < Helper
       end
 
       result += fv.to_s
-      last_index = fi + 1
+      li = fi + 1
     end
     result.to_i
   end
