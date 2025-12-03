@@ -372,13 +372,12 @@ Returns:
       fi = nil
       fv = 0
       (li..(self.size - (size - result.size))).each do |ci|
-        if fv < self[ci]
+        if fi.nil? || self[fi] < self[ci]
           fi = ci
-          fv = self[ci]
         end
       end
 
-      result << fv
+      result << self[fi]
       li = fi + 1
     end
     result
