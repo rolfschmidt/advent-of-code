@@ -1,5 +1,4 @@
 class Day03 < Helper
-
   def self.find_number(nums, max = 2)
     result = ''
     last_index = 0
