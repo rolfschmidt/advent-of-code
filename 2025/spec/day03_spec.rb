@@ -1,5 +1,5 @@
 class Day03 < Helper
-  def self.find_number(nums, max = 2)
+  def self.find_number(nums, max)
     result = ''
     li = 0
     while result.size < max do
