@@ -1672,6 +1672,23 @@ class Helper
     @left ||= DIR_LEFT
   end
 
+=begin
+
+  Provides a loop which only keeps running when you keep it stable.
+
+  x = 0
+  while_stable do
+    x += 1
+
+    stable if x < 5
+  end
+
+Returns:
+
+  x = 5
+
+=end
+
   def self.while_stable(name = 'main')
     @while_stable ||= {}
     @while_stable[name] = true
