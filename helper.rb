@@ -734,7 +734,8 @@ class Hash
 
 =begin
 
-  Hash.init_grid(2)
+  Hash.init_map(2)
+  Hash.init_map(2, 2, '.')
 
 Returns:
 
