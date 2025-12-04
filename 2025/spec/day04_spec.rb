@@ -2,7 +2,7 @@ class Day04 < Helper
   def self.part1
     map    = file.to_map
     result = 0
-    until_stable do
+    while_stable do
       map.select_value('@').keys.each do |pos|
         neighbours = DIRS_ALL.count do |dir|
           map[pos + dir] == '@'
