@@ -1592,7 +1592,9 @@ class Helper
 
       def part2(*args)
         @part2 = true
-        part2_original(*args)
+        part2_original(*args).tap do
+          @part2 = false
+        end
       end
     end
 
