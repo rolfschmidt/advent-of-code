@@ -1,5 +1,5 @@
 class Day03 < Helper
-  def self.part1(part2: false)
+  def self.part1
     file.lines.sum do |line|
       line.chars.map(&:to_i).highest_number(2).join.to_i
     end

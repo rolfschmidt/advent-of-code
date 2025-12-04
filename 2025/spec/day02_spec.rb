@@ -1,5 +1,5 @@
 class Day02 < Helper
-  def self.part1(part2: false)
+  def self.part1
     file.split(',').map(&:strip).sum do |value|
       value.split('-').map(&:to_i).to_range.select do |num|
         num.to_s.halve.same?

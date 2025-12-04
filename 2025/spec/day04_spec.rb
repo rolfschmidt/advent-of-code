@@ -1,5 +1,5 @@
 class Day04 < Helper
-  def self.part1(part2: false)
+  def self.part1
     map    = file.to_map
     result = 0
     until_stable do
@@ -12,7 +12,7 @@ class Day04 < Helper
 
         result += 1
         map.delete(pos)
-        stable if part2
+        stable if part2?
       end
     end
 
@@ -20,7 +20,7 @@ class Day04 < Helper
   end
 
   def self.part2
-    part1(part2: true)
+    part1
   end
 end
 

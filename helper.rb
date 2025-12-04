@@ -1581,6 +1581,28 @@ class Range
 end
 
 class Helper
+  def self.singleton_method_added(method_name)
+    super
+    return unless method_name == :part2 && !@wrapping
+
+    @wrapping  = true
+    eigenclass = class << self; self; end
+    eigenclass.class_eval do
+      alias_method :part2_original, :part2
+
+      def part2(*args)
+        @part2 = true
+        part2_original(*args)
+      end
+    end
+
+    @wrapping = false
+  end
+
+  def self.part2?
+    @part2
+  end
+
   def self.get_day(url_ext: '')
     raise 'No session token set: export AOC_SESSION="..."' if ENV['AOC_SESSION'].blank?
 
