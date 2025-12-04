@@ -19,7 +19,7 @@
 
 ## Bash alias
 
-Auto reload bash alias for aoc days:
+Helpful aliases for advent of code handling:
 
 ```
 npm install -g nodemon
