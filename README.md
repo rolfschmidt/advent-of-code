@@ -25,4 +25,5 @@ Auto reload bash alias for aoc days:
 npm install -g nodemon
 
 alias aoc='f() { nodemon -q -e rb -w /home/debian-rs/ws/advent-of-code -x "bundle exec rspec --fail-fast spec/day${1}_spec.rb"; }; f'
+alias aoc-new='f() { local F="spec/day${1}_spec.rb"; cp "spec/day00_spec.rb" "${F}"; touch "spec/day${1}_test.txt"; sed -i "s/Day00/Day${1}/g" "${F}"; }; f'
 ```
