@@ -1647,6 +1647,25 @@ class Helper
   def self.left
     @left ||= DIR_LEFT
   end
+
+  def self.until_stable(name = 'main')
+    @until_stable ||= {}
+    @until_stable[name] = true
+    while @until_stable[name] do
+      @until_stable[name] = false
+      yield
+    end
+  end
+
+  def self.unstable(name = 'main')
+    @until_stable ||= {}
+    @until_stable[name] = false
+  end
+
+  def self.stable(name = 'main')
+    @until_stable ||= {}
+    @until_stable[name] = true
+  end
 end
 
 class Struct

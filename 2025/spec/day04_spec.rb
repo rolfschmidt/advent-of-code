@@ -2,9 +2,7 @@ class Day04 < Helper
   def self.part1(part2: false)
     map     = file.to_map
     result  = 0
-    removed = true
-    while removed do
-      removed = false
+    until_stable do
       map.select_value('@').keys.each do |pos|
         neighbours = DIRS_ALL.count do |dir|
           map[pos + dir] == '@'
@@ -14,7 +12,7 @@ class Day04 < Helper
 
         result += 1
         map.delete(pos)
-        removed = true if part2
+        stable if part2
       end
     end
 
