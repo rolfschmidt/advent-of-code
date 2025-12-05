@@ -9,7 +9,7 @@ class Day05 < Helper
   def self.part2
     ranges, data = file.blocks.map(&:lines)
 
-    ranges.map { _1.dash_pair }.uniq_ranges.map(&:count).sum
+    ranges.map(&:dash_pair).uniq_ranges.map(&:count).sum
   end
 end
 
