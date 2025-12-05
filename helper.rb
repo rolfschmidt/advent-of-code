@@ -157,6 +157,24 @@ Returns:
 
 =begin
 
+  "3-3".dash_pair
+  "A-A".dash_pair
+
+Returns:
+
+  [3, 3]
+  ['A', 'A']
+
+=end
+
+  def dash_pair
+    result = self.split('-')
+    result = result.map(&:to_i) if result.all?(&:is_number?)
+    result
+  end
+
+=begin
+
   "###\n#.#\n###".to_2d
 
 Returns:

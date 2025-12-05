@@ -1,7 +1,7 @@
 class Day02 < Helper
   def self.part1
     file.split(',').map(&:strip).sum do |value|
-      value.split('-').map(&:to_i).to_range.select do |num|
+      value.dash_pair.to_range.select do |num|
         num.to_s.halve.same?
       end.sum
     end
@@ -9,7 +9,7 @@ class Day02 < Helper
 
   def self.part2
     file.split(',').map(&:strip).sum do |value|
-      value.split('-').map(&:to_i).to_range.map(&:to_s).select do |chain|
+      value.dash_pair.to_range.map(&:to_s).select do |chain|
         chain.sequences(count: 1).present?
       end.map(&:to_i).sum
     end

@@ -1,7 +1,7 @@
 class Day05 < Helper
   def self.part1
     ranges, data = file.blocks.map(&:lines)
-    ranges = ranges.map { _1.split('-').map(&:to_i).to_range }
+    ranges = ranges.map { _1.dash_pair.to_range }
 
     data.count do |number|
       ranges.any? { _1.include?(number.to_i) }
@@ -11,7 +11,7 @@ class Day05 < Helper
   def self.part2
     ranges, data = file.blocks.map(&:lines)
 
-    ranges.map { _1.split('-').map(&:to_i).to_range }.uniq_ranges.map(&:count).sum
+    ranges.map { _1.dash_pair.to_range }.uniq_ranges.map(&:count).sum
   end
 end
 
