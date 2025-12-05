@@ -3,9 +3,7 @@ class Day05 < Helper
     ranges, data = file.blocks.map(&:lines)
     ranges = ranges.map { _1.dash_pair.to_range }
 
-    data.count do |number|
-      ranges.any? { _1.include?(number.to_i) }
-    end
+    data.count { ranges.include_ranges?(_1) }
   end
 
   def self.part2

@@ -99,6 +99,20 @@ class String
 
 =begin
 
+  '5'.to_range
+
+Returns:
+
+  Range(5..5)
+
+=end
+
+  def to_range
+    self.to_i.to_range
+  end
+
+=begin
+
   Modified count function. If one char it counts the char, if string it counts the string.
 
   "aaa".count('a')
@@ -578,6 +592,28 @@ Returns:
 
   def ensure_ranges
     self.map{|v| v.is_a?(Range) ? v : v.to_range }
+  end
+
+=begin
+
+  This function checks if a number or a range is in the list of ranges.
+
+  [(3..5), (6..8)].include_ranges?(5)
+  [(3..5), (6..8)].include_ranges?(5..5)
+  [(3..5), (6..8)].include_ranges?([(5..5)])
+
+Returns:
+
+  true
+
+=end
+
+  def include_ranges?(values)
+    Array.wrap(values).all? do |value|
+      value = value.to_range if value.respond_to?(:to_range)
+
+      self.any? { _1.include?(value.min) && _1.include?(value.max) }
+    end
   end
 
 =begin
