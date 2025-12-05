@@ -564,7 +564,11 @@ Returns:
 
 =begin
 
-  [5].add_range([6,7,8])
+  This function adds a range to an existing list of ranges.
+
+  [5].add_ranges(6)
+  [5].add_ranges((6..6))
+  [5].add_ranges([6,7,8])
 
 Returns:
 
@@ -572,20 +576,22 @@ Returns:
 
 =end
 
-  def add_range(values)
-    self.map do |r|
-      r = r.to_range if r.respond_to?(:to_range)
-      Array.wrap(values).each do |value|
-        value = value.to_range if value.respond_to?(:to_range)
-        r += value
-      end
-      r
-    end.flatten.compact.rangify.ensure_ranges
+  def add_ranges(values)
+    Array.wrap(values).each do |value|
+      value = value.to_range if value.respond_to?(:to_range)
+      self << value
+    end
+
+    self.flatten.compact.rangify.ensure_ranges
   end
 
 =begin
 
-  [Range(5..8)].sub_range([6,7,8])
+  This function removes range from a list of ranges.
+
+  [Range(5..8)].sub_ranges(6)
+  [Range(5..8)].sub_ranges((6..6))
+  [Range(5..8)].sub_ranges([6,7,8])
 
 Returns:
 
@@ -593,7 +599,7 @@ Returns:
 
 =end
 
-  def sub_range(values)
+  def sub_ranges(values)
     self.map do |r|
       r = r.to_range if r.respond_to?(:to_range)
       Array.wrap(values).each do |value|
@@ -606,7 +612,11 @@ Returns:
 
 =begin
 
-  [Range(5..7), Range(9..11)].intersect_range([6,7,8])
+  This function returns the overlap of range in existing list of ranges.
+
+  [Range(5..7), Range(9..11)].intersect_ranges(6)
+  [Range(5..7), Range(9..11)].intersect_ranges((6..6))
+  [Range(5..7), Range(9..11)].intersect_ranges([6,7,8])
 
 Returns:
 
@@ -614,7 +624,7 @@ Returns:
 
 =end
 
-  def intersect_range(values)
+  def intersect_ranges(values)
     self.map do |r|
       r = r.to_range if r.respond_to?(:to_range)
       Array.wrap(values).each do |value|
@@ -623,6 +633,22 @@ Returns:
       end
       r
     end.flatten.compact.rangify.ensure_ranges
+  end
+
+=begin
+
+  This function just ensures that the values in the ranges are unique.
+
+  [Range(5..7), Range(6..11)].reduce_ranges
+
+Returns:
+
+  [Range(5..11)]
+
+=end
+
+  def reduce_ranges
+    self.ensure_ranges.flatten.compact.rangify
   end
 
 =begin

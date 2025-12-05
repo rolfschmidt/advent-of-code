@@ -30,11 +30,11 @@ class Day19 < Helper
           end
 
           "
-          check = Array.wrap(#{rule_name}).intersect_range(#{rule_range})
+          check = Array.wrap(#{rule_name}).intersect_ranges(#{rule_range})
           if check.present?
             cx, cm, ca, cs = ddup(x), ddup(m), ddup(a), ddup(s)
             c#{rule_name}  = ddup(check)
-            #{rule_name}   = Array.wrap(#{rule_name}).sub_range(#{rule_range})
+            #{rule_name}   = Array.wrap(#{rule_name}).sub_ranges(#{rule_range})
             total         += sub_#{rule_cw}(cx, cm, ca, cs)
           end
           "
