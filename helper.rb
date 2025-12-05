@@ -612,7 +612,7 @@ Returns:
     Array.wrap(values).all? do |value|
       value = value.to_range if value.respond_to?(:to_range)
 
-      self.any? { _1.include?(value.min) && _1.include?(value.max) }
+      self.ensure_ranges.any? { _1.include?(value.min) && _1.include?(value.max) }
     end
   end
 
@@ -631,12 +631,7 @@ Returns:
 =end
 
   def add_ranges(values)
-    Array.wrap(values).each do |value|
-      value = value.to_range if value.respond_to?(:to_range)
-      self << value
-    end
-
-    self.flatten.compact.rangify.ensure_ranges
+    (self.ensure_ranges + Array.wrap(values).ensure_ranges).flatten.compact.rangify.ensure_ranges
   end
 
 =begin
@@ -702,7 +697,7 @@ Returns:
 =end
 
   def uniq_ranges
-    self.flatten.compact.rangify.ensure_ranges
+    self.ensure_ranges.flatten.compact.rangify.ensure_ranges
   end
 
 =begin
