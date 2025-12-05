@@ -648,7 +648,7 @@ Returns:
 =end
 
   def uniq_ranges
-    self.ensure_ranges.flatten.compact.rangify
+    self.flatten.compact.rangify.ensure_ranges
   end
 
 =begin
