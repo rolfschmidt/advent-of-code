@@ -1,7 +1,7 @@
 class Day05 < Helper
   def self.part1
     ranges, data = file.blocks.map(&:lines)
-    ranges = ranges.map { _1.dash_pair }
+    ranges = ranges.map(&:dash_pair)
 
     data.count { ranges.include_ranges?(_1) }
   end
