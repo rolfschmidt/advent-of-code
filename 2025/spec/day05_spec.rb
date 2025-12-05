@@ -11,7 +11,7 @@ class Day05 < Helper
   def self.part2
     ranges, data = file.blocks.map(&:lines)
 
-    ranges.map { _1.split('-').map(&:to_i).to_range }.reduce_ranges.map(&:count).sum
+    ranges.map { _1.split('-').map(&:to_i).to_range }.uniq_ranges.map(&:count).sum
   end
 end
 

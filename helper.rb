@@ -639,7 +639,7 @@ Returns:
 
   This function just ensures that the values in the ranges are unique.
 
-  [Range(5..7), Range(6..11)].reduce_ranges
+  [Range(5..7), Range(6..11)].uniq_ranges
 
 Returns:
 
@@ -647,7 +647,7 @@ Returns:
 
 =end
 
-  def reduce_ranges
+  def uniq_ranges
     self.ensure_ranges.flatten.compact.rangify
   end
 
