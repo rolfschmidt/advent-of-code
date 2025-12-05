@@ -572,7 +572,7 @@ Returns:
 
 Returns:
 
-  [Range(5..8)]
+  [Range(6..8)]
 
 =end
 
