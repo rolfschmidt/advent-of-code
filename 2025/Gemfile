@@ -12,3 +12,4 @@ gem 'range_operators'
 gem 'rb_heap'
 gem 'rainbow'
 gem 'z3' # for equations | see 2024 day 13 | sudo apt install libz3-dev
+gem 'pry'

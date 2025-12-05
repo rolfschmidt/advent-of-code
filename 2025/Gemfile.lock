@@ -208,6 +208,7 @@ DEPENDENCIES
   byebug
   dijkstra_trace
   parallel
+  pry
   pry-rails
   rails
   rainbow
