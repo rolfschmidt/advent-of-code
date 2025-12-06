@@ -387,6 +387,34 @@ Returns:
 
 =begin
 
+  [1,2,3].to_blocks
+
+Returns:
+
+  "1\n\n2\n\n3"
+
+=end
+
+  def to_blocks
+    self.join("\n\n")
+  end
+
+=begin
+
+  [1,2,3].to_lines
+
+Returns:
+
+  "1\n2\n3"
+
+=end
+
+  def to_lines
+    self.join("\n")
+  end
+
+=begin
+
   Find the highest number of a specific size in the list.
 
   [9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1].highest_number(12)

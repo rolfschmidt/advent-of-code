@@ -15,7 +15,7 @@ class Day06 < Helper
       row + Array.new(grid_size - row.size, ' ')
     end
 
-    grid.transpose.map(&:join).map(&:strip).join("\n").blocks.sum do |block|
+    grid.transpose.map(&:join).map(&:strip).to_lines.blocks.sum do |block|
       op = block.include?('*') ? '*' : '+'
 
       block.numbers.reduce(op)
