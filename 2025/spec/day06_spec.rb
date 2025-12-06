@@ -1,10 +1,8 @@
 class Day06 < Helper
   def self.part1
     file.lines.map { _1.scan(/\+|\*|-?\d+/) }.transpose.sum do |line|
-      op      = line.pop
-      numbers = line.map(&:to_i)
-
-      numbers.reduce(op)
+      op = line.pop
+      line.map(&:to_i).reduce(op)
     end
   end
 
@@ -17,7 +15,6 @@ class Day06 < Helper
 
     grid.transpose.map(&:join).map(&:strip).to_lines.blocks.sum do |block|
       op = block.include?('*') ? '*' : '+'
-
       block.numbers.reduce(op)
     end
   end
