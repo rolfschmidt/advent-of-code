@@ -4,7 +4,7 @@ class Day06 < Helper
       op      = line.pop
       numbers = line.map(&:to_i)
 
-      numbers.reduce { _1.send(op, _2) }
+      numbers.reduce(op)
     end
   end
 
@@ -17,7 +17,8 @@ class Day06 < Helper
 
     grid.transpose.map(&:join).map(&:strip).join("\n").blocks.sum do |block|
       op = block.include?('*') ? '*' : '+'
-      block.numbers.reduce { _1.send(op, _2) }
+
+      block.numbers.reduce(op)
     end
   end
 end
