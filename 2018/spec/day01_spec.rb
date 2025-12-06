@@ -4,7 +4,7 @@ class Day01 < Helper
   end
 
   def self.part2
-    seen = []
+    seen = Set.new
     result = 0
     loop do
       file.split("\n").map(&:to_i).each do |num|
