@@ -26,7 +26,7 @@ class Day06 < Helper
         end
         row = { op: line.last, numbers: [] }
       end
-      row[:numbers] << line.join('').numbers.first
+      row[:numbers] << line.join.numbers.first
     end
 
     result
