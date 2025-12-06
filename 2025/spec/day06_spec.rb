@@ -9,15 +9,15 @@ class Day06 < Helper
   end
 
   def self.part2
-    grid = file.lines.map { _1.split('') }
-    max_size = grid.map { _1.size }.max
+    grid     = file.lines.map(&:chars)
+    max_size = grid.map(&:size).max
     grid.each_with_index do |v, vi|
-      while grid[vi].size < max_size do
+      (max_size - grid[vi].size).times do
         grid[vi].push(' ')
       end
     end
 
-    row = {}
+    row    = {}
     result = 0
     (grid.transpose + [['+']]).each do |line|
       if ['+', '*'].include?(line.last)
