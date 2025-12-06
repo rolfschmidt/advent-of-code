@@ -4,16 +4,20 @@ class Day00 < Helper
   end
 
   def self.part2
-    100
+    part1
   end
 end
+
+puts Day00.part1
+# puts Day00.part2
+return
 
 RSpec.describe "Day00" do
   it "does part 1" do
     expect(Day00.part1).to eq(100)
   end
 
-  # it "does part 2" do
-  #   expect(Day00.part2).to eq(100)
-  # end
+  it "does part 2" do
+    expect(Day00.part2).to eq(100)
+  end
 end
