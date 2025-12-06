@@ -15,19 +15,10 @@ class Day06 < Helper
       row + Array.new(grid_size - row.size, ' ')
     end
 
-    row    = {}
-    result = 0
-    (grid.transpose + [['+']]).each do |line|
-      if ['+', '*'].include?(line.last)
-        if row.present?
-          result += row[:numbers].compact.reduce { _1.send(row[:op], _2) }
-        end
-        row = { op: line.last, numbers: [] }
-      end
-      row[:numbers] << line.join.numbers.first
+    grid.transpose.map(&:join).map(&:strip).join("\n").blocks.sum do |block|
+      op = block.include?('*') ? '*' : '+'
+      block.numbers.reduce { _1.send(op, _2) }
     end
-
-    result
   end
 end
 
