@@ -11,10 +11,8 @@ class Day06 < Helper
   def self.part2
     grid     = file.lines.map(&:chars)
     max_size = grid.map(&:size).max
-    grid.each_with_index do |v, vi|
-      (max_size - grid[vi].size).times do
-        grid[vi].push(' ')
-      end
+    grid.map! do |row|
+      row + Array.new(max_size - row.size, ' ')
     end
 
     row    = {}
