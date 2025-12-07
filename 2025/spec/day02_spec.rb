@@ -8,11 +8,11 @@ class Day02 < Helper
   end
 
   def self.part2
-    file.split(',').map(&:strip).sum do |value|
+    Parallel.map(file.split(',').map(&:strip)) do |value|
       value.dash_pair.to_range.map(&:to_s).select do |chain|
         chain.sequences(count: 1).present?
       end.map(&:to_i).sum
-    end
+    end.sum
   end
 end
 
