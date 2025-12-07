@@ -1918,6 +1918,22 @@ Vector = Struct.new(:x, :y) do
     (self.x - pos.x).abs + (self.y - pos.y).abs
   end
 
+  def left
+    self + DIR_LEFT
+  end
+
+  def right
+    self + DIR_RIGHT
+  end
+
+  def up
+    self + DIR_UP
+  end
+
+  def down
+    self + DIR_DOWN
+  end
+
   alias_method :r, :magnitude
   alias_method :norm, :magnitude
 

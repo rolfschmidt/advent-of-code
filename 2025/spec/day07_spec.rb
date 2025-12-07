@@ -16,12 +16,12 @@ class Day07 < Helper
       next if seen.include?(pos)
       seen << pos
 
-      if map[pos + DIR_DOWN] == '.'
-        queue << pos + DIR_DOWN
-      elsif map[pos + DIR_DOWN] == '^'
+      if map[pos.down] == '.'
+        queue << pos.down
+      elsif map[pos.down] == '^'
         count += 1
-        queue << pos + DIR_DOWN + DIR_LEFT
-        queue << pos + DIR_DOWN + DIR_RIGHT
+        queue << pos.down.left
+        queue << pos.down.right
       end
     end
 
@@ -33,11 +33,11 @@ class Day07 < Helper
       result = 0
       if map.maxy == pos.y
         result = 1
-      elsif map[pos + DIR_DOWN] == '.'
-        result = count_timelines(pos + DIR_DOWN)
-      elsif map[pos + DIR_DOWN] == '^'
-        result += count_timelines(pos + DIR_DOWN + DIR_LEFT)
-        result += count_timelines(pos + DIR_DOWN + DIR_RIGHT)
+      elsif map[pos.down] == '.'
+        result = count_timelines(pos.down)
+      elsif map[pos.down] == '^'
+        result += count_timelines(pos.down.left)
+        result += count_timelines(pos.down.right)
       end
       result
     end
