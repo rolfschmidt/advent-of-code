@@ -1782,7 +1782,7 @@ class Helper
 
     raise "Invalid request: #{result.code} #{result.body}" if !result.code.start_with?('2')
 
-    return result.body.strip
+    return result.body
   end
 
   @@test = false
