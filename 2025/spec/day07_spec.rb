@@ -34,11 +34,6 @@ class Day07 < Helper
 
   def self.count_timelines(pos)
     cache(pos) do
-      next_tachy = tachyons.find { _1.x == pos.x && _1.y > pos.y }
-      if next_tachy
-        pos = next_tachy + DIR_UP
-      end
-
       result = 0
       if map.maxy == pos.y
         result = 1
