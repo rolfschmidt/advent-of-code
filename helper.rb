@@ -1795,7 +1795,7 @@ class Helper
 
     @@test = false
 
-    File.read(path)
+    File.read(path).chomp
   end
 
   def self.file_test
@@ -1809,7 +1809,7 @@ class Helper
 
     @@test = true
 
-    File.read("spec/#{self.to_s.downcase}_test.txt")
+    File.read("spec/#{self.to_s.downcase}_test.txt").chomp
   end
 
   def self.test?

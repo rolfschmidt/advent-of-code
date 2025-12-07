@@ -24,7 +24,7 @@ class Day22 < Helper
   end
 
   def self.init_map
-    input.select_vec('#').to_h
+    input.select_vec('#').to_h(true)
   end
 
   def self.part1
