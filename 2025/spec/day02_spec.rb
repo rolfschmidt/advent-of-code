@@ -1,6 +1,6 @@
 class Day02 < Helper
   def self.part1
-    file.split(',') do |value|
+    Parallel.map(file.split(',')) do |value|
       value.dash_pair.to_range.select do |num|
         num.to_s.halve.same?
       end.sum
