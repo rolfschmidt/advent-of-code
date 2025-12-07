@@ -7,10 +7,6 @@ class Day07 < Helper
     @start ||= map.select_value('S').keys.first
   end
 
-  def self.tachyons
-    @tachyons ||= map.select_value('^').keys
-  end
-
   def self.part1
     count = 0
     queue = [start]
