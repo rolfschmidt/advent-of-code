@@ -28,7 +28,7 @@ class Day13 < Helper
 
         next_pos = cart.pos + cart.dir
 
-        crash = carts.find { _1.pos.x == next_pos.x && _1.pos.y == next_pos.y && _1.active }
+        crash = carts.find { _1.pos == next_pos && _1.active }
         if crash
           return "#{next_pos.x},#{next_pos.y}" if !part2?
 
