@@ -834,6 +834,7 @@ Returns:
 end
 
 class Hash
+  alias_method :+, :merge
 
 =begin
 
@@ -1640,7 +1641,7 @@ Returns:
 =end
 
   def select_value(search = nil)
-    self.select { |key, value| !search.nil? ? Array.wrap(value).include?(search) : yield(value) }
+    self.select { |key, value| !search.nil? ? (Array.wrap(value) & Array.wrap(search)).present? : yield(value) }
   end
 
 =begin
@@ -1932,6 +1933,22 @@ Vector = Struct.new(:x, :y) do
 
   def down
     self + DIR_DOWN
+  end
+
+  def rotate_right
+    Vector.new(-self.y, self.x)
+  end
+
+  def rotate_left
+    Vector.new(self.y, -self.x)
+  end
+
+  def diagonal_pos
+    Vector.new(self.y, self.x)
+  end
+
+  def diagonal_neg
+    Vector.new(-self.y, -self.x)
   end
 
   alias_method :r, :magnitude
