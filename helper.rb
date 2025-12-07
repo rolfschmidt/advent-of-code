@@ -561,7 +561,7 @@ Returns:
 =end
 
   def to_map
-    result = {}
+    result = Map.new
     self.each_with_index do |y, yi|
       y.each_with_index do |x, xi|
         result[Vector.new(xi, yi)] = x
@@ -1662,6 +1662,66 @@ Returns:
 
   def reject_value(search = nil)
     self.reject { |key, value| !search.nil? ? Array.wrap(value).include?(search) : yield(value) }
+  end
+end
+
+# moved to own class because cache delete hook was
+# not possible in Hash
+class Map < Hash
+  def minx
+    @minx ||= keys.min_by { |v| v[0] }.x
+  end
+
+  def maxx
+    @maxx ||= keys.max_by { |v| v[0] }.x
+  end
+
+  def miny
+    @miny ||= keys.min_by { |v| v[1] }.y
+  end
+
+  def maxy
+    @maxy ||= keys.max_by { |v| v[1] }.y
+  end
+
+  def []=(k, v)
+    @minx = @maxx = @miny = @maxy = nil
+    super
+  end
+
+  def delete(k)
+    @minx = @maxx = @miny = @maxy = nil
+    super
+  end
+
+  def clear
+    @minx = @maxx = @miny = @maxy = nil
+    super
+  end
+
+  def merge!(*args)
+    @minx = @maxx = @miny = @maxy = nil
+    super
+  end
+
+  def replace(other)
+    @minx = @maxx = @miny = @maxy = nil
+    super
+  end
+
+  def shift
+    @minx = @maxx = @miny = @maxy = nil
+    super
+  end
+
+  def update(*args)
+    @minx = @maxx = @miny = @maxy = nil
+    super
+  end
+
+  def rehash
+    @minx = @maxx = @miny = @maxy = nil
+    super
   end
 end
 
