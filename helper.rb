@@ -1943,10 +1943,12 @@ Vector = Struct.new(:x, :y) do
     Vector.new(self.y, -self.x)
   end
 
+  # used e.g. for char '\'
   def diagonal_pos
     Vector.new(self.y, self.x)
   end
 
+  # used e.g. for char '/'
   def diagonal_neg
     Vector.new(-self.y, -self.x)
   end
