@@ -32,7 +32,7 @@ class Day07 < Helper
     count
   end
 
-  def self.count_timelines(map, pos)
+  def self.count_timelines(pos)
     cache(pos) do
       next_tachy = tachyons.find { _1.x == pos.x && _1.y > pos.y }
       if next_tachy
@@ -43,17 +43,17 @@ class Day07 < Helper
       if map.maxy == pos.y
         result = 1
       elsif map[pos + DIR_DOWN] == '.'
-        result = count_timelines(map, pos + DIR_DOWN)
+        result = count_timelines(pos + DIR_DOWN)
       elsif map[pos + DIR_DOWN] == '^'
-        result += count_timelines(map, pos + DIR_DOWN + DIR_LEFT)
-        result += count_timelines(map, pos + DIR_DOWN + DIR_RIGHT)
+        result += count_timelines(pos + DIR_DOWN + DIR_LEFT)
+        result += count_timelines(pos + DIR_DOWN + DIR_RIGHT)
       end
       result
     end
   end
 
   def self.part2
-    count_timelines(map, start)
+    count_timelines(start)
   end
 end
 
