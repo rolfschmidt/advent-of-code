@@ -1,17 +1,23 @@
 class Day08 < Helper
   def self.part1
     junctions = file.lines.map(&:numbers).map(&:to_vec3)
-    distances = junctions.keys.combination(2).map do |i1, i2|
-      [i1, i2, junctions[i1].euclidean(junctions[i2])]
-    end.sort_by { _1[2] }
+    distances = junctions.combination(2).map do |ja, jb|
+      [ja, jb, ja.euclidean(jb)]
+    end.sort_by {|js| js[2] }
 
-    circuits  = junctions.keys.to_h { [_1, { _1 => true }] }
-    distances[0, 1000].each do |posa, posb, dist|
-      circuits[posa][posb] = true
-      circuits[posb][posa] = true
+    circuits = junctions.map { [_1] }
+    distances[0, 1000].each do |posa, posb|
+      alist = circuits.find { _1.include?(posa) }
+      blist = circuits.find { _1.include?(posb) }
+      next if alist == blist
+
+      circuits.delete(alist)
+      circuits.delete(blist)
+
+      circuits << (alist | blist)
     end
 
-    junctions.keys.map { circuits.linked_list(_1).sort }.uniq.sort_by(&:size)[-3..].map(&:size).reduce(&:*)
+    circuits.sort_by(&:size).map(&:size)[-3..].reduce(&:*)
   end
 
   def self.check_max(junctions, circuits, pos)
@@ -22,22 +28,23 @@ class Day08 < Helper
 
   def self.part2
     junctions = file.lines.map(&:numbers).map(&:to_vec3)
-    distances = junctions.keys.combination(2).map do |i1, i2|
-      [i1, i2, junctions[i1].euclidean(junctions[i2])]
-    end.sort_by { _1[2] }
+    distances = junctions.combination(2).map do |ja, jb|
+      [ja, jb, ja.euclidean(jb)]
+    end.sort_by {|js| js[2] }
 
-    circuits  = junctions.keys.to_h { [_1, { _1 => true }] }
-    distances.each do |posa, posb, dist|
-      if !circuits[posa][posb]
-        circuits[posa][posb] = true
-        max = check_max(junctions, circuits, posa)
-        return junctions[posa].x * junctions[posb].x if max
-      end
-      if !circuits[posb][posa]
-        circuits[posb][posa] = true
-        max = check_max(junctions, circuits, posb)
-        return junctions[posa].x * junctions[posb].x if max
-      end
+    circuits = junctions.map { [_1] }
+    distances.each do |posa, posb|
+      alist = circuits.find { _1.include?(posa) }
+      blist = circuits.find { _1.include?(posb) }
+      next if alist == blist
+
+      circuits.delete(alist)
+      circuits.delete(blist)
+
+      nlist = (alist | blist)
+      return posa.x * posb.x if nlist.size == junctions.size
+
+      circuits << nlist
     end
   end
 end
