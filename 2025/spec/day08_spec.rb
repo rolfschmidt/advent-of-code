@@ -1,19 +1,12 @@
 class Day08 < Helper
   def self.part1
     junctions = file.lines.map(&:numbers).map(&:to_vec3)
+    distances = junctions.keys.combination(2).map do |i1, i2|
+      [i1, i2, junctions[i1].euclidean(junctions[i2])]
+    end.sort_by { _1[2] }
 
-    distances = []
-    junctions.keys.combination(2) do |j1i, j2i|
-      j1 = junctions[j1i]
-      j2 = junctions[j2i]
-      distances << [j1i, j2i, j1.euclidean(j2)]
-    end
-
-    distances = distances.sort_by { _1[2] }
     circuits  = junctions.keys.to_h { [_1, { _1 => true }] }
-
-    distances = distances[0, 1000]
-    distances.each do |posa, posb, dist|
+    distances[0, 1000].each do |posa, posb, dist|
       circuits[posa][posb] = true
       circuits[posb][posa] = true
     end
@@ -29,17 +22,11 @@ class Day08 < Helper
 
   def self.part2
     junctions = file.lines.map(&:numbers).map(&:to_vec3)
+    distances = junctions.keys.combination(2).map do |i1, i2|
+      [i1, i2, junctions[i1].euclidean(junctions[i2])]
+    end.sort_by { _1[2] }
 
-    distances = []
-    junctions.keys.combination(2) do |j1i, j2i|
-      j1 = junctions[j1i]
-      j2 = junctions[j2i]
-      distances << [j1i, j2i, j1.euclidean(j2)]
-    end
-
-    distances = distances.sort_by { _1[2] }
     circuits  = junctions.keys.to_h { [_1, { _1 => true }] }
-
     distances.each do |posa, posb, dist|
       if !circuits[posa][posb]
         circuits[posa][posb] = true

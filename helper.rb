@@ -1986,6 +1986,7 @@ Vector = Struct.new(:x, :y) do
   end
 
   # https://en.wikipedia.org/wiki/Euclidean_distance
+  # straight-line distance
   def euclidean(pos)
     sum_of_squares = self.to_a.zip(pos.to_a).map { |a_i, b_i| (a_i - b_i)**2 }.sum
 
