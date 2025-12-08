@@ -5,28 +5,8 @@ class Day08 < Helper
       [ja, jb, ja.euclidean(jb)]
     end.sort_by {|js| js[2] }
 
-    circuits = junctions.map { [_1] }
-    distances[0, 1000].each do |posa, posb|
-      alist = circuits.find { _1.include?(posa) }
-      blist = circuits.find { _1.include?(posb) }
-      next if alist == blist
-
-      circuits.delete(alist)
-      circuits.delete(blist)
-
-      circuits << (alist | blist)
-    end
-
-    circuits.sort_by(&:size).map(&:size)[-3..].reduce(&:*)
-  end
-
-  def self.part2
-    junctions = file.lines.map(&:numbers).map(&:to_vec3)
-    distances = junctions.combination(2).map do |ja, jb|
-      [ja, jb, ja.euclidean(jb)]
-    end.sort_by {|js| js[2] }
-
-    circuits = junctions.map { [_1] }
+    circuits  = junctions.map { [_1] }
+    distances = distances[0, 1000] if !part2?
     distances.each do |posa, posb|
       alist = circuits.find { _1.include?(posa) }
       blist = circuits.find { _1.include?(posb) }
@@ -36,10 +16,16 @@ class Day08 < Helper
       circuits.delete(blist)
 
       nlist = (alist | blist)
-      return posa.x * posb.x if nlist.size == junctions.size
+      return posa.x * posb.x if part2? && nlist.size == junctions.size
 
       circuits << nlist
     end
+
+    circuits.sort_by(&:size).map(&:size)[-3..].reduce(&:*)
+  end
+
+  def self.part2
+    part1
   end
 end
 
