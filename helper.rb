@@ -893,6 +893,24 @@ Returns:
     Vector.new(maxx, maxy)
   end
 
+=begin
+
+  This function finds a list of connected links to the node.
+
+  circuits = {
+    Vector.new(0, 1) => {
+      Vector.new(0, 2) => true,
+    },
+  }
+
+  circuits.linked_list(circuits.keys.first)
+
+Returns:
+
+  [#<struct Vector x=0, y=1>, #<struct Vector x=0, y=2>]
+
+=end
+
   def linked_list(pos, seen: Set.new)
     return [] if seen.include?(pos)
     seen << pos
@@ -907,13 +925,31 @@ Returns:
     return result
   end
 
+=begin
+
+  This function counts connected links to the node.
+
+  circuits = {
+    Vector.new(0, 1) => {
+      Vector.new(0, 2) => true,
+    },
+  }
+
+  circuits.linked_count(circuits.keys.first)
+
+Returns:
+
+  2
+
+=end
+
   def linked_count(pos, seen: Set.new)
     return 0 if seen.include?(pos)
     seen << pos
 
     result = 1
     Array.wrap(self[pos]&.keys).each do |check|
-      result += self.linked_count(pos, seen: seen)
+      result += self.linked_count(check, seen: seen)
     end
 
     return result

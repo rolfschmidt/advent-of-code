@@ -18,28 +18,13 @@ class Day08 < Helper
       circuits[posb][posa] = true
     end
 
-    chains = {}
-    circuits.each do |key, value|
-      chains[key] = []
+    junctions.keys.map { circuits.linked_list(_1).sort }.uniq.sort_by(&:size)[-3..].map(&:size).reduce(&:*)
+  end
 
-      queue = [key]
-      seen = Set.new
-      while queue.present?
-        row = queue.shift
-        next if seen.include?(row)
-        seen << row
-
-        chains[key] << row
-
-        circuits[row].keys.each do |check|
-          queue << check
-        end
-      end
-
-      chains[key].sort!
-    end
-
-    chains.values.uniq.map(&:size).sort.reverse[0, 3].reduce(&:*)
+  def self.check_max(junctions, circuits, pos)
+    count = circuits.linked_count(pos)
+    return if count < junctions.size
+    return true
   end
 
   def self.part2
@@ -55,30 +40,20 @@ class Day08 < Helper
     distances = distances.sort_by { _1[2] }
     circuits  = junctions.keys.to_h { [_1, { _1 => true }] }
 
-    distances = distances
     distances.each do |posa, posb, dist|
-      check = []
       if !circuits[posa][posb]
         circuits[posa][posb] = true
-        check << posa
+        max = check_max(junctions, circuits, posa)
+        return junctions[posa].x * junctions[posb].x if max
       end
       if !circuits[posb][posa]
         circuits[posb][posa] = true
-        check << posb
-      end
-
-      check.map { circuits.linked_list(_1) }.each do |chain|
-        next if chain.size < junctions.size
-
-        return junctions[posa].x * junctions[posb].x
+        max = check_max(junctions, circuits, posb)
+        return junctions[posa].x * junctions[posb].x if max
       end
     end
   end
 end
-
-# puts Day08.part1
-puts Day08.part2
-return
 
 RSpec.describe "Day08" do
   it "does part 1" do
