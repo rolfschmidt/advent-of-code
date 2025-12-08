@@ -541,6 +541,10 @@ Returns:
     Vector.new(self[0], self[1])
   end
 
+  def to_vec3
+    Vector3.new(self[0], self[1], self[2])
+  end
+
 =begin
 
   [
@@ -887,6 +891,32 @@ Returns:
 
   def stop
     Vector.new(maxx, maxy)
+  end
+
+  def linked_list(pos, seen: Set.new)
+    return [] if seen.include?(pos)
+    seen << pos
+
+    result = [pos]
+    Array.wrap(self[pos]&.keys).each do |check|
+      next if seen.include?(check)
+
+      result |= self.linked_list(check, seen: seen)
+    end
+
+    return result
+  end
+
+  def linked_count(pos, seen: Set.new)
+    return 0 if seen.include?(pos)
+    seen << pos
+
+    result = 1
+    Array.wrap(self[pos]&.keys).each do |check|
+      result += self.linked_count(pos, seen: seen)
+    end
+
+    return result
   end
 
 =begin
@@ -1919,6 +1949,13 @@ Vector = Struct.new(:x, :y) do
     (self.x - pos.x).abs + (self.y - pos.y).abs
   end
 
+  # https://en.wikipedia.org/wiki/Euclidean_distance
+  def euclidean(pos)
+    sum_of_squares = self.to_a.zip(pos.to_a).map { |a_i, b_i| (a_i - b_i)**2 }.sum
+
+    Math.sqrt(sum_of_squares)
+  end
+
   def left
     self + DIR_LEFT
   end
@@ -2001,6 +2038,13 @@ Vector3 = Struct.new(:x, :y, :z) do
 
   def product(v)
     self.x * v.x + self.y * v.y + self.z * v.z
+  end
+
+  # https://en.wikipedia.org/wiki/Euclidean_distance
+  def euclidean(pos)
+    sum_of_squares = self.to_a.zip(pos.to_a).map { |a_i, b_i| (a_i - b_i)**2 }.sum
+
+    Math.sqrt(sum_of_squares)
   end
 
   def normalize
