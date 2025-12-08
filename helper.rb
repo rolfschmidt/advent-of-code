@@ -949,6 +949,8 @@ Returns:
 
     result = 1
     Array.wrap(self[pos]&.keys).each do |check|
+      next if seen.include?(check)
+
       result += self.linked_count(check, seen: seen)
     end
 
