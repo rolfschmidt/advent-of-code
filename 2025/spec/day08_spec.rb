@@ -20,12 +20,6 @@ class Day08 < Helper
     circuits.sort_by(&:size).map(&:size)[-3..].reduce(&:*)
   end
 
-  def self.check_max(junctions, circuits, pos)
-    count = circuits.linked_count(pos)
-    return if count < junctions.size
-    return true
-  end
-
   def self.part2
     junctions = file.lines.map(&:numbers).map(&:to_vec3)
     distances = junctions.combination(2).map do |ja, jb|
