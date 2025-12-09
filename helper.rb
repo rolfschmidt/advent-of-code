@@ -681,14 +681,15 @@ Returns:
 =end
 
   def sub_ranges(values)
-    self.map do |r|
-      r = r.to_range if r.respond_to?(:to_range)
-      Array.wrap(values).each do |value|
-        value = value.to_range if value.respond_to?(:to_range)
-        r -= value
+    result = self
+    Array.wrap(values).each do |value|
+      new_result = []
+      result.each do |r|
+        new_result << r - value
       end
-      r
-    end.flatten.compact.rangify.ensure_ranges
+      result = new_result.flatten.compact.rangify.ensure_ranges
+    end
+    result
   end
 
 =begin
@@ -809,6 +810,142 @@ Returns:
   # https://en.wikipedia.org/wiki/Shoelace_formula
   def poligon_inner_area
     self.each_cons(2).sum {|a, b| (a.x * b.y) - (b.x * a.y) }.abs / 2
+  end
+
+=begin
+
+This function returns the sides of a list of poligon edges.
+
+  edges = [Vector.new(7,1), Vector.new(11, 1), Vector.new(11, 7)]
+  edges.poligon_sides
+
+Returns:
+
+  [Vector.new(7, 1), ...]
+
+=end
+
+  def poligon_sides
+    samexy = self.combination(2).select do |pa, pb|
+      pa.x == pb.x || pa.y == pb.y
+    end
+
+    sides = []
+    samexy.each do |pa, pb|
+      (pa.x..pb.x).each do |px|
+        (pa.y..pb.y).each do |py|
+          sides << Vector.new(px, py)
+        end
+      end
+    end
+    sides
+  end
+
+  def poligon_pos?(pos)
+    cache(pos) do
+      x = pos.x
+      y = pos.y
+      inside = false
+
+      j = self.size - 1
+      i = 0
+      while i < self.size
+        vi = self[i]
+        vj = self[j]
+
+        yi = vi.y
+        yj = vj.y
+
+        intersect = (yi > y) != (yj > y) && x < (vj.x - vi.x) * (y - yi) / (yj - yi).to_f + vi.x
+        inside = !inside if intersect
+
+        j = i
+        i += 1
+      end
+
+      inside
+    end
+  end
+
+  def poligon_pos_list?(data)
+    check = data.to_a.to_h(false)
+
+    j = self.size - 1
+    i = 0
+    while i < self.size
+      vi = self[i]
+      vj = self[j]
+
+      yi = vi.y
+      yj = vj.y
+
+      check.keys.each do |pc|
+        x = pc.x
+        y = pc.y
+
+        intersect = (yi > y) != (yj > y) && x < (vj.x - vi.x) * (y - yi) / (yj - yi).to_f + vi.x
+        check[pc] = !check[pc] if intersect
+      end
+
+      j = i
+      i += 1
+    end
+
+    check
+  end
+
+  def poligon_edges_to_area
+    sides = self.poligon_sides
+    sides.to_set + sides.poligon_flood
+  end
+
+  def poligon_flood
+    seen_corner = Set.new(self)
+    corner_top_right = self.find do |pos|
+      if seen_corner.include?(pos.down) && seen_corner.include?(pos.right) && seen_corner.exclude?(pos.down.right)
+        true
+      else
+        false
+      end
+    end
+
+    queue  = [corner_top_right.down.right]
+    seen   = Set.new
+    while queue.present?
+      pos = queue.shift
+      next if seen_corner.include?(pos)
+      next if seen.include?(pos)
+      puts seen.size if seen.size % 10000000 == 0
+
+      seen << pos
+
+      DIRS_PLUS.each do |dir|
+        check_pos = pos + dir
+        next if seen.include?(check_pos)
+
+        queue << check_pos
+      end
+    end
+
+    seen
+  end
+
+=begin
+
+Calculates the rectangle area of 2 coordinates.
+
+  [Vector.new(2, 5), Vector.new(11, 1)].rectangle_area
+
+Returns:
+
+  50
+
+=end
+
+  def rectangle_area
+    maxx = self.map(&:x).map(&:abs).sort.reverse.reduce(&:-) + 1
+    maxy = self.map(&:y).map(&:abs).sort.reverse.reduce(&:-) + 1
+    maxx * maxy
   end
 
 =begin
