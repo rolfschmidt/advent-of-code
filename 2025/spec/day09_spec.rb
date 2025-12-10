@@ -8,31 +8,31 @@ class Day09 < Helper
     maxdist.rectangle_area
   end
 
+  def self.outside(p0, p1, e0, e1)
+    [p0, p1].max <= [e0, e1].min || [p0, p1].min >= [e0, e1].max
+  end
+
   # gave up, no math skills
   # props to Turilas
   # https://www.reddit.com/r/adventofcode/comments/1phywvn/comment/nt6f5fa
   def self.part2
-    edges = file.lines.map(&:numbers)
+    edges = file.lines.map(&:numbers).map(&:to_vec)
     pairs = edges.combination(2)
     lines = edges.each_cons(2)
 
     sorted_distances = pairs.map do |c0, c1|
       [
-        [c0, c1].map(&:to_vec).rectangle_area,
+        [c0, c1].rectangle_area,
         c0,
         c1
       ]
-    end.sort_by do |x|
-      -x[0]
-    end
-
-    outside = -> (p0, p1, e0, e1) do
-      [p0, p1].max <= [e0, e1].min || [p0, p1].min >= [e0, e1].max
+    end.sort_by do |pos|
+      -pos[0]
     end
 
     sorted_distances.each do |dist, c0, c1|
       match = lines.all? do |p0, p1|
-        outside.call(p0[0], p1[0], c0[0], c1[0]) || outside.call(p0[1], p1[1], c0[1], c1[1])
+        outside(p0.x, p1.x, c0.x, c1.x) || outside(p0.y, p1.y, c0.y, c1.y)
       end
 
       return dist if match
