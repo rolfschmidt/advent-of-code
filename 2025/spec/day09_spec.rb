@@ -8,68 +8,37 @@ class Day09 < Helper
     maxdist.rectangle_area
   end
 
-  def self.calculate_edge_points(polygon, steps)
-    points = []
-
-    polygon.each_with_index do |(x1, y1), i|
-      x2, y2 = polygon[(i + 1) % polygon.size]
-
-      (0..steps).each do |s|
-        t = s.to_f / steps
-        points << [
-          x1 + (x2 - x1) * t,
-          y1 + (y2 - y1) * t
-        ]
-      end
-    end
-
-    points
-  end
-
+  # gave up, no math skills
+  # props to Turilas
+  # https://www.reddit.com/r/adventofcode/comments/1phywvn/comment/nt6f5fa
   def self.part2
-    coords = file.lines.map(&:numbers).map(&:to_vec)
-    map    = coords.to_h('X')
-    sides  = coords.poligon_sides
-    sides_seen = sides.to_set
+    edges = file.lines.map(&:numbers)
+    pairs = edges.combination(2)
+    lines = edges.each_cons(2)
 
-    combos       = coords.combination(2)
-    combos_count = combos.size
-    check = Set.new
-    combos.each do |pa, pb|
-      next if pa.x == pb.x
-      next if pa.y == pb.y
-
-      check << Vector.new(pa.x, pb.y)
-      check << Vector.new(pb.x, pa.y)
+    sorted_distances = pairs.map do |c0, c1|
+      [
+        [c0, c1].map(&:to_vec).rectangle_area,
+        c0,
+        c1
+      ]
+    end.sort_by do |x|
+      -x[0]
     end
 
-    pp ['check', check.size]
-    polimap = sides.poligon_pos_list?(check)
+    outside = -> (p0, p1, e0, e1) do
+      [p0, p1].max <= [e0, e1].min || [p0, p1].min >= [e0, e1].max
+    end
 
-    pp ['polimap', polimap.size]
-    exit
-
-    Parallel.map(combos) do |pa, pb|
-      next if pa.x == pb.x
-      next if pa.y == pb.y
-
-      ca = Vector.new(pa.x, pb.y)
-      cb = Vector.new(pb.x, pa.y)
-
-      next if [ca, cb].any? do |pos|
-        next false if sides_seen.include?(pos)
-        next false if sides.poligon_pos?(pos)
-        true
+    sorted_distances.each do |dist, c0, c1|
+      match = lines.all? do |p0, p1|
+        outside.call(p0[0], p1[0], c0[0], c1[0]) || outside.call(p0[1], p1[1], c0[1], c1[1])
       end
 
-      [pa, pb].rectangle_area
-    end.compact.max
+      return dist if match
+    end
   end
 end
-
-# puts Day09.part1
-puts Day09.part2
-return
 
 RSpec.describe "Day09" do
   it "does part 1" do
