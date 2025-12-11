@@ -12,48 +12,29 @@ class Day10 < Helper
     end
   end
 
-  def self.light_state(light, buttons)
-    cache(light, buttons) do
-      light = light.clone
-      buttons.each do |bi|
-        light[bi] = !light[bi]
-      end
-      light
-    end
-  end
-
-  def self.press(pressed, light, buttons, li)
-    return if pressed >= @best
-
-    light = light_state(light, buttons)
-    pressed += 1
-
-    return if @cache[light] && @cache[light] <= pressed
-    @cache[light] = pressed
-
-    if light.all?(false) && pressed < @best
-      @best = pressed
-      return @best if @best <= 1
-    end
-
-    machines[li][1].shuffle.each do |pc|
-      next if pressed >= @best
-      press(pressed.clone, light.clone, pc.clone, li)
-    end
-  end
-
+  # rebuild part 1 in z3 by myself to learn z3 (kinda proud :D)
   def self.part1
-    Parallel.map(machines.keys) do |li|
-      light = machines[li]
-    # machines.map.with_index do |light, li|
-      @best = 10000000000
-      @cache = {}
-      light[1].each do |pc|
-        reset_cache
-        press(0, light[0].clone, pc.clone, li)
+    result = 0
+    machines.each do |light, buttons|
+      solver = Z3::Optimize.new
+      presses = buttons.keys.map do |bi|
+        z3b = Z3::Int("button_#{bi}")
+        solver.assert(z3b >= 0)
+        z3b
       end
-      @best
-    end.sum
+
+      light.each_with_index do |value, li|
+        light_buttons = buttons.keys.select { buttons[_1].include?(li) }
+
+        solver.assert((light_buttons.map { presses[_1] }.sum % 2 == 1) == value)
+      end
+
+      solver.minimize(presses.sum)
+      raise 'z3-error' if !solver.satisfiable?
+
+      result += presses.map { solver.model[_1].to_i }.sum
+    end
+    result
   end
 
   # gave up, no math skills
