@@ -8,7 +8,7 @@ class Day11 < Helper
   end
 
   def self.part2
-    Graph.count_paths_with(@graph, 'svr', 'out', ['fft', 'dac'])
+    Graph.count_paths_with(graph, 'svr', 'out', ['fft', 'dac'])
   end
 end
 
