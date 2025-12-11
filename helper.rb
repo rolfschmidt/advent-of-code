@@ -2227,6 +2227,121 @@ Returns:
     graph = Dijkstra::Trace.new(edges)
     graph.path(from, to)
   end
+
+=begin
+
+Find all paths from a node to another one.
+
+  graph = {
+    'aaa' => ['bbb'],
+    'bbb' => ['ccc'],
+  }
+
+  result = Graph.find_paths(graph, 'aaa', 'ccc')
+
+Returns:
+
+  <Set: {["aaa", "bbb", "ccc"]}>
+
+=end
+
+  def self.find_paths(graph, from, to)
+    queue = [[from]]
+    seen  = Set.new
+    paths = Set.new
+    while queue.present?
+      path = queue.shift
+
+      next if seen.include?(path)
+      seen << path
+
+      if path.last == to
+        paths << path
+        next
+      end
+
+      graph[path.last].each do |to|
+        next if path.include?(to)
+
+        queue << path + [to]
+      end
+    end
+
+    paths
+  end
+
+=begin
+
+Count all paths from a node to another one.
+
+  graph = {
+    'aaa' => ['bbb'],
+    'bbb' => ['ccc'],
+  }
+
+  result = Graph.count_paths(graph, 'aaa', 'ccc')
+
+Returns:
+
+  1
+
+=end
+
+  def self.count_paths(graph, from, to, path = Set.new)
+    @cache ||= {}
+    @cache["#{from}_#{to}"] ||= begin
+      if from == to
+        1
+      else
+        result = 0
+        Array.wrap(graph[from]).each do |node|
+          next if path.include?(node)
+
+          new_path = path.clone
+          new_path << node
+          result += count_paths(graph, node, to, new_path)
+        end
+
+        result
+      end
+    end
+  end
+
+=begin
+
+Find all paths from a node to another one.
+
+  graph = {
+    'aaa' => ['bbb', 'ddd'],
+    'bbb' => ['ccc'],
+    'ddd' => ['ccc'],
+  }
+
+  includes = ['ddd']
+
+  result = Graph.count_paths_with(graph, 'aaa', 'ccc', includes)
+
+Returns:
+
+  1
+
+=end
+
+  def self.count_paths_with(graph, from, to, includes)
+    result = []
+    includes.permutation.each do |middles|
+      row = []
+      row << Graph.count_paths(graph, from, middles.first)
+      middles.each_cons(2) do |a, b|
+        row << Graph.count_paths(graph, a, b)
+      end
+      row << Graph.count_paths(graph, middles.last, to)
+
+      result << row
+    end
+    result.map { _1.reduce(&:*) }.sum
+  end
+
 end
 
 def ddup(obj)
