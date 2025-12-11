@@ -4,11 +4,11 @@ class Day11 < Helper
   end
 
   def self.part1
-    Graph.count_paths(graph, 'you', 'out')
+    Graph.new(graph).count_paths('you', 'out')
   end
 
   def self.part2
-    Graph.count_paths_with(graph, 'svr', 'out', ['fft', 'dac'])
+    Graph.new(graph).count_paths_with('svr', 'out', ['fft', 'dac'])
   end
 end
 

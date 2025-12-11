@@ -2143,6 +2143,11 @@ class Node
 end
 
 class Graph
+  attr_accessor :graph
+
+  def initialize(graph)
+    @graph = graph
+  end
 
   # return a graph matrix for the list of edges
   def self.matrix(edges)
@@ -2237,7 +2242,7 @@ Find all paths from a node to another one.
     'bbb' => ['ccc'],
   }
 
-  result = Graph.find_paths(graph, 'aaa', 'ccc')
+  result = Graph.new(graph).find_paths('aaa', 'ccc')
 
 Returns:
 
@@ -2245,7 +2250,7 @@ Returns:
 
 =end
 
-  def self.find_paths(graph, from, to)
+  def find_paths(from, to)
     queue = [[from]]
     seen  = Set.new
     paths = Set.new
@@ -2279,7 +2284,7 @@ Count all paths from a node to another one.
     'bbb' => ['ccc'],
   }
 
-  result = Graph.count_paths(graph, 'aaa', 'ccc')
+  result = Graph.new(graph).count_paths('aaa', 'ccc')
 
 Returns:
 
@@ -2287,7 +2292,7 @@ Returns:
 
 =end
 
-  def self.count_paths(graph, from, to, path = Set.new)
+  def count_paths(from, to, path = Set.new)
     @cache ||= {}
     @cache["#{from}_#{to}"] ||= begin
       if from == to
@@ -2299,7 +2304,7 @@ Returns:
 
           new_path = path.clone
           new_path << node
-          result += count_paths(graph, node, to, new_path)
+          result += count_paths(node, to, new_path)
         end
 
         result
@@ -2319,7 +2324,7 @@ Find all paths from a node to another one.
 
   includes = ['ddd']
 
-  result = Graph.count_paths_with(graph, 'aaa', 'ccc', includes)
+  result = Graph.new(graph).count_paths_with('aaa', 'ccc', includes)
 
 Returns:
 
@@ -2327,15 +2332,15 @@ Returns:
 
 =end
 
-  def self.count_paths_with(graph, from, to, includes)
+  def count_paths_with(from, to, includes)
     result = []
     includes.permutation.each do |middles|
       row = []
-      row << Graph.count_paths(graph, from, middles.first)
+      row << count_paths(from, middles.first)
       middles.each_cons(2) do |a, b|
-        row << Graph.count_paths(graph, a, b)
+        row << count_paths(a, b)
       end
-      row << Graph.count_paths(graph, middles.last, to)
+      row << count_paths(middles.last, to)
 
       result << row
     end
