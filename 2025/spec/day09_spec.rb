@@ -13,8 +13,7 @@ class Day09 < Helper
   end
 
   # gave up, no math skills
-  # props to Turilas
-  # https://www.reddit.com/r/adventofcode/comments/1phywvn/comment/nt6f5fa
+  # yoinked, props to @Turilas, https://www.reddit.com/r/adventofcode/comments/1phywvn/comment/nt6f5fa
   def self.part2
     edges = file.lines.map(&:numbers).map(&:to_vec)
     pairs = edges.combination(2)
