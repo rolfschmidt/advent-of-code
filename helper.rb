@@ -2149,6 +2149,22 @@ class Graph
     @graph = graph
   end
 
+  def dijkstra
+    @dijkstra ||= Dijkstra::Trace.new(edges)
+  end
+
+  def edges
+    @edges ||= begin
+      result = []
+      graph.each do |key, values|
+        values.each do |value, weight|
+          result << [key, value, weight]
+        end
+      end
+      result
+    end
+  end
+
   # return a graph matrix for the list of edges
   def self.matrix(edges)
     graph = Dijkstra::Trace.new(edges)
@@ -2209,12 +2225,13 @@ Dijkstra's algorithm is an algorithm for finding
 the shortest paths between nodes in a weighted graph, which
 may represent, for example, road networks.
 
-edges = [
-  ['AA', 'BB', 1],
-  ['BB', 'CC', 1],
-]
 
-result = Graph.shortest_path(edges, 'AA', 'BB')
+graph = {
+  'AA' => { 'BB' => 1 },
+  'BB' => { 'CC' => 1 },
+}
+
+result = Graph.new(graph).shortest_path('AA', 'BB')
 
 Returns:
 
@@ -2228,9 +2245,8 @@ Returns:
 
 =end
 
-  def self.shortest_path(edges, from, to)
-    graph = Dijkstra::Trace.new(edges)
-    graph.path(from, to)
+  def shortest_path(from, to)
+    dijkstra.path(from, to)
   end
 
 =begin

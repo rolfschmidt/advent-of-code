@@ -1,15 +1,14 @@
 class Day16 < Helper
-  def self.edges
-    @edges ||= begin
-      r = []
-      @valves.each do |v|
-        v[2].each do |v2|
-          next if v[0] == v2
-
-          r << [v[0], v2, 1]
+  def self.graph
+    @graph ||= begin
+      result = {}
+      @valves.each do |from, rate, tos|
+        tos.each do |to|
+          result[from] ||= {}
+          result[from][to] = 1
         end
       end
-      r
+      result
     end
   end
 
@@ -20,7 +19,7 @@ class Day16 < Helper
       @valves.each do |v|
         next if v[0] == from
 
-        result << Graph.shortest_path(edges, from, v[0])
+        result << Graph.new(graph).shortest_path(from, v[0])
       end
       result
         .sort_by {|r| r.distance }
