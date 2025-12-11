@@ -1,20 +1,23 @@
 class Day25 < Helper
-  def self.edges
-    @edges ||= begin
-      edges = []
-      file.split("\n").map{|line| line.words }.each do |comps|
-        comps[1..].each do |comp|
-          edges << [comps.first, comp, 1]
-          edges << [comp, comps.first, 1]
+  def self.graph
+    @graph ||= begin
+      result = {}
+      file.lines.map(&:words).each do |comps|
+        comps[1..].each do |to|
+          result[comps.first] ||= {}
+          result[comps.first][to] = 1
+
+          result[to] ||= {}
+          result[to][comps.first] = 1
         end
       end
-      edges
+      result
     end
   end
 
   def self.part1
-    cut, best = Graph.minimum_cut(Graph.matrix(edges))
-    total     = edges.map(&:first).uniq
+    cut, best = Graph.new(graph).minimum_cut
+    total     = graph.keys
 
     return best.count * (total.count - best.count)
   end

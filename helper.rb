@@ -2166,9 +2166,8 @@ class Graph
   end
 
   # return a graph matrix for the list of edges
-  def self.matrix(edges)
-    graph = Dijkstra::Trace.new(edges)
-    graph.graph_matrix
+  def matrix
+    @matrix ||= dijkstra.graph_matrix
   end
 
 =begin
@@ -2178,12 +2177,12 @@ In graph theory, the Stoer–Wagner algorithm is a recursive algorithm
 to solve the minimum cut problem in undirected weighted graphs
 with non-negative weights.
 
-edges = [
-  ['AA', 'BB', 1],
-  ['BB', 'CC', 1],
-]
+graph = {
+  'AA' => { 'BB' => 1 },
+  'BB' => { 'CC' => 1 },
+}
 
-cut, best = Graph.minimum_cut(Graph.matrix(edges))
+cut, best = Graph.new(graph).minimum_cut
 
 Returns:
 
@@ -2192,7 +2191,7 @@ Returns:
 
 =end
 
-  def self.minimum_cut(matrix)
+  def minimum_cut
     best = [Float::INFINITY, []]
     n = matrix.length
     co = Array.new(n) { |i| [i] }
