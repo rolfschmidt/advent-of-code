@@ -2314,7 +2314,7 @@ Returns:
 
 =begin
 
-Find all paths from a node to another one.
+Find all paths from a node to another one including a specific list of of nodes.
 
   graph = {
     'aaa' => ['bbb', 'ddd'],
