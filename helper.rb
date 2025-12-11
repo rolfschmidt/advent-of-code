@@ -2302,9 +2302,7 @@ Returns:
         Array.wrap(graph[from]).each do |node|
           next if path.include?(node)
 
-          new_path = path.clone
-          new_path << node
-          result += count_paths(node, to, new_path)
+          result += count_paths(node, to, path + [node])
         end
 
         result
