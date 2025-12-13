@@ -4,28 +4,26 @@ class Day12 < Helper
   end
 
   def self.shapes_fit?(map, shapes, shape_counts, history = [])
-    cache(shape_counts, history) do
-      if shape_counts.all?(0)
-        true
-      elsif shapes_size(shapes, shape_counts) > map.size
-        false
-      else
-        map.any? do |pos|
-          shape_counts.each_with_index.any? do |shape_count, shape_index|
-            next if shape_count.zero?
+    if shape_counts.all?(0)
+      true
+    elsif shapes_size(shapes, shape_counts) > map.size
+      false
+    else
+      map.any? do |pos|
+        shape_counts.each_with_index.any? do |shape_count, shape_index|
+          next if shape_count.zero?
 
-            shapes[shape_index].any? do |shape|
-              next if shape.size > map.size
-              next if shape.any? { !map.include?(pos + _1) }
+          shapes[shape_index].any? do |shape|
+            next if shape.size > map.size
+            next if shape.any? { !map.include?(pos + _1) }
 
-              new_shape_counts = shape_counts.clone
-              new_shape_counts[shape_index] -= 1
+            new_shape_counts = shape_counts.clone
+            new_shape_counts[shape_index] -= 1
 
-              new_map = map.clone
-              new_map -= shape.map { pos + _1 }
+            new_map = map.clone
+            new_map -= shape.map { pos + _1 }
 
-              shapes_fit?(new_map, shapes, new_shape_counts, history + [shape])
-            end
+            shapes_fit?(new_map, shapes, new_shape_counts, history + [shape])
           end
         end
       end
