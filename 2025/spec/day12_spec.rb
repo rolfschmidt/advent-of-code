@@ -30,29 +30,22 @@ class Day12 < Helper
     end
   end
 
-  def self.part1
-    blocks  = file.blocks
-    regions = blocks.pop.lines.map(&:numbers)
-    shapes  = blocks.map { _1.lines[1..].to_lines }
-    regions.keys.each do |bi|
-      region = regions[bi]
-      x = region.shift
-      y = region.shift
-
-      regions[bi].unshift(Map.init_map(x - 1, y - 1, '.').select_value('.').keys.to_set)
-    end
-
-    shape_variants = shapes.map do |shape|
-      shape.to_2d.all_variants.map { _1.to_map.select_value('#').keys.to_set }
-    end
-
-    Parallel.map(regions) do |region|
-      shapes_fit?(region[0], shape_variants, region[1..]) ? 1: 0
-    end.sum
+  def self.null_map(x, y)
+    Map.init_map(x - 1, y - 1, '.').select_value('.').keys.to_set
   end
 
-  def self.part2
-    part1
+  def self.shape_map(string)
+    string.to_2d.all_variants.map { _1.to_map.select_value('#').keys.to_set }
+  end
+
+  def self.part1
+    blocks  = file.blocks
+    regions = blocks.pop.lines.map(&:numbers).map { [null_map(_1[0], _1[1])] + _1[2..] }
+    shapes  = blocks.map { _1.lines[1..].to_lines }.map { shape_map(_1) }
+
+    Parallel.map(regions) do |region|
+      shapes_fit?(region[0], shapes, region[1..]) ? 1: 0
+    end.sum
   end
 end
 
