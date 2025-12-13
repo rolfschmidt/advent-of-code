@@ -612,6 +612,82 @@ Returns:
     result
   end
 
+
+=begin
+
+  shape = "###\n##.\n##."
+  shape.to_2d.rotated_variants
+
+  shape = "###\n##.\n##."
+  shape.to_2d.rotated_variants.each { puts _1.to_2ds; puts }
+
+Returns:
+
+  ###  ###  .##  #..
+  ##.  ###  .##  ###
+  ##.  ..#  ###  ###
+
+=end
+
+  def rotated_variants
+    result = []
+    result << self
+    result << self.transpose.map { _1.reverse }
+    result << self.reverse.map { _1.reverse }
+    result << self.transpose.reverse.map { _1 }
+    result.uniq
+  end
+
+=begin
+
+  shape = "###\n##.\n##."
+  shape.to_2d.flipped_variants
+
+  shape = "###\n##.\n##."
+  shape.to_2d.flipped_variants.each { puts _1.to_2ds; puts }
+
+Returns:
+
+  ##.  ###  ###  ..#
+  ##.  ###  .##  ###
+  ###  #..  .##  ###
+
+=end
+
+  def flipped_variants
+    result = []
+    result << self.reverse
+    result << self.transpose
+    result << self.map { _1.reverse }
+    result << self.transpose.reverse.map { _1.reverse }
+    result.uniq
+  end
+
+=begin
+
+  shape = "###\n##.\n##."
+  shape.to_2d.all_variants
+
+Returns:
+
+  rotated:
+
+  ###  ###  .##  #..
+  ##.  ###  .##  ###
+  ##.  ..#  ###  ###
+
+  flipped:
+
+  ##.  ###  ###  ..#
+  ##.  ###  .##  ###
+  ###  #..  .##  ###
+
+=end
+
+  def all_variants
+    (rotated_variants + flipped_variants).uniq
+  end
+
 =begin
 
   [5, Range(5), 5].ensure_ranges
