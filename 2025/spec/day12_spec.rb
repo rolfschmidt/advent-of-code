@@ -3,7 +3,7 @@ class Day12 < Helper
     shape_counts.keys.map { shapes[_1][0].size * shape_counts[_1] }.sum
   end
 
-  def self.shapes_fit?(map, shapes, shape_counts, history = [])
+  def self.shapes_fit?(map, shapes, shape_counts)
     if shape_counts.all?(0)
       true
     elsif shapes_size(shapes, shape_counts) > map.size
@@ -23,7 +23,7 @@ class Day12 < Helper
             new_map = map.clone
             new_map -= shape.map { pos + _1 }
 
-            shapes_fit?(new_map, shapes, new_shape_counts, history + [shape])
+            shapes_fit?(new_map, shapes, new_shape_counts)
           end
         end
       end
