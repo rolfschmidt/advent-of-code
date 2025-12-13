@@ -1,7 +1,6 @@
 class Day12 < Helper
   def self.shapes_size(shapes, shape_counts)
-    @shapes_size ||= {}
-    @shapes_size[shape_counts] ||= shape_counts.keys.map { shapes[_1][0].size * shape_counts[_1] }.sum
+    shape_counts.keys.map { shapes[_1][0].size * shape_counts[_1] }.sum
   end
 
   def self.shapes_fit?(map, shapes, shape_counts)
@@ -21,14 +20,10 @@ class Day12 < Helper
             new_shape_counts = shape_counts.clone
             new_shape_counts[shape_index] -= 1
 
-            # do not clone, instead keep the map
-            # and rollback the map afterwards if no fit
-            # for more speed
-            does_fit = shapes_fit?(map, shapes, new_shape_counts)
-            return true if does_fit
+            new_map = map.clone
+            new_map -= shape.map { pos + _1 }
 
-            # rollback map
-            new_map += shape.map { pos + _1 }
+            shapes_fit?(new_map, shapes, new_shape_counts)
           end
         end
       end
