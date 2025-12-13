@@ -17,13 +17,13 @@ class Day12 < Helper
             next if shape.size > map.size
             next if shape.any? { !map.include?(pos + _1) }
 
-            shape_counts[shape_index] -= 1
-            shape.each { map.delete(pos + _1) }
+            new_shape_counts = shape_counts.clone
+            new_shape_counts[shape_index] -= 1
 
-            return true if shapes_fit?(map, shapes, shape_counts)
+            new_map = map.clone
+            new_map -= shape.map { pos + _1 }
 
-            shape.each { map.add(pos + _1) }
-            shape_counts[shape_index] += 1
+            shapes_fit?(new_map, shapes, new_shape_counts)
           end
         end
       end
