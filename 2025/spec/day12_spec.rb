@@ -34,14 +34,14 @@ class Day12 < Helper
     Map.init_map(x - 1, y - 1, '.').select_value('.').keys.to_set
   end
 
-  def self.shape_set(string)
+  def self.shape_list(string)
     string.to_2d.all_variants.map { _1.to_map.select_value('#').keys.to_set }
   end
 
   def self.part1
     blocks  = file.blocks
     regions = blocks.pop.lines.map(&:numbers).map { [null_set(_1[0], _1[1])] + _1[2..] }
-    shapes  = blocks.map { _1.lines[1..].to_lines }.map { shape_set(_1) }
+    shapes  = blocks.map { _1.lines[1..].to_lines }.map { shape_list(_1).sort_by(&:size).reverse }
 
     Parallel.map(regions) do |region|
       shapes_fit?(region[0], shapes, region[1..]) ? 1: 0
