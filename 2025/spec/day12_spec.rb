@@ -30,18 +30,18 @@ class Day12 < Helper
     end
   end
 
-  def self.null_map(x, y)
+  def self.null_set(x, y)
     Map.init_map(x - 1, y - 1, '.').select_value('.').keys.to_set
   end
 
-  def self.shape_map(string)
+  def self.shape_set(string)
     string.to_2d.all_variants.map { _1.to_map.select_value('#').keys.to_set }
   end
 
   def self.part1
     blocks  = file.blocks
-    regions = blocks.pop.lines.map(&:numbers).map { [null_map(_1[0], _1[1])] + _1[2..] }
-    shapes  = blocks.map { _1.lines[1..].to_lines }.map { shape_map(_1) }
+    regions = blocks.pop.lines.map(&:numbers).map { [null_set(_1[0], _1[1])] + _1[2..] }
+    shapes  = blocks.map { _1.lines[1..].to_lines }.map { shape_set(_1) }
 
     Parallel.map(regions) do |region|
       shapes_fit?(region[0], shapes, region[1..]) ? 1: 0
