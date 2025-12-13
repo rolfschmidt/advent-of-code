@@ -33,11 +33,7 @@ class Day12 < Helper
   def self.part1
     blocks  = file.blocks
     regions = blocks.pop.lines.map(&:numbers)
-    shapes  = blocks.map do
-      lines = _1.lines
-      lines.shift
-      lines.to_lines
-    end
+    shapes  = blocks.map { _1.lines[1..].to_lines }
     regions.keys.each do |bi|
       region = regions[bi]
       x = region.shift
