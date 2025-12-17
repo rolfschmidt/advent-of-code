@@ -11,6 +11,10 @@ class Machine
     @input_index   = input_index
   end
 
+  def halted?
+    parts[run_index] == 99
+  end
+
   def operator
     @operator ||= {}
     @operator[run_index] ||= parts[run_index] % 100
@@ -115,7 +119,7 @@ class Machine
     end
 
     ouput_result = output.join.to_i
-    return { output: ouput_result, parts: parts, index: run_index, halted: parts[run_index] == 99, relative_base: relative_base } if all
+    return { output: ouput_result, parts: parts, index: run_index, halted: halted?, relative_base: relative_base } if all
     return ouput_result if output.present?
 
     parts
