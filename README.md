@@ -3,7 +3,7 @@
 <a href="http://www.adventofcode.com" target="_blank"><img width="700" alt="image" src="https://github.com/user-attachments/assets/8252cdba-9787-464e-aac3-ab422541abe9" /></a>
 
 
-|  Year               |  ⭐   |  Language(s)  |
+|  Year               |  ⭐   |  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Language &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  |
 |:-------------------:|:-----------:|:-------------:|
 |  [2025](2025/spec)  |    12/12    | Ruby          |
 |  [2024](2024/spec)  |    25/25    | Ruby          |
