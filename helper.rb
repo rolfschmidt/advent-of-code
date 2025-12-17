@@ -2234,7 +2234,7 @@ class Graph
       result = []
       graph.each do |key, values|
         values.each do |value, weight|
-          result << [key, value, weight]
+          result << [key, value, weight || 0]
         end
       end
       result
