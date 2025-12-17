@@ -14,6 +14,7 @@ require 'rainbow'
 require 'z3' # equations
 
 require '../helper'
+require './spec/machine'
 
 RSpec.configure do |config|
   config.default_formatter = "doc"
