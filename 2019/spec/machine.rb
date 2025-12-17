@@ -20,8 +20,9 @@ class Machine
   end
 
   def mode(value_index)
-    data = parts[run_index] / 100
-    ((data / (10 ** (value_index - 1))) % 10)
+    data = parts[run_index].to_s.rjust(4, '0').chars.map(&:to_i)[...-2]
+
+    return data[value_index * -1] || 0
   end
 
   def mode_index(value_index)
