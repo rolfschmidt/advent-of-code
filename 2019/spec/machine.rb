@@ -16,25 +16,26 @@ class Machine
   end
 
   def operator
-    @operator ||= {}
-    @operator[run_index] ||= parts[run_index] % 100
+    parts[run_index] % 100
   end
 
   def mode(value_index)
     data = parts[run_index] / 100
-    ((data / (10 ** (value_index - run_index - 1))) % 10)
+    ((data / (10 ** (value_index - 1))) % 10)
   end
 
   def mode_index(value_index)
     mode = mode(value_index)
 
+    pos_index = run_index + value_index
+
     result = nil
     if mode == 0 # position mode
-      result = parts[value_index]
+      result = parts[pos_index]
     elsif mode == 1 # immediate mode
-      result = value_index
+      result = pos_index
     elsif mode == 2 # relative mode
-      result = relative_base + parts[value_index]
+      result = relative_base + parts[pos_index]
     else
       raise "invalid mode '#{mode}'!"
     end
@@ -56,6 +57,22 @@ class Machine
     parts[to_index]
   end
 
+  def value1
+    value(1)
+  end
+
+  def value2
+    value(2)
+  end
+
+  def value3
+    value(3)
+  end
+
+  def value3=(value)
+    set_value(3, value)
+  end
+
   def set_value(value_index, value)
     to_index = mode_index(value_index)
 
@@ -66,50 +83,31 @@ class Machine
     while true do
       case operator
       when 1 # add
-        result = value(run_index + 1) + value(run_index + 2)
-        set_value(run_index + 3, result)
+        self.value3 = value1 + value2
         @run_index += 4
       when 2 # mul
-        result = value(run_index + 1) * value(run_index + 2)
-        set_value(run_index + 3, result)
+        self.value3 = value1 * value2
         @run_index += 4
       when 3 # move
-        to_index = mode_index(run_index + 1)
+        to_index = mode_index(1)
         @parts[to_index] = input_value
         @run_index += 2
       when 4 # print output
-        result = value(run_index + 1)
-        @output << result
+        @output << value1
         @run_index += 2
         break if all
-      when 5 # jump if true
-        result = value(run_index + 1)
-        if result == 0
-          @run_index += 3
-          next
-        end
-
-        result = value(run_index + 2)
-        @run_index = result
-      when 6 # jump if false
-        result = value(run_index + 1)
-        if result != 0
-          @run_index += 3
-          next
-        end
-
-        result = value(run_index + 2)
-        @run_index = result
+      when 5 # jump-if-true
+        @run_index = value1 != 0 ? value2 : @run_index + 3
+      when 6 # jump-if-false
+        @run_index = value1 == 0 ? value2 : @run_index + 3
       when 7 # less than
-        result = value(run_index + 1) < value(run_index + 2)
-        set_value(run_index + 3, (result ? 1 : 0))
+        self.value3 = (value1 < value2).to_i
         @run_index += 4
       when 8 # equals
-        result = value(run_index + 1) == value(run_index + 2)
-        set_value(run_index + 3, (result ? 1 : 0))
+        self.value3 = (value1 == value2).to_i
         @run_index += 4
       when 9 # relative base
-        @relative_base += value(run_index + 1)
+        @relative_base += value1
         @run_index += 2
       when 99
         break
