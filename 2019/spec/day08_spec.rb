@@ -26,11 +26,11 @@ class Day08 < Helper
     result = nil
     lowest_layer_zeros = nil
 
-    (data || []).each do |layer|
+    Array.wrap(data).each do |layer|
       layer_zeros = 0
 
-      (layer || []).each do |part|
-        (part || []).each do |number|
+      Array.wrap(layer).each do |part|
+        Array.wrap(part).each do |number|
           next unless number == 0
           layer_zeros += 1
         end
@@ -49,7 +49,7 @@ class Day08 < Helper
     number1_count = 0
     number2_count = 0
 
-    (layer || []).each do |part|
+    Array.wrap(layer).each do |part|
       number1_count += part.count { |v| v == 1 }
       number2_count += part.count { |v| v == 2 }
     end
@@ -60,9 +60,9 @@ class Day08 < Helper
   def self.image_data_get(data)
     image = {}
 
-    (0...(data&.length || 0)).each do |layer_index|
-      (0...(data[layer_index]&.length || 0)).each do |part_index|
-        (0...(data[layer_index][part_index]&.length || 0)).each do |number_index|
+    (0...data.size).each do |layer_index|
+      (0...data[layer_index].size).each do |part_index|
+        (0...data[layer_index][part_index].size).each do |number_index|
           value = data[layer_index][part_index][number_index]
 
           image[part_index] ||= {}
