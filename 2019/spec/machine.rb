@@ -7,17 +7,18 @@ class Machine
     @relative_base = 0
   end
 
-  def op(op_index)
-    parts[op_index] % 100
+  def operator
+    @operator ||= {}
+    @operator[run_index] ||= parts[run_index] % 100
   end
 
-  def mode(op_index, value_index)
-    data = parts[op_index] / 100
-    ((data / (10 ** (value_index - op_index - 1))) % 10)
+  def mode(value_index)
+    data = parts[run_index] / 100
+    ((data / (10 ** (value_index - run_index - 1))) % 10)
   end
 
-  def mode_index(op_index, value_index)
-    mode = mode(op_index, value_index)
+  def mode_index(value_index)
+    mode = mode(value_index)
 
     result = nil
     if mode == 0 # position mode
@@ -35,18 +36,16 @@ class Machine
     result
   end
 
-  def value(op_index, value_index)
-    to_index = mode_index(op_index, value_index)
+  def value(value_index)
+    to_index = mode_index(value_index)
 
     parts[to_index]
   end
 
-  def set_value(op_index, value_index, value)
-    to_index = mode_index(op_index, value_index)
+  def set_value(value_index, value)
+    to_index = mode_index(value_index)
 
     @parts[to_index] = value
-
-    1
   end
 
   def compute(input: 1, init_index: nil, all: false)
@@ -55,60 +54,58 @@ class Machine
     input_index = init_index != 0 ? input.size - 1 : 0
 
     while true do
-      operator = op(run_index)
-      break if operator == 99
-
-      result = nil
-      if operator == 1 # add
-        result = value(run_index, run_index + 1) + value(run_index, run_index + 2)
-        set_value(run_index, run_index + 3, result)
+      case operator
+      when 1 # add
+        result = value(run_index + 1) + value(run_index + 2)
+        set_value(run_index + 3, result)
         @run_index += 4
-      elsif operator == 2 # mul
-        result = value(run_index, run_index + 1) * value(run_index, run_index + 2)
-        set_value(run_index, run_index + 3, result)
+      when 2 # mul
+        result = value(run_index + 1) * value(run_index + 2)
+        set_value(run_index + 3, result)
         @run_index += 4
-      elsif operator == 3 # move
-        to_index = mode_index(run_index, run_index + 1)
+      when 3 # move
+        to_index = mode_index(run_index + 1)
         @parts[to_index] = input[input_index] || input[0]
         input_index += 1
         @run_index += 2
-      elsif operator == 4 # print output
-        result = value(run_index, run_index + 1)
+      when 4 # print output
+        result = value(run_index + 1)
         @output << result
         @run_index += 2
         break if all
-      elsif operator == 5 # jump if true
-        result = value(run_index, run_index + 1)
+      when 5 # jump if true
+        result = value(run_index + 1)
         if result == 0
           @run_index += 3
           next
         end
 
-        result = value(run_index, run_index + 2)
+        result = value(run_index + 2)
         @run_index = result
-      elsif operator == 6 # jump if false
-        result = value(run_index, run_index + 1)
+      when 6 # jump if false
+        result = value(run_index + 1)
         if result != 0
           @run_index += 3
           next
         end
 
-        result = value(run_index, run_index + 2)
+        result = value(run_index + 2)
         @run_index = result
-      elsif operator == 7 # less than
-        result = value(run_index, run_index + 1) < value(run_index, run_index + 2)
-        set_value(run_index, run_index + 3, (result ? 1 : 0))
+      when 7 # less than
+        result = value(run_index + 1) < value(run_index + 2)
+        set_value(run_index + 3, (result ? 1 : 0))
         @run_index += 4
-      elsif operator == 8 # equals
-        result = value(run_index, run_index + 1) == value(run_index, run_index + 2)
-        set_value(run_index, run_index + 3, (result ? 1 : 0))
+      when 8 # equals
+        result = value(run_index + 1) == value(run_index + 2)
+        set_value(run_index + 3, (result ? 1 : 0))
         @run_index += 4
-      elsif operator == 9 # relative base
-        @relative_base += value(run_index, run_index + 1)
+      when 9 # relative base
+        @relative_base += value(run_index + 1)
         @run_index += 2
-      else
-        puts "invalid operator #{operator}"
+      when 99
         break
+      else
+        raise "invalid operator #{operator}"
       end
     end
 
