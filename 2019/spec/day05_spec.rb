@@ -4,13 +4,13 @@ class Day05 < Helper
   end
 
   def self.part2
-    Machine.new(file.split(/,/).map(&:to_i)).compute(input: 5)
+    Machine.new(file.split(/,/).map(&:to_i), input: 5).compute
   end
 end
 
 RSpec.describe "Day05" do
   def run(code, input: nil)
-    value = Machine.new(code.split(/,/).map(&:to_i)).compute(input: input)
+    value = Machine.new(code.split(/,/).map(&:to_i), input: input).compute
     value = value.join(',') if value.is_a?(Array)
     value
   end

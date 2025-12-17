@@ -1,10 +1,14 @@
 class Machine
-  attr_accessor :parts, :run_index, :output, :relative_base
+  attr_accessor :parts, :run_index, :output, :relative_base, :all, :input, :input_index
 
-  def initialize(parts)
+  def initialize(parts, run_index: 0, relative_base: 0, all: false, input: 1, input_index: 0)
     @parts         = parts.is_a?(String) ? parts.split(/,/).map(&:to_i) : parts
     @output        = []
-    @relative_base = 0
+    @relative_base = relative_base
+    @run_index     = run_index
+    @all           = all
+    @input         = Array.wrap(input)
+    @input_index   = input_index
   end
 
   def operator
@@ -36,6 +40,12 @@ class Machine
     result
   end
 
+  def input_value
+    value = @input[input_index]
+    @input_index += 1
+    value || 0
+  end
+
   def value(value_index)
     to_index = mode_index(value_index)
 
@@ -48,11 +58,7 @@ class Machine
     @parts[to_index] = value
   end
 
-  def compute(input: 1, init_index: nil, all: false)
-    @run_index  = init_index || 0
-    input       = Array.wrap(input)
-    input_index = init_index != 0 ? input.size - 1 : 0
-
+  def compute
     while true do
       case operator
       when 1 # add
@@ -65,8 +71,7 @@ class Machine
         @run_index += 4
       when 3 # move
         to_index = mode_index(run_index + 1)
-        @parts[to_index] = input[input_index] || input[0]
-        input_index += 1
+        @parts[to_index] = input_value
         @run_index += 2
       when 4 # print output
         result = value(run_index + 1)

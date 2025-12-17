@@ -17,7 +17,8 @@ class Day07 < Helper
         index_code[amp_index] ||= code.clone
 
         sequence_value = sequence[amp_index]
-        ra = Machine.new(index_code[amp_index].clone).compute(input: [sequence_value, amp_outputs], all: true, init_index: index_memory[amp_index])
+        input_index    = index_memory[amp_index] != 0 ? 1 : 0
+        ra = Machine.new(index_code[amp_index].clone, input: [sequence_value, amp_outputs], all: true, run_index: index_memory[amp_index], input_index: input_index).compute
 
         amp_outputs = ra[:output] if !ra[:output].nil?
 
