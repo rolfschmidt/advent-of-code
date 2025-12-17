@@ -2511,6 +2511,13 @@ DIRS_OPPOSITE = {
   DIR_RIGHT_UP   => DIR_LEFT_DOWN,
 }
 
+DIRS_ALPHA = {
+  'U' => DIR_UP,
+  'R' => DIR_RIGHT,
+  'D' => DIR_DOWN,
+  'L' => DIR_LEFT,
+}
+
 DIRS_STRING = {
   '^' => DIR_UP,
   '>' => DIR_RIGHT,
@@ -2541,4 +2548,5 @@ DIRS_DIAG = [
 
 DIRS_ALL = DIRS_PLUS + DIRS_DIAG
 
-
+INT_MIN = -(2 ** (0.size * 8 -2))
+INT_MAX = (2 ** (0.size * 8 -2) -1)
