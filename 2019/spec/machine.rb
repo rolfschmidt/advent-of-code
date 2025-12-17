@@ -28,15 +28,13 @@ class Machine
   def mode_index(value_index)
     mode = mode(value_index)
 
-    pos_index = run_index + value_index
-
     result = nil
     if mode == 0 # position mode
-      result = parts[pos_index]
+      result = parts[run_index + value_index]
     elsif mode == 1 # immediate mode
-      result = pos_index
+      result = run_index + value_index
     elsif mode == 2 # relative mode
-      result = relative_base + parts[pos_index]
+      result = relative_base + parts[run_index + value_index]
     else
       raise "invalid mode '#{mode}'!"
     end
