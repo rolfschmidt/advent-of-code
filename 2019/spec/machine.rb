@@ -16,7 +16,9 @@ class Machine
     ((data / (10 ** (value_index - op_index - 1))) % 10)
   end
 
-  def mode_index(mode, value_index)
+  def mode_index(op_index, value_index)
+    mode = mode(op_index, value_index)
+
     result = nil
     if mode == 0 # position mode
       result = parts[value_index]
@@ -34,15 +36,13 @@ class Machine
   end
 
   def value(op_index, value_index)
-    mode     = mode(op_index, value_index)
-    to_index = mode_index(mode, value_index)
+    to_index = mode_index(op_index, value_index)
 
     parts[to_index]
   end
 
   def set_value(op_index, value_index, value)
-    mode     = mode(op_index, value_index)
-    to_index = mode_index(mode, value_index)
+    to_index = mode_index(op_index, value_index)
 
     @parts[to_index] = value
 
@@ -68,7 +68,7 @@ class Machine
         set_value(run_index, run_index + 3, result)
         @run_index += 4
       elsif operator == 3 # move
-        to_index = mode_index(mode(run_index, run_index + 1), run_index + 1)
+        to_index = mode_index(run_index, run_index + 1)
         @parts[to_index] = input[input_index] || input[0]
         input_index += 1
         @run_index += 2
