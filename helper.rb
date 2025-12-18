@@ -2092,6 +2092,25 @@ Vector = Struct.new(:x, :y) do
   alias_method :r, :magnitude
   alias_method :norm, :magnitude
 
+  def angle_with(other)
+    diff   = other - self
+    angle  = Math.atan2(diff.x, -diff.y)
+    angle += 2 * Math::PI if angle < 0
+    angle
+  end
+
+  def dot(other)
+    x * other.x + y * other.y
+  end
+
+  def cross(other)
+    (x * other.y - y * other.x).abs
+  end
+
+  def magnitude_sq
+    x**2 + y**2
+  end
+
   def to_a
     [x, y]
   end
@@ -2103,6 +2122,30 @@ Vector = Struct.new(:x, :y) do
 
   def hash
     [x, y].hash
+  end
+
+  def self.hidden_by_obstacle?(observer, target, obstacle, epsilon)
+    to_target = target - observer
+    to_obstacle = obstacle - observer
+
+    return false if to_target.magnitude_sq < to_obstacle.magnitude_sq
+
+    cross_product = to_target.cross(to_obstacle)
+    return false if cross_product > epsilon
+
+    dot_product = to_target.dot(to_obstacle)
+    dot_product > 0 && dot_product < to_target.magnitude_sq
+  end
+
+  def can_see?(target, obstacles, epsilon = 0.1)
+    bminx, bmaxx = [self.x, target.x].min, [self.x, target.x].max
+    bminy, bmaxy = [self.y, target.y].min, [self.y, target.y].max
+
+    obstacles.none? do |obstacle|
+      next if !obstacle.x.between?(bminx, bmaxx)
+      next if !obstacle.y.between?(bminy, bmaxy)
+      self.class.hidden_by_obstacle?(self, target, obstacle, epsilon)
+    end
   end
 end
 
