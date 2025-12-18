@@ -2190,18 +2190,19 @@ Returns:
 Returns:
 
   {
-    #<struct Vector x=0, y=0> => {#<struct Vector x=0, y=0> => true, #<struct Vector x=1, y=0> => true, #<struct Vector x=2, y=0> => false},
-    #<struct Vector x=1, y=0> => {#<struct Vector x=0, y=0> => true, #<struct Vector x=1, y=0> => true, #<struct Vector x=2, y=0> => true},
-    #<struct Vector x=2, y=0> => {#<struct Vector x=0, y=0> => false, #<struct Vector x=1, y=0> => true, #<struct Vector x=2, y=0> => true}}
-  }
+    #<struct Vector x=0, y=0> => {#<struct Vector x=1, y=0> => true, #<struct Vector x=2, y=0> => false},
+    #<struct Vector x=1, y=0> => {#<struct Vector x=0, y=0> => true, #<struct Vector x=2, y=0> => true},
+    #<struct Vector x=2, y=0> => {#<struct Vector x=0, y=0> => false, #<struct Vector x=1, y=0> => true}
+ }
 
 =end
-
 
   def self.visibility_list(list)
     result = {}
     list.each do |from|
       list.each do |to|
+        next if from == to
+
         result[from] ||= {}
         result[to]   ||= {}
         next if !result[from][to].nil?
@@ -2212,6 +2213,29 @@ Returns:
       end
     end
     result
+  end
+
+=begin
+
+  Generates counts of how much positions each position can see.
+
+  all = [Vector.new(0, 0), Vector.new(1, 0), Vector.new(2, 0)]
+  Vector.visibility_count(all)
+
+Returns:
+
+  {
+    #<struct Vector x=0, y=0> => 1,
+    #<struct Vector x=1, y=0> => 2,
+    #<struct Vector x=2, y=0> => 1
+  }
+
+=end
+
+  def self.visibility_count(list)
+    visibility_list(list).to_h do |key, value|
+      [key, value.values.count(true)]
+    end
   end
 end
 

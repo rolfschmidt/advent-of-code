@@ -8,15 +8,11 @@ class Day10 < Helper
   end
 
   def self.totals
-    @totals ||= begin
-      Vector.visibility_list(asteroids).to_h do |key, value|
-        [key, value.values.count(true)]
-      end
-    end
+    @totals ||= Vector.visibility_count(asteroids)
   end
 
   def self.part1
-    totals.values.max - 1
+    totals.values.max
   end
 
   def self.part2
