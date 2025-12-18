@@ -2125,7 +2125,22 @@ Vector = Struct.new(:x, :y) do
     [x, y].hash
   end
 
-  def self.hidden_by_obstacle?(observer, target, obstacle, epsilon)
+=begin
+
+  Checks if the target pos is hidden by an obstacle pos if you look from the observer pos.
+
+  observer --> obstacle --> target --> true
+  observer --> [nothing] --> target --> false
+
+  Vector.hidden_by_obstacle?(start, stop, middle)
+
+Returns:
+
+  false
+
+=end
+
+  def self.hidden_by_obstacle?(observer, target, obstacle, epsilon = 0.1)
     to_target = target - observer
     to_obstacle = obstacle - observer
 
@@ -2138,6 +2153,22 @@ Vector = Struct.new(:x, :y) do
     dot_product > 0 && dot_product < to_target.magnitude_sq
   end
 
+=begin
+
+  Checks if the current pos does see target pos considering an obstacle list.
+
+  all = [Vector.new(0, 0), Vector.new(1, 0), Vector.new(2, 0)]
+  from = Vector.new(0, 0)
+  to = Vector.new(2, 0)
+
+  from.can_see?(to, all)
+
+Returns:
+
+  false
+
+=end
+
   def can_see?(target, obstacles, epsilon = 0.1)
     bminx, bmaxx = [self.x, target.x].min, [self.x, target.x].max
     bminy, bmaxy = [self.y, target.y].min, [self.y, target.y].max
@@ -2147,6 +2178,40 @@ Vector = Struct.new(:x, :y) do
       next if !obstacle.y.between?(bminy, bmaxy)
       self.class.hidden_by_obstacle?(self, target, obstacle, epsilon)
     end
+  end
+
+=begin
+
+  Generates a visibility map of all positions if they can see each other.
+
+  all = [Vector.new(0, 0), Vector.new(1, 0), Vector.new(2, 0)]
+  Vector.visibility_list(all)
+
+Returns:
+
+  {
+    #<struct Vector x=0, y=0> => {#<struct Vector x=0, y=0> => true, #<struct Vector x=1, y=0> => true, #<struct Vector x=2, y=0> => false},
+    #<struct Vector x=1, y=0> => {#<struct Vector x=0, y=0> => true, #<struct Vector x=1, y=0> => true, #<struct Vector x=2, y=0> => true},
+    #<struct Vector x=2, y=0> => {#<struct Vector x=0, y=0> => false, #<struct Vector x=1, y=0> => true, #<struct Vector x=2, y=0> => true}}
+  }
+
+=end
+
+
+  def self.visibility_list(list)
+    result = {}
+    list.each do |from|
+      list.each do |to|
+        result[from] ||= {}
+        result[to]   ||= {}
+        next if !result[from][to].nil?
+
+        can_see = from.can_see?(to, list)
+        result[from][to] = can_see
+        result[to][from] = can_see
+      end
+    end
+    result
   end
 end
 

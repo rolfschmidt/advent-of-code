@@ -9,11 +9,9 @@ class Day10 < Helper
 
   def self.totals
     @totals ||= begin
-      totals    = {}
-      asteroids.each do |from|
-        totals[from] = asteroids.map { from.can_see?(_1, asteroids).to_i }.sum
+      Vector.visibility_list(asteroids).to_h do |key, value|
+        [key, value.values.count(true)]
       end
-      totals
     end
   end
 
