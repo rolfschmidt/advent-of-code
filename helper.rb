@@ -2092,6 +2092,7 @@ Vector = Struct.new(:x, :y) do
   alias_method :r, :magnitude
   alias_method :norm, :magnitude
 
+  # modified angle starting top clockwise
   def angle_with(other)
     diff   = other - self
     angle  = Math.atan2(diff.x, -diff.y)
