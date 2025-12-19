@@ -1,7 +1,7 @@
 class Machine
-  attr_accessor :parts, :run_index, :output, :relative_base, :all, :input, :input_index
+  attr_accessor :parts, :run_index, :output, :relative_base, :all, :input, :input_index, :wait_on_input
 
-  def initialize(parts, run_index: 0, relative_base: 0, all: false, input: 1, input_index: 0)
+  def initialize(parts, run_index: 0, relative_base: 0, all: false, input: 1, input_index: 0, wait_on_input: false)
     @parts         = parts.is_a?(String) ? parts.split(/,/).map(&:to_i) : parts
     @output        = []
     @relative_base = relative_base
@@ -9,6 +9,7 @@ class Machine
     @all           = all
     @input         = Array.wrap(input)
     @input_index   = input_index
+    @wait_on_input = wait_on_input
   end
 
   def halted?
@@ -17,6 +18,15 @@ class Machine
 
   def operator
     parts[run_index] % 100
+  end
+
+  def set_input(value)
+    @input       = Array.wrap(value)
+    @input_index = 0
+  end
+
+  def wait_on_input?
+    input_index >= input.size
   end
 
   def mode(value_index)
@@ -88,6 +98,8 @@ class Machine
         self.value3 = value1 * value2
         @run_index += 4
       when 3 # move
+        break if wait_on_input?
+
         to_index = mode_index(1)
         @parts[to_index] = input_value
         @run_index += 2
@@ -116,7 +128,7 @@ class Machine
     end
 
     ouput_result = output.join.to_i
-    return { output: ouput_result, parts: parts, index: run_index, halted: halted?, relative_base: relative_base } if all
+    return { output_raw: output, output: ouput_result, parts: parts, index: run_index, halted: halted?, relative_base: relative_base } if all || wait_on_input
     return ouput_result if output.present?
 
     parts
