@@ -20,7 +20,7 @@ class Day12 < Helper
         end
       end
 
-      moons.each_with_index do |mo, mi|
+      moons.each do |mo|
         mo[0] += mo[1]
       end
 
